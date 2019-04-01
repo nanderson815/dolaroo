@@ -13,12 +13,12 @@ require("dotenv").config();
 //   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID
 // };
 const config = {
-  apiKey: "AIzaSyCGvVrq9uuUgTF7nBXzPIqUzml42YUtN08",
-  authDomain: "paullinck-authreact.firebaseapp.com",
-  databaseURL: "https://paullinck-authreact.firebaseio.com",
-  projectId: "paullinck-authreact",
-  storageBucket: "paullinck-authreact.appspot.com",
-  messagingSenderId: "910164644412"
+  apiKey: "AIzaSyDCddfdNSdSf19cWK7je91aJtlyh3zBp4Q",
+  authDomain: "project3-noahpauljj-fintech2.firebaseapp.com",
+  databaseURL: "https://project3-noahpauljj-fintech2.firebaseio.com",
+  projectId: "project3-noahpauljj-fintech2",
+  storageBucket: "project3-noahpauljj-fintech2.appspot.com",
+  messagingSenderId: "87243866145"
 };
 
 console.log("fb config", config);
