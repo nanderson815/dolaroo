@@ -20,12 +20,31 @@ class SignInFormBase extends Component {
 
   onSubmit = event => {
     const { email, password } = this.state;
+    const db = this.props.firebase.db;  // ref to firebase firestore()
 
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((authUser) => {
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push("/dashboard");
+        let docRef = db.collection("users").doc(authUser.user.uid);
+        docRef.get().then( (doc) => {
+          if (doc.exists) {
+            // update
+            console.log("User updated");
+            return db.collection('users').doc(authUser.user.uid).update({
+              email: email
+            });
+          }
+          // cretae if not existing
+          console.log("New user created");
+          return db.collection('users').doc(authUser.user.uid).set({
+            email: email
+          });
+        });
+      })
+      .then(() => {
+        // redirect home
+        this.props.history.push("/dashboard"); 
       })
       .catch(error => {
         this.setState({ error });

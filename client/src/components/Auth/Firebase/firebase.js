@@ -1,5 +1,7 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/functions';
 require("dotenv").config();
 
 // For the life of me I cant get REACT (when in client/) to read ENV vars and google isnt helping me ...
@@ -36,6 +38,18 @@ class Firebase {
     }
 
     this.auth = firebase.auth();
+    this.db = firebase.firestore();
+    this.functions = firebase.functions();
+  }
+
+  db2 = () => {
+    let db = firebase.firestore();
+    return(db);
+  }
+
+  fbFunctions = () => {
+    let fbFunctions = firebase.functions();
+    return(fbFunctions);
   }
 
   // *** Firebase Auth API ***
@@ -48,7 +62,7 @@ class Firebase {
           console.error("User create failed!", err);
           return reject(err);
         }) 
-    }); // Promise
+    }); // Promise  
   }
 
   doSignInWithEmailAndPassword = (email, password) => {

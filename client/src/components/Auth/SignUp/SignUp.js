@@ -25,19 +25,26 @@ class SignUpFormBase extends Component {
 
     const { username, email, passwordOne } = this.state;
     console.log(this.props);
+    const db = this.props.firebase.db;  // ref to firebase firestore()
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         // clear the userinout fields
         this.setState({ ...INITIAL_STATE });
+        // Now Create the user in firestore
+        return db.collection('users').doc(authUser.user.uid).set({
+          username: username,
+          email: email
+        });
+      })
+      .then(() => {
         // redirect home
         this.props.history.push("/dashboard"); 
       })
       .catch(error => {
         this.setState({ error });
-      });
-
+    });
   };
 
   onChange = event => {
