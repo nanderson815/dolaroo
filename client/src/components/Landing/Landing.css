@@ -1,5 +1,4 @@
 header {
     height: 70vh;
-    background-image: url("/images/smallbusiness.jpg");
-    filter: brightness(30%);
+    background: linear-gradient( rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.5) ), url("/images/smallbusiness.jpg");
 }
