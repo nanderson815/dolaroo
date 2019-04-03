@@ -9,7 +9,7 @@ class Landing extends React.Component {
                 <header>
                     <div className="container">
                         <div className="row">
-                            <div className="col s5 offset-s7">
+                            <div className="textbox col m5 offset-m7">
                                 <h3 className="white-text">How Retailers Handle Cash</h3>
                                 <h5 className="white-text">Instantly make cash deposits</h5>
                                 <h5 className="white-text">Consolidate balances from multiple locations</h5>
@@ -19,7 +19,6 @@ class Landing extends React.Component {
                                 <div className="center-align">
                                     <a className="waves-effect waves-light btn  blue darken-4">Sign Up Now</a>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
