@@ -29,7 +29,7 @@ class Navigation extends React.Component {
     const navigationAuth = 
       <ul>
         <li><Link to="/">Landing</Link></li>
-        <li><NavLink to="/dashboard">Dashboard</NavLink></li>
+        <li><NavLink to="/navigation">Home</NavLink></li>
         <li><NavLink to="/account">Account</NavLink></li>
         <li><SignOutButton /></li>
       </ul>
