@@ -23,6 +23,15 @@ class Landing extends React.Component {
                         </div>
                     </div>
                 </header>
+                <main>
+                    <div className='row'>
+                        <div className="col s12">
+                            <h3 className="white-text center-align">The days of walking your deposits to the bank are over</h3>
+                        </div>
+                    </div>
+
+
+                </main>
             </div >
         );
     }

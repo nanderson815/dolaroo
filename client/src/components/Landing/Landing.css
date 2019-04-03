@@ -5,6 +5,11 @@ header {
     background-position: center; 
 }
 
+main {
+    height: 70vh;
+    background: #0d47a1;
+}
+
 .textbox {
     margin-top: 10%;
 }
