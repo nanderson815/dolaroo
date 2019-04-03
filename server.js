@@ -16,17 +16,17 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 
-// connect mongoose
-const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-1qm5r.gcp.mongodb.net/fintechdb?retryWrites=true`;
-// Connect to the Mongo DB ATLAS
-mongoose.connect(uri, {
-    useNewUrlParser: true
-});
-
-// // Connect to the Mongo DB LOCAL
-// mongoose.connect("mongodb://localhost:27017/fintechdb", {
+// // connect mongoose
+// const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-1qm5r.gcp.mongodb.net/fintechdb?retryWrites=true`;
+// // Connect to the Mongo DB ATLAS
+// mongoose.connect(uri, {
 //     useNewUrlParser: true
 // });
+
+// Connect to the Mongo DB LOCAL
+mongoose.connect("mongodb://localhost:27017/fintechdb", {
+    useNewUrlParser: true
+});
 
 
 //Route setup
@@ -39,12 +39,12 @@ app.get('/api/user', (req, res) => {
 
 // Make sure our React files are being served by our Express server.
 // Serve static files from the React frontend app
-// app.use(express.static(path.join(__dirname, 'client', 'build')));
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-// app.get('*', function (req, res) {
-//     const index = path.join(__dirname, 'client', 'build', 'index.html');
-//     res.sendFile(index);
-// });
+app.get('*', function (req, res) {
+    const index = path.join(__dirname, 'client', 'build', 'index.html');
+    res.sendFile(index);
+});
 
 // //production mode - serve from build dir, else serve from public
 if (process.env.NODE_ENV === 'production') {
