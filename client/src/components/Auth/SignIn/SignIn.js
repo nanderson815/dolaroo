@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
-import { SignUpLink } from '../SignUp/SignUp';
 import { withFirebase } from '../Firebase/FirebaseContext';
-
-const SignInPage = () => (
-  <div>
-    <h1>SignIn</h1>
-    <SignInForm />
-    <SignUpLink />
-  </div>
-);
 
 const INITIAL_STATE = {
   email: '',
@@ -28,12 +20,31 @@ class SignInFormBase extends Component {
 
   onSubmit = event => {
     const { email, password } = this.state;
+    const db = this.props.firebase.db;  // ref to firebase firestore()
 
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((authUser) => {
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push("/dashboard");
+        let docRef = db.collection("users").doc(authUser.user.uid);
+        docRef.get().then( (doc) => {
+          if (doc.exists) {
+            // update
+            console.log("User updated");
+            return db.collection('users').doc(authUser.user.uid).update({
+              email: email
+            });
+          }
+          // cretae if not existing
+          console.log("New user created");
+          return db.collection('users').doc(authUser.user.uid).set({
+            email: email
+          });
+        });
+      })
+      .then(() => {
+        // redirect home
+        this.props.history.push("/dashboard"); 
       })
       .catch(error => {
         this.setState({ error });
@@ -52,37 +63,27 @@ class SignInFormBase extends Component {
     const isInvalid = password === '' || email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="password"
-          value={password}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
-
-        {error && <p>{error.message}</p>}
-      </form>
+      <div className="container">
+        <form className="white" onSubmit={this.onSubmit}>
+          <h5 className="grey-text text-darken-3">Sign In</h5>
+          <div className="input-field">
+            <label htmlFor="email">Email</label>
+            <input type="email" name='email' value={email} onChange={this.onChange} />
+          </div>
+          <div className="input-field">
+            <label htmlFor="password">Password</label>
+            <input type="password" name='password' value={password} onChange={this.onChange} />
+          </div>
+          <div className="input-field">
+            <button disabled={isInvalid} className="btn lighten-1 z-depth-0">Login</button>
+            {error && <p>{error.message}</p>}
+          </div>
+        </form>
+        <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>      
+      </div>
     );
   }
 }
 
-// componse is a way to avoid nesting HOC's
-const SignInForm = compose(
-  withRouter,
-  withFirebase,
-)(SignInFormBase);
-
-export default SignInPage;
-
-export { SignInForm };
+const SignInForm = withRouter(withFirebase(SignInFormBase));
+export default SignInForm;

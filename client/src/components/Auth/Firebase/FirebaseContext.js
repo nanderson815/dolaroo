@@ -7,6 +7,8 @@ const FirebaseContext = React.createContext(null);
 // is passsd in from the .Provider
 // the provider for this is in index.js so its passed to everytone below
 // consumer uses => notation to pass in 'value={}' that provider passes
+// NOTE: this HOC allows component just to wrap themselves with withFirebase(component)
+// vs having to use  <FirebaseContext.Consumer> but the result is the same
 const withFirebase = Component => props => (
   <FirebaseContext.Consumer>
     {firebase => <Component {...props} firebase={firebase} />}
