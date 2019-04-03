@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-
+// access to hostory for redirects etc
+import { withRouter } from 'react-router-dom';
+// for firebase conext and access to firebase app
 import { withFirebase } from '../Firebase/FirebaseContext';
-
-const SignUpPage = () => (
-  <div>
-    <h1>SignUp</h1>
-    <SignUpForm />
-  </div>
-);
 
 const INITIAL_STATE = {
   username: '',
@@ -66,57 +60,40 @@ class SignUpFormBase extends Component {
       username === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="username"
-          value={username}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Full Name"
-        />
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign Up
-        </button>
-
-        {error && <p>{error.message}</p>}
-      </form>
+      <div className="container">
+        <form className="white" onSubmit={this.onSubmit}>
+          <h5 className="grey-text text-darken-3">Sign Up</h5>
+          <div className="input-field">
+            <label htmlFor="username">User Name</label>
+            <input type="text" name='username' value={username} onChange={this.onChange} />
+          </div>
+          <div className="input-field">
+            <label htmlFor="email">Email</label>
+            <input type="email" name='email' value={email} onChange={this.onChange} />
+          </div>
+          <div className="input-field">
+            <label htmlFor="passwordOne">Password</label>
+            <input type="password" name='passwordOne' value={passwordOne} onChange={this.onChange} />
+          </div>
+          <div className="input-field">
+            <label htmlFor="passwordTwo">Confirm Password</label>
+            <input type="password" name='passwordTwo' value={passwordTwo} onChange={this.onChange} />
+          </div>
+          <div className="input-field">
+            <button disabled={isInvalid} className="btn lighten-1 z-depth-0">Sign Up</button>
+            {error && <p>{error.message}</p>}
+          </div>
+        </form>
+      </div>
     );
   }
 }
 
-const SignUpLink = () => (
-  <p>
-    Don't have an account? <Link to="/signup">Sign Up</Link>
-  </p>
-);
-
-// Instead of using the Firebase Context directly in the SignUpPage,
+// Instead of using the Firebase Context Componentdirectly in the SignUpPage,
 //  which doesn’t need to know about the Firebase instance, use the higher-order component 
-//  to wrap your SignUpForm. Afterward, the SignUpForm has access to the Firebase instance 
+//  to wrap SignUpForm. Afterward, the SignUpForm has access to the Firebase instance 
 //  via the higher-order component. It’s also possible to use the SignUpForm as standalone without the SignUpPage,
 //  because it is responsible to get the Firebase instance via the higher-order component.
 // withRouter gives the history props for redirect, withFirebase gives firebase props
 const SignUpForm = withRouter(withFirebase(SignUpFormBase));
-export default SignUpPage;
-export { SignUpForm, SignUpLink };
+export default SignUpForm;
