@@ -24,12 +24,23 @@ class Landing extends React.Component {
                     </div>
                 </header>
                 <main>
-                    <div className='row'>
-                        <div className="col s12">
-                            <h3 className="white-text center-align">The days of walking your deposits to the bank are over</h3>
+                    <div className="container">
+                        <div className='row'>
+                            <div className="col s12">
+                                <h3 className="white-text center-align">The days of making branch deposits are over</h3>
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className="col s12 m8">
+                                <h5 className="white-text">Depositing your business' hard-earned cash shouldn't be expensive or time consuming.
+                                That's why we created a better way. </h5>
+                            </div>
+                            <div className="col s12 m3 offset-m1">
+                                <a className="btn white blue-text text-darken-4">Learn More</a>
+                            </div>
                         </div>
                     </div>
-
 
                 </main>
             </div >
