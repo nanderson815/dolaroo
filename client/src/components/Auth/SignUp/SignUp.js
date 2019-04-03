@@ -38,7 +38,7 @@ class SignUpFormBase extends Component {
         // clear the userinout fields
         this.setState({ ...INITIAL_STATE });
         // redirect home
-        this.props.history.push("/home"); 
+        this.props.history.push("/dashboard"); 
       })
       .catch(error => {
         this.setState({ error });
