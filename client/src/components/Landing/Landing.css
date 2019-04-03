@@ -1,0 +1,5 @@
+header {
+    height: 70vh;
+    background-image: url("/images/smallbusiness.jpg");
+    filter: brightness(30%);
+}

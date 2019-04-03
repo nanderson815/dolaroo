@@ -1,14 +1,14 @@
 import React from 'react';
+import './Landing.css';
 
 class Landing extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return ( 
             <div>
-                <h1>Landing</h1>
+                <header>
+
+                </header>
             </div>  
         );
     }
