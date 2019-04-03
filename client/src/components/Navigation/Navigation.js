@@ -76,7 +76,7 @@ class Navigation extends React.Component {
         <div className='navbar-fixed'>
           <nav className={this.navBarClass}>
             <div className="container nav-wrapper">
-              <a href="#" class="brand-logo center">Logo</a>
+              <a href="#" className="brand-logo center">Logo</a>
               <a href="#!" data-target="mobile-menu" className="sidenav-trigger"><i className="material-icons">menu</i></a>
               <ul className="right hide-on-med-and-down">
                 <AuthUserContext.Consumer>
