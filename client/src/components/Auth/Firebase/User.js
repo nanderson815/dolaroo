@@ -1,4 +1,19 @@
+import axios from 'axios';
+
 class User {
+
+    getUsers = () => {
+        // need to figure out how to get the token
+        let token;  // dummy out so it can compile for noww
+        axios.get(`/api/scrape`, { headers: {"FIREBASE_AUTH_TOKEN" : token}})
+        .then(res => {
+          const articles = [...res.data];
+          this.setState({ articles: articles });
+        })
+        .catch(err => {
+            console.error(err); 
+        });
+    }
 
     addUserToFirestore = (db, authUser) => {
         return new Promise((resolve, reject) => {
