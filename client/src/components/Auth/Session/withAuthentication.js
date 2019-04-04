@@ -1,6 +1,6 @@
 import React from 'react';
-
 import AuthUserContext from './AuthUserContext';
+
 import { withFirebase } from '../Firebase/FirebaseContext';
 
 // This component WRAPS Firebase and Authentication Context togtehr in 
@@ -16,7 +16,17 @@ const withAuthentication = Component => {
 
             this.state = {
                 authUser: null,
+                token: null
             };
+        }
+
+        refreshToken = async () => {
+            try {
+                let token = await this.props.firebase.doRefreshToken();
+                this.setState({token: token})
+            } catch {
+                console.error("Error refreshng token");
+            }
         }
 
         // NOTE:  This is where the AuthUserContext gets SET
@@ -26,7 +36,26 @@ const withAuthentication = Component => {
         componentDidMount() {
             this.listener = this.props.firebase.auth.onAuthStateChanged(
                 authUser => {
-                    authUser ? this.setState({ authUser}) : this.setState({authUser: null});
+                    if (authUser) {
+                        this.setState({
+                            authUser: authUser
+                        })
+                        authUser.getIdToken(true).then(function (idToken) {
+                            this.setState({
+                                token: idToken
+                            })
+                        }).catch((error) => {
+                            this.setState({
+                                token: null
+                            })
+                            console.error(`error creating id token`);
+                        });
+                    } else {
+                        this.setState({
+                            authUser: null,
+                            token: null
+                        });
+                    }
                 },
             );
         }
@@ -43,7 +72,7 @@ const withAuthentication = Component => {
         render() {
             return ( 
                 <AuthUserContext.Provider value = {this.state.authUser} >
-                    <Component {...this.props} /> 
+                    <Component {...this.props}/>  
                 </AuthUserContext.Provider>
             );
         }

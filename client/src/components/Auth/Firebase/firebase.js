@@ -2,7 +2,6 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/functions';
-require("dotenv").config();
 
 // For the life of me I cant get REACT (when in client/) to read ENV vars and google isnt helping me ...
 // Firebase Config using react env
@@ -42,15 +41,53 @@ class Firebase {
     this.functions = firebase.functions();
   }
 
-  db2 = () => {
-    let db = firebase.firestore();
-    return(db);
+  doRefreshToken = () => {
+    return new Promise((resolve, reject) => {
+        this.auth.currentUser.getIdToken(true).then(function (idToken) {
+            return resolve(idToken);
+        }).catch((err) => {
+            return reject(err);
+        });
+    });
   }
 
-  fbFunctions = () => {
-    let fbFunctions = firebase.functions();
-    return(fbFunctions);
-  }
+  // get custom claims
+  doIsUserAdmin = () => {
+    return new Promise((resolve, reject) => {
+      this.auth.currentUser.getIdTokenResult()
+        .then((idTokenResult) => {
+          // Confirm the user is an Admin.
+          if (!!idTokenResult.claims.admin) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
+    });//promise
+  }// method
+
+  doIsUserCashier = () => {
+    return new Promise((resolve, reject) => {
+      this.auth.currentUser.getIdTokenResult()
+        .then((idTokenResult) => {
+          // Confirm the user is an Admin.
+          if (!!idTokenResult.claims.cashier) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
+    });//promise
+  }// method
+
 
   // *** Firebase Auth API ***
   doCreateUserWithEmailAndPassword = (email, password) => {
@@ -77,8 +114,19 @@ class Firebase {
     }); // Promise
   }
 
+  doSignInWithGoogle = () => {
+    //return this.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+    return(this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()));
+  }
+
+  doGetRedirectResult = () => {
+    return this.auth.getRedirectResult();
+  }
+
+
+
   doSignOut = () => {
-    this.auth.signOut();
+    return(this.auth.signOut());
   }
 
   doPasswordReset = (email) => {
