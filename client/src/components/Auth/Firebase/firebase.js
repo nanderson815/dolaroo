@@ -41,6 +41,16 @@ class Firebase {
     this.functions = firebase.functions();
   }
 
+  doRefreshToken = () => {
+    return new Promise((resolve, reject) => {
+        this.auth.currentUser.getIdToken(true).then(function (idToken) {
+            return resolve(idToken);
+        }).catch((err) => {
+            return reject(err);
+        });
+    });
+  }
+
   // get custom claims
   doIsUserAdmin = () => {
     return new Promise((resolve, reject) => {
