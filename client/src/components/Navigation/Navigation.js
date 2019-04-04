@@ -6,27 +6,27 @@ import AuthUserContext from '../Auth/Session/AuthUserContext';
 
 class Navigation extends React.Component {
   constructor(props) {
-      super(props);
+    super(props);
 
-      this.navBarClass = '';
+    this.navBarClass = '';
 
-      if (props.scroll){
-          this.navBarClass = 'transparent z-depth-0';
-      } else {
-          this.navBarClass = 'z-depth-0 blue darken-4'
-      }
+    if (props.scroll) {
+      this.navBarClass = 'transparent z-depth-0';
+    } else {
+      this.navBarClass = 'z-depth-0 blue darken-4'
+    }
   }
 
   componentDidMount() {
     let elem = document.querySelector(".sidenav");
     M.Sidenav.init(elem, {
-        edge: "left",
-        inDuration: 250
+      edge: "left",
+      inDuration: 250
     });
   }
 
   render() {
-    const navigationAuth = 
+    const navigationAuth =
       <ul>
         <li><Link to="/">Landing</Link></li>
         <li><NavLink to="/navigation">Home</NavLink></li>
@@ -35,34 +35,34 @@ class Navigation extends React.Component {
       </ul>
       ;
 
-    const navigationNonAuth = 
+    const navigationNonAuth =
       <ul>
         <li><Link to="/">Landing</Link></li>
         <li><NavLink to="/signin">Signin</NavLink></li>
       </ul>
-    ;
+      ;
 
-    const mobileNavigationAuth = 
+    const mobileNavigationAuth =
       <ul>
         <li><a href="/">Landing</a></li>
-        <li><a href="/home">Home</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="/account">Account</a></li>
         <li><SignOutButton /></li>
       </ul>
       ;
 
-    const mobileNavigationNonAuth = 
+    const mobileNavigationNonAuth =
       <ul>
         <li><a href="/">Landing</a></li>
         <li><a href="/signin">Signin</a></li>
       </ul>
-    ;
+      ;
 
     // get auth user from react-context firebase
     // Not the AuthUSerContext Provider passes the authUser
     // in its value={} paramater (see withAuthentication component in Auth/Session)
     // ANY COMPONENT that needs authUser info uses consumer this way
-      
+
     return (
       <div>
         <ul className="sidenav" id="mobile-menu">
@@ -74,18 +74,19 @@ class Navigation extends React.Component {
         </ul>
 
         <div className='navbar-fixed'>
-            <nav className={this.navBarClass}>
-                <div className="container nav-wrapper">
-                    <a href="#!" data-target="mobile-menu" className="sidenav-trigger"><i className="material-icons">menu</i></a>
-                    <ul className="right hide-on-med-and-down">
-                      <AuthUserContext.Consumer>
-                        {authUser =>
-                          authUser ? navigationAuth : navigationNonAuth
-                        }
-                      </AuthUserContext.Consumer>
-                    </ul>
-                </div>
-            </nav>
+          <nav className={this.navBarClass}>
+            <div className="container nav-wrapper">
+              <a href="#" className="brand-logo center">Dollaroo</a>
+              <a href="#!" data-target="mobile-menu" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+              <ul className="right hide-on-med-and-down">
+                <AuthUserContext.Consumer>
+                  {authUser =>
+                    authUser ? navigationAuth : navigationNonAuth
+                  }
+                </AuthUserContext.Consumer>
+              </ul>
+            </div>
+          </nav>
         </div>
       </div>
     );
