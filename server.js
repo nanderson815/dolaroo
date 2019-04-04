@@ -28,14 +28,8 @@ mongoose.connect(uri, {
 //     useNewUrlParser: true
 // });
 
-
-//Route setup
-app.get('/api/user', (req, res) => {
-    res.json({
-        name: "NoahPaulJJ",
-        email: "NoahPaulJJ@gmail.com"
-    });
-})
+require("./routes/api-auth-routes.js")(app);
+require("./routes/api-user-routes.js")(app);
 
 // Make sure our React files are being served by our Express server.
 // Serve static files from the React frontend app
