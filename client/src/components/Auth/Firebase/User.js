@@ -5,7 +5,7 @@ class User {
     getUsers = () => {
         // need to figure out how to get the token
         let token;  // dummy out so it can compile for noww
-        axios.get(`/api/scrape`, { headers: {"FIREBASE_AUTH_TOKEN" : token}})
+        axios.get(`/api/user`, { headers: {"FIREBASE_AUTH_TOKEN" : token}})
         .then(res => {
           const articles = [...res.data];
           this.setState({ articles: articles });
