@@ -2,7 +2,6 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/functions';
-require("dotenv").config();
 
 // For the life of me I cant get REACT (when in client/) to read ENV vars and google isnt helping me ...
 // Firebase Config using react env
@@ -75,6 +74,10 @@ class Firebase {
           return reject(err);
         }) 
     }); // Promise
+  }
+
+  doSignInWithGoogle = () => {
+    return this.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
   }
 
   doSignOut = () => {

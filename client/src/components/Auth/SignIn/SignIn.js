@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom'
+
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
 
 import { withFirebase } from '../Firebase/FirebaseContext';
+import AuthUserContext from '../Session/AuthUserContext';
+import User from "../Firebase/User"
 
 const INITIAL_STATE = {
   email: '',
@@ -15,71 +18,102 @@ class SignInFormBase extends Component {
   constructor(props) {
     super(props);
 
+    this._isMounted = false;
+
     this.state = { ...INITIAL_STATE };
   }
 
-  onSubmit = event => {
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  onSubmit = e => {
+    e.preventDefault();
+
     const { email, password } = this.state;
-    const db = this.props.firebase.db;  // ref to firebase firestore()
+    const user = new User();
 
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then((authUser) => {
-        this.setState({ ...INITIAL_STATE });
-        let docRef = db.collection("users").doc(authUser.user.uid);
-        docRef.get().then( (doc) => {
-          if (doc.exists) {
-            // update
-            console.log("User updated");
-            return db.collection('users').doc(authUser.user.uid).update({
-              email: email
-            });
-          }
-          // cretae if not existing
-          console.log("New user created");
-          return db.collection('users').doc(authUser.user.uid).set({
-            email: email
-          });
-        });
+        return(user.addUserToFirestore(this.props.firebase.db, authUser));
       })
       .then(() => {
-        // redirect home
-        this.props.history.push("/dashboard"); 
+        // NOTE : DO NOT RESET STATE if component unmounts since we are going to redirect
+        // this causes memory leaks - Igot an error explaining all that
+        if (this._isMounted) {
+          this.setState({ ...INITIAL_STATE });
+        }
       })
       .catch(error => {
-        this.setState({ error });
+        if (this._isMounted) {
+          this.setState({ error });
+        }
       });
 
-    event.preventDefault();
   };
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  handleGoogleLogin = (e) => {
+    e.preventDefault();
+
+    let firebaseAuthKey;
+    this.props.firebase
+      .doSignInWithGoogle()
+      .catch(err => {
+        console.log("Google Auth Failed, err=", err);
+        localStorage.removeItem(firebaseAuthKey, "1");
+      });
+      localStorage.setItem(firebaseAuthKey, "1");
+  }
+
   render() {
+    let firebaseAuthKey;
     const { email, password, error } = this.state;
 
     const isInvalid = password === '' || email === '';
 
-    return (
-      <div className="container">
+    let SignInScreen;
+
+    if (localStorage.getItem(firebaseAuthKey) === "1") {
+      SignInScreen = <p>Loading New Page After Google Login ...</p>;
+    }
+    else {
+      SignInScreen = 
         <form className="white" onSubmit={this.onSubmit}>
           <h5 className="grey-text text-darken-3">Sign In</h5>
-          <div className="input-field">
+          <div className="active input-field">
             <label htmlFor="email">Email</label>
-            <input type="email" name='email' value={email} onChange={this.onChange} />
+            <input type="email" id='email' name='email' value={email} onChange={this.onChange} />
           </div>
-          <div className="input-field">
+          <div className="active input-field">
             <label htmlFor="password">Password</label>
-            <input type="password" name='password' value={password} onChange={this.onChange} />
+            <input type="password" id='password' name='password' value={password} onChange={this.onChange} />
           </div>
           <div className="input-field">
             <button disabled={isInvalid} className="btn lighten-1 z-depth-0">Login</button>
             {error && <p>{error.message}</p>}
           </div>
+          <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>    
+          <button onClick={this.handleGoogleLogin} className="btn lighten-1 z-depth-0">SignIn With Google</button>  
         </form>
-        <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>      
+    }
+
+    return (
+      <div className="container">
+        <AuthUserContext.Consumer>
+          {authUser =>
+          authUser ? <Redirect to="/dashboard" /> : null
+          }
+        </AuthUserContext.Consumer>
+        {SignInScreen}
       </div>
     );
   }
