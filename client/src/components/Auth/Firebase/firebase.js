@@ -41,15 +41,43 @@ class Firebase {
     this.functions = firebase.functions();
   }
 
-  db2 = () => {
-    let db = firebase.firestore();
-    return(db);
-  }
+  // get custom claims
+  doIsUserAdmin = () => {
+    return new Promise((resolve, reject) => {
+      this.auth.currentUser.getIdTokenResult()
+        .then((idTokenResult) => {
+          // Confirm the user is an Admin.
+          if (!!idTokenResult.claims.admin) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
+    });//promise
+  }// method
 
-  fbFunctions = () => {
-    let fbFunctions = firebase.functions();
-    return(fbFunctions);
-  }
+  doIsUserCashier = () => {
+    return new Promise((resolve, reject) => {
+      this.auth.currentUser.getIdTokenResult()
+        .then((idTokenResult) => {
+          // Confirm the user is an Admin.
+          if (!!idTokenResult.claims.cashier) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
+    });//promise
+  }// method
+
 
   // *** Firebase Auth API ***
   doCreateUserWithEmailAndPassword = (email, password) => {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom'
 import AuthUserContext from './AuthUserContext';
 
 import { withFirebase } from '../Firebase/FirebaseContext';
@@ -17,8 +16,18 @@ const withAuthentication = Component => {
 
             this.state = {
                 authUser: null,
-                redirect: null
+                token: null
             };
+        }
+
+        refreshToken = () => {
+            return new Promise((resolve, reject) => {
+                this.props.firebase.auth.currentUser.getIdToken(true).then(function (idToken) {
+                    return resolve(idToken);
+                }).catch((err) => {
+                    return reject(err);
+                });
+            });
         }
 
         // NOTE:  This is where the AuthUserContext gets SET
@@ -29,9 +38,24 @@ const withAuthentication = Component => {
             this.listener = this.props.firebase.auth.onAuthStateChanged(
                 authUser => {
                     if (authUser) {
-                        this.setState({ authUser: authUser })
+                        this.setState({
+                            authUser: authUser
+                        })
+                        authUser.getIdToken(true).then(function (idToken) {
+                            this.setState({
+                                token: idToken
+                            })
+                        }).catch((error) => {
+                            this.setState({
+                                token: null
+                            })
+                            console.error(`error creating id token`);
+                        });
                     } else {
-                        this.setState({ authUser: null });
+                        this.setState({
+                            authUser: null,
+                            token: null
+                        });
                     }
                 },
             );
@@ -42,23 +66,14 @@ const withAuthentication = Component => {
             this.listener();
         }
 
-        // this does not work
-        renderRedirect = () => {
-            if (this.state.redirect) {
-              return <Redirect to={this.state.redirect} />
-            } else {
-                return null
-            }
-        }
-
         // Remember - this withAuthentication pattern automatically wraps a compoennt
         // with the provider show below to keep it out of that component
         // it provides the state of this a-object to ant consumer
         // I am not 100% sure its cleaner and easier but I will go with it for now.
         render() {
-            return (       
+            return ( 
                 <AuthUserContext.Provider value = {this.state.authUser} >
-                    <Component {...this.props} /> 
+                    <Component {...this.props}/>  
                 </AuthUserContext.Provider>
             );
         }
