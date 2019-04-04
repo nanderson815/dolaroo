@@ -25,7 +25,7 @@ class Landing extends React.Component {
                     </div>
                 </header>
                 <main>
-                    <div className="container">
+                    <div className="container main">
                         <div className='row'>
                             <div className="col s12">
                                 <h3 className="white-text center-align">The days of making branch deposits are over</h3>
