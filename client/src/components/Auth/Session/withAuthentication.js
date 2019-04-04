@@ -21,10 +21,12 @@ const withAuthentication = Component => {
         }
 
         refreshToken = async () => {
-            let token = await this.props.firebase.doRefreshToken();
-            this.setState({
-                token: token
-            })
+            try {
+                let token = await this.props.firebase.doRefreshToken();
+                this.setState({token: token})
+            } catch {
+                console.error("Error refreshng token");
+            }
         }
 
         // NOTE:  This is where the AuthUserContext gets SET
