@@ -26,12 +26,10 @@ const withAuthentication = Component => {
         // Also the the the firebase app object is passed from the index.js component
         // above the app component so it can be used here.  
         componentDidMount() {
-            let firebaseAuthKey;
             this.listener = this.props.firebase.auth.onAuthStateChanged(
                 authUser => {
                     if (authUser) {
                         this.setState({ authUser: authUser })
-                        localStorage.removeItem(firebaseAuthKey, "1");
                     } else {
                         this.setState({ authUser: null });
                     }

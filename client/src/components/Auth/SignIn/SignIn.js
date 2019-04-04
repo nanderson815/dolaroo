@@ -66,20 +66,20 @@ class SignInFormBase extends Component {
   handleGoogleLogin = (e) => {
     e.preventDefault();
 
-    let firebaseAuthKey;
+    const user = new User();
+
     this.props.firebase
       .doSignInWithGoogle()
+      .then((authUser) => {
+        console.log("Logged in with google to firebase");
+        return(user.addUserToFirestore(this.props.firebase.db, authUser));
+      })
+      .then(() => {
+        console.log("Added to firebase");
+      })
       .catch(err => {
-        console.log("Google Auth Failed, err=", err);
-        localStorage.removeItem(firebaseAuthKey, "1");
+        console.error("Error logging in with google", err);
       });
-      localStorage.setItem(firebaseAuthKey, "1");
-
-      this.props.firebase
-        .doGetRedirectResult().then(authUser => {
-          console.log("authUser", authUser);
-        })
-    
   }
 
   render() {
