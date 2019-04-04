@@ -1,0 +1,14 @@
+# Node
+NODE_ENV=development
+# GCP Instance
+INSTANCE_CONNECTION_NAME=project3-noahpauljj-fintech2:us-central1:project3-noahpauljj-fintech2
+# MONGO
+MONGO_USER=admin
+MONGO_PASSWORD=mongoadmin
+#
+REACT_APP_API_KEY=AIzaSyCGvVrq9uuUgTF7nBXzPIqUzml42YUtN08
+REACT_APP_AUTH_DOMAIN=project3-noahpauljj-fintech2.firebaseapp.com
+REACT_APP_DATABASE_URL=https://project3-noahpauljj-fintech2.firebaseio.com
+REACT_APP_PROJECT_ID=project3-noahpauljj-fintech2
+REACT_APP_STORAGE_BUCKET=project3-noahpauljj-fintech2.appspot.com
+REACT_APP_MESSAGING_SENDER_ID=910164644412
