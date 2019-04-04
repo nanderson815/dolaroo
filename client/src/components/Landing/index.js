@@ -25,6 +25,7 @@ class Landing extends React.Component {
                         </div>
                     </div>
                 </header>
+
                 <main>
                     <div className="container main">
                         <div className='row'>
@@ -64,8 +65,31 @@ class Landing extends React.Component {
                                     <Step num="1" step="Run your daily cash deposits through the Dollaroo Smart Scanner at the end of the day" />
                                     <Step num="2" step="Secure cash in any safe on site. Deposits are collected every two weeks, or on a custom schedule" />
                                     <Step num="3" step="Provisional credit is available the same day of deposit, consolidated from all locations" />
-                               
+
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="signUp">
+                    <div className="container">
+                        <div className='row'>
+                            <div className="col s12">
+                                <h3 className="white-text center-align">Sign up today - Start depositing tomorrow</h3>
+                                <div className="row">
+                                    <div className="textbox col m5">
+                                        <h5 className="white-text">Sign Up Requirements</h5>
+                                        <p className="white-text">An in-person consultation and product demo are the first step of the sign up process. 
+                                        Sign up today to be up and running in as little as two weeks.</p>
+                                        <div className="center-align">
+                                            <a className="waves-effect waves-light btn  blue darken-4">Sign Up Now</a>
+                                            <a className="waves-effect waves-light btn  blue darken-4">More Info</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
