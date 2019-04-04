@@ -37,6 +37,8 @@ class SignInFormBase extends Component {
     const { email, password } = this.state;
     const user = new User();
 
+    this.setState({ ...INITIAL_STATE });
+
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then((authUser) => {
@@ -72,6 +74,12 @@ class SignInFormBase extends Component {
         localStorage.removeItem(firebaseAuthKey, "1");
       });
       localStorage.setItem(firebaseAuthKey, "1");
+
+      this.props.firebase
+        .doGetRedirectResult().then(authUser => {
+          console.log("authUser", authUser);
+        })
+    
   }
 
   render() {
