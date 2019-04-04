@@ -88,7 +88,7 @@ class Firebase {
 
 
   doSignOut = () => {
-    this.auth.signOut();
+    return(this.auth.signOut());
   }
 
   doPasswordReset = (email) => {
