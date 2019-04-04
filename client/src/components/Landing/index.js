@@ -1,5 +1,6 @@
 import React from 'react';
 import './Landing.css';
+import Circle from './Circle/circle';
 
 class Landing extends React.Component {
 
@@ -37,7 +38,17 @@ class Landing extends React.Component {
                                 That's why we created a better way. </h5>
                             </div>
                             <div className="col s12 m3 offset-m1">
-                                <a className="btn white blue-text text-darken-4">Learn More</a>
+                                <div className="center-align">
+                                    <a className="btn white blue-text text-darken-4">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="cont">
+                                <Circle info="Deposit cash remotely via DollaRoo's Smart Cash Scanner" />
+                                <Circle info="Get instant credit to your account for daily deposits" />
+                                <Circle info="View comprehensive deposit reports across all locations" />
                             </div>
                         </div>
                     </div>
