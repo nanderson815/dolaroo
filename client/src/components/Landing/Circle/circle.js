@@ -5,7 +5,7 @@ import './circle.css';
 function Circle(props) {
     return (
             <div className="circle valign-wrapper">
-                <p className="center-align">{props.info}</p>
+                <p className="center-align circle-text">{props.info}</p>
             </div>
     )
 }

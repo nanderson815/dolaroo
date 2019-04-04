@@ -1,6 +1,7 @@
 import React from 'react';
 import './Landing.css';
 import Circle from './Circle/circle';
+import Step from './Steps/Steps';
 
 class Landing extends React.Component {
 
@@ -46,14 +47,30 @@ class Landing extends React.Component {
 
                         <div className="row">
                             <div className="cont">
-                                <Circle info="Deposit cash remotely via DollaRoo's Smart Cash Scanner" />
+                                <Circle info="Deposit cash remotely via Dollaroo's Smart Cash Scanner" />
                                 <Circle info="Get instant credit to your account for daily deposits" />
                                 <Circle info="View comprehensive deposit reports across all locations" />
                             </div>
                         </div>
                     </div>
-
                 </main>
+
+                <section>
+                    <div className="container">
+                        <div className='row'>
+                            <div className="col s12">
+                                <h3 className="blue-text text-darken-4 center-align">How depositing with Dollaroo works:</h3>
+                                <div className="row">
+                                    <Step num="1" step="Run your daily cash deposits through the Dollaroo Smart Scanner at the end of the day" />
+                                    <Step num="2" step="Secure cash in any safe on site. Deposits are collected every two weeks, or on a custom schedule" />
+                                    <Step num="3" step="Provisional credit is available the same day of deposit, consolidated from all locations" />
+                               
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div >
         );
     }
