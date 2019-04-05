@@ -19,14 +19,6 @@ import PasswordForgetPage from '../Auth/PasswordForget/PasswordForget';
 import provideAuthUserContext from '../Auth/Session/provideAuthUserContext';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      authUser: null,
-    };
-  }
-
   render() {
     return (
         <Router>
