@@ -42,7 +42,6 @@ class Firebase {
   doRefreshToken = () => {
     return new Promise((resolve, reject) => {
         this.auth.currentUser.getIdToken(true).then( (idToken) => {
-          console.log(`Firebase refreshed id token: ${idToken}`);
           resolve(idToken);
         }).catch((err) => {
           console.error(`Firebase refresh id token failed: ${err}`);

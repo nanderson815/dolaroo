@@ -24,7 +24,6 @@ const provideAuthUserContext = Component => {
         refreshToken = async () => {
             try {
                 let token = await this.props.firebase.doRefreshToken();
-                console.log(`provideAuthUserContext refreshed token: ${token}`);
                 this.setState({token: token})
             } catch {
                 console.error("Error refreshng token");
