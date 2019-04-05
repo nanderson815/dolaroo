@@ -117,9 +117,7 @@ class SignInFormBase extends Component {
     return (
       <div className="container">
         <AuthUserContext.Consumer>
-          {user =>
-            user.authUser ? <Redirect to="/dashboard" /> : null
-          }
+          {user => user.authUser ? <Redirect to="/dashboard" /> : null}
         </AuthUserContext.Consumer>
         {SignInScreen}
       </div>

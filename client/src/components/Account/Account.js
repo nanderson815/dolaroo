@@ -1,7 +1,6 @@
 import React from 'react';
 import User from "../User/User";
-import axios from "axios";
-import { withFirebase } from '../Auth/Firebase/FirebaseContext';
+import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 
 const INITIAL_STATE = {
     firstName: '',
@@ -26,27 +25,13 @@ class Account extends React.Component {
     getCurrentUser = (e) => {
       e.preventDefault();
 
-      // this.props.firebase.doRefreshToken()
-      //   .then(token => {
-      //     console.log(`Got current user token from firebase: ${token}`);
-      //     axios.get(`/api/user`, {headers: {"FIREBASE_AUTH_TOKEN": token}})
-      //       .then(user => {
-      //         console.log(`Got current user from firestore: ${user}`);
-      //       })
-      //       .catch(err => {
-      //         console.error(`Error getting user ${err}`);
-      //       });  
-      //   })
-      //   .catch(err => {
-      //     console.error(`Account refresh token failed: ${err}`);
-
-      //   });
-
       const user = new User();
 
-      user.getCurrentUser().then(user => {
+      user.getCurrentUser(this.props.authUser.token)
+      .then(user => {
         console.log(`Got current user from firestore: ${user}`);
-      }).catch(err => {
+      })
+      .catch(err => {
         console.error(`Error getting user ${err}`);
       })
     }
@@ -92,4 +77,4 @@ class Account extends React.Component {
     }
 }
 
-export default withFirebase(Account);
+export default withAuthUserContext(Account);

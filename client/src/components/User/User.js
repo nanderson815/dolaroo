@@ -2,13 +2,12 @@ import Util from "../Util/Util"
 
 class User {
 
-    getCurrentUser = () => {
+    getCurrentUser = (token) => {
         return new Promise((resolve, reject) => {
             const util = new Util();
 
             // its a promise so return
-            util.apiGet(`/api/user`).then(data => {
-                console.log(`data from user: ${data}`)
+            util.apiGet(`/api/user`, token).then(data => {
                 resolve(data);
             });
         });
