@@ -3,6 +3,10 @@ import axios from 'axios';
 class Util  {
 
   apiGet = (api, token) => {
+    return(axios.get(api, {headers: {"FIREBASE_AUTH_TOKEN": token}}));
+  } // apiGet
+
+  apiGetOld = (api, token) => {
     return new Promise((resolve, reject) => {
       axios.get(api, {headers: {"FIREBASE_AUTH_TOKEN": token}})
         .then(data => {
@@ -14,9 +18,9 @@ class Util  {
       }); // Promise
   } // apiGet
 
-  APIAysncGet = async (api) => {
+
+  APIAysncGet = async (api, token) => {
     try {
-      let token = await this.props.firebase.doRefreshToken();
       console.log(`got token: ${token}`);
       return(axios.get(api, {headers: {"FIREBASE_AUTH_TOKEN": token}}))
     }

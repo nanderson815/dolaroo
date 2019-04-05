@@ -28,8 +28,9 @@ class Account extends React.Component {
       const user = new User();
 
       user.getCurrentUser(this.props.authUser.token)
-      .then(user => {
-        console.log(`Got current user from firestore: ${user}`);
+      .then(data => {
+        const user = data.data;
+        console.log(`Got current user from firestore: ${JSON.stringify(user)}`);
       })
       .catch(err => {
         console.error(`Error getting user ${err}`);
