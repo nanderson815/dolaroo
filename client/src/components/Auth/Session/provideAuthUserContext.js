@@ -16,13 +16,14 @@ const provideAuthUserContext = Component => {
 
             this.state = {
                 authUser: null,
+                authUserRole: null,
                 token: null
             };
         }
 
         refreshToken = async () => {
             try {
-                let token = await this.state.authUser.getIdToken(true);
+                let token = await this.props.firebase.doRefreshToken();
                 console.log(`provideAuthUserContext refreshed token: ${token}`);
                 this.setState({token: token})
             } catch {
@@ -44,6 +45,7 @@ const provideAuthUserContext = Component => {
                     } else {
                         this.setState({
                             authUser: null,
+                            authUserRole: null,
                             token: null
                         });
                     }
@@ -62,7 +64,7 @@ const provideAuthUserContext = Component => {
         // I am not 100% sure its cleaner and easier but I will go with it for now.
         render() {
             return ( 
-                <AuthUserContext.Provider value = {this.state.authUser} >
+                <AuthUserContext.Provider value = {this.state} >
                     <Component {...this.props}/>  
                 </AuthUserContext.Provider>
             );

@@ -67,9 +67,7 @@ class Navigation extends React.Component {
       <div>
         <ul className="sidenav" id="mobile-menu">
           <AuthUserContext.Consumer>
-            {authUser =>
-              authUser ? mobileNavigationAuth : mobileNavigationNonAuth
-            }
+            {user => user.authUser ? mobileNavigationAuth : mobileNavigationNonAuth}
           </AuthUserContext.Consumer>
         </ul>
 
@@ -80,9 +78,7 @@ class Navigation extends React.Component {
               <a href="#!" data-target="mobile-menu" className="sidenav-trigger"><i className="material-icons">menu</i></a>
               <ul className="right hide-on-med-and-down">
                 <AuthUserContext.Consumer>
-                  {authUser =>
-                    authUser ? navigationAuth : navigationNonAuth
-                  }
+                  {user => user.authUser ? navigationAuth : navigationNonAuth}
                 </AuthUserContext.Consumer>
               </ul>
             </div>
