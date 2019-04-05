@@ -5,17 +5,18 @@ import { withFirebase } from '../Firebase/FirebaseContext';
 
 // This component WRAPS Firebase and Authentication Context togtehr in 
 // a HOC - Higher Order Component.
-// This allows providers to just wrap withAuthentication around a component
+// This allows providers to just wrap provideAuthUserContext around a component
 // to get access to the firebase app and the session context info
 // SO BE CLEAR - This HOC is a WRAPPER in A WRAPPER
-// -- i.e. withAuthentication === withFirebase(WithAuthentication)
-const withAuthentication = Component => {
-    class WithAuthentication extends React.Component {
+// -- i.e. provideAuthUserContext === withFirebase(ProvideAuthUserContext)
+const provideAuthUserContext = Component => {
+    class ProvideAuthUserContext extends React.Component {
         constructor(props) {
             super(props);
 
             this.state = {
                 authUser: null,
+                authUserRole: null,
                 token: null
             };
         }
@@ -26,6 +27,7 @@ const withAuthentication = Component => {
                 this.setState({token: token})
             } catch {
                 console.error("Error refreshng token");
+                this.setState({token: null})
             }
         }
 
@@ -37,22 +39,12 @@ const withAuthentication = Component => {
             this.listener = this.props.firebase.auth.onAuthStateChanged(
                 authUser => {
                     if (authUser) {
-                        this.setState({
-                            authUser: authUser
-                        })
-                        authUser.getIdToken(true).then(function (idToken) {
-                            this.setState({
-                                token: idToken
-                            })
-                        }).catch((error) => {
-                            this.setState({
-                                token: null
-                            })
-                            console.error(`error creating id token`);
-                        });
+                        this.setState({authUser: authUser})
+                        this.refreshToken();
                     } else {
                         this.setState({
                             authUser: null,
+                            authUserRole: null,
                             token: null
                         });
                     }
@@ -65,20 +57,20 @@ const withAuthentication = Component => {
             this.listener();
         }
 
-        // Remember - this withAuthentication pattern automatically wraps a compoennt
+        // Remember - this provideAuthUserContext pattern automatically wraps a compoennt
         // with the provider show below to keep it out of that component
         // it provides the state of this a-object to ant consumer
         // I am not 100% sure its cleaner and easier but I will go with it for now.
         render() {
             return ( 
-                <AuthUserContext.Provider value = {this.state.authUser} >
+                <AuthUserContext.Provider value = {this.state} >
                     <Component {...this.props}/>  
                 </AuthUserContext.Provider>
             );
         }
     }
 
-    return withFirebase(WithAuthentication);
+    return withFirebase(ProvideAuthUserContext);
 };
 
-export default withAuthentication;
+export default provideAuthUserContext;

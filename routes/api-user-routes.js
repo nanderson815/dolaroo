@@ -14,8 +14,9 @@ module.exports = function (app) {
     app.get("/api/user", requiresLogin, (req, res) => {
         try {
             res.json({
-                name: "NoahPaulJJ",
-                email: "NoahPaulJJ@gmail.com"
+                uid: req.user.uid,
+                name: req.user.displayName,
+                email: req.user.email
             });
         } catch (err) {
             // catch all error
@@ -23,4 +24,20 @@ module.exports = function (app) {
              ..." ${err.errors[0].message}`);
         }
     }); // Route
+
+    // Route for getting all photos from photos table for the currently authenticated user
+    app.get("/api/userStatic", (req, res) => {
+        try {
+            res.json({
+                uid: "ppppp",
+                name: "Paul",
+                email: "paul.linck@gmail.com"
+            });
+        } catch (err) {
+            // catch all error
+            res.status(500).json(`Error caught in route app.get("/api/user
+                 ..." ${err.errors[0].message}`);
+        }
+    }); // Route
+
 };

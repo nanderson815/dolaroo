@@ -22,8 +22,6 @@ const config = {
   messagingSenderId: "87243866145"
 };
 
-console.log("fb config", config);
-console.log("process.env", process.env);
 class Firebase {
   constructor() {
     try {
@@ -43,10 +41,11 @@ class Firebase {
 
   doRefreshToken = () => {
     return new Promise((resolve, reject) => {
-        this.auth.currentUser.getIdToken(true).then(function (idToken) {
-            return resolve(idToken);
+        this.auth.currentUser.getIdToken(true).then( (idToken) => {
+          resolve(idToken);
         }).catch((err) => {
-            return reject(err);
+          console.error(`Firebase refresh id token failed: ${err}`);
+          reject(err);
         });
     });
   }

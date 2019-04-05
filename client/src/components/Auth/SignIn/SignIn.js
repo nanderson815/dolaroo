@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase/FirebaseContext';
 import AuthUserContext from '../Session/AuthUserContext';
-import User from "../Firebase/User"
+import User from "../../User/User"
 
 const INITIAL_STATE = {
   email: '',
@@ -117,9 +117,7 @@ class SignInFormBase extends Component {
     return (
       <div className="container">
         <AuthUserContext.Consumer>
-          {authUser =>
-          authUser ? <Redirect to="/dashboard" /> : null
-          }
+          {user => user.authUser ? <Redirect to="/dashboard" /> : null}
         </AuthUserContext.Consumer>
         {SignInScreen}
       </div>

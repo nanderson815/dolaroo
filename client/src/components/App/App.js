@@ -7,8 +7,8 @@ import {
 import Navigation from '../Navigation/Navigation';
 import LandingPage from '../Landing';
 import HomePage from '../Dashboard';
-import AccountPage from '../Account';
-import AdminPage from '../Admin';
+import AccountPage from '../Account/Account';
+import AdminPage from '../Admin/Admin';
 
 // Auth components
 import SignUpForm from '../Auth/SignUp/SignUp';
@@ -16,17 +16,9 @@ import SignInForm from '../Auth/SignIn/SignIn';
 import PasswordForgetPage from '../Auth/PasswordForget/PasswordForget';
 
 // Session/State Info for all components
-import withAuthentication from '../Auth/Session/withAuthentication';
+import provideAuthUserContext from '../Auth/Session/provideAuthUserContext';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      authUser: null,
-    };
-  }
-
   render() {
     return (
         <Router>
@@ -45,4 +37,4 @@ class App extends React.Component {
   }
 }
 
-export default withAuthentication(App);
+export default provideAuthUserContext(App);
