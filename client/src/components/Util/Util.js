@@ -4,15 +4,25 @@ import Firebase from "../Auth/Firebase/firebase"
 class Util  {
 
   apiGet = (api) => {
-    const firebase = new Firebase();
-
     return new Promise((resolve, reject) => {
-      firebase.doRefreshToken().then(token => {
-        resolve(axios.get(api, {headers: {"FIREBASE_AUTH_TOKEN": token}}))  
-      }).catch (err => {
-        console.error(`error getting token: ${err}`);
-        reject(err);
+      const firebase = new Firebase();
+
+      axios.get("/api/userStatic")
+      .then(data => {
+        console.log(`data from util: ${data}`);
+        resolve(data);
       });
+
+      // firebase.doRefreshToken().then(token => {
+      //   axios.get(api, {headers: {"FIREBASE_AUTH_TOKEN": token}})
+      //   .then(data => {
+      //     console.log(`data from util: ${data}`);
+      //     resolve(data);
+      //   });
+      // }).catch (err => {
+      //   console.error(`error getting token: ${err}`);
+      //   reject(err);
+      // });
     });
   } // apiGet
 

@@ -3,10 +3,15 @@ import Util from "../Util/Util"
 class User {
 
     getCurrentUser = () => {
-        const util = new Util();
+        return new Promise((resolve, reject) => {
+            const util = new Util();
 
-        // its a promise so return
-        return(util.apiGet(`/api/user`));
+            // its a promise so return
+            util.apiGet(`/api/user`).then(data => {
+                console.log(`data from user: ${data}`)
+                resolve(data);
+            });
+        });
     }
 
     addUserToFirestore = (db, authUser) => {
