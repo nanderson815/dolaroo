@@ -14,8 +14,9 @@ module.exports = function (app) {
     app.get("/api/user", requiresLogin, (req, res) => {
         try {
             res.json({
-                name: "NoahPaulJJ",
-                email: "NoahPaulJJ@gmail.com"
+                uid: req.user.uid,
+                name: req.user.displayName,
+                email: req.user.email
             });
         } catch (err) {
             // catch all error

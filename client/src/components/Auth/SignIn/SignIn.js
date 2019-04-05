@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase/FirebaseContext';
 import AuthUserContext from '../Session/AuthUserContext';
-import User from "../Firebase/User"
+import User from "../../User/User"
 
 const INITIAL_STATE = {
   email: '',

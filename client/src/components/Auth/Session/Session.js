@@ -2,9 +2,6 @@ import React from 'react';
 import AuthUserContext from './AuthUserContext';
 
 class Session extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return ( 
@@ -16,4 +13,3 @@ class Session extends React.Component {
 }
 
 export default Session;
-export { AuthUserContext };

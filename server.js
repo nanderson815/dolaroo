@@ -40,19 +40,20 @@ require("./routes/api-user-routes.js")(app);
 //     res.sendFile(index);
 // });
 
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 // //production mode - serve from build dir, else serve from public
 if (process.env.NODE_ENV === 'production') {
+    console.log(`prod mode ${path.join(__dirname, 'client', 'build', 'index.html')}`);
     app.use(express.static(path.join(__dirname, 'client', 'build')));
     app.get('*', function (req, res) {
         const index = path.join(__dirname, 'client', 'build', 'index.html');
         res.sendFile(index);
     });
 } else {
-    //build mode
+    console.log(`dev mode ${path.join(__dirname, '/client/public/index.html')}`);
+    //dev mode
     app.use(express.static(path.join(__dirname, 'client', 'public')));
-
     app.get('*', (req, res) => {
-        console.log(path.join(__dirname, '/client/public/index.html'));
         res.sendFile(path.join(__dirname + '/client/public/index.html'));
     })
 }

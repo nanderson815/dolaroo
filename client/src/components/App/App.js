@@ -16,7 +16,7 @@ import SignInForm from '../Auth/SignIn/SignIn';
 import PasswordForgetPage from '../Auth/PasswordForget/PasswordForget';
 
 // Session/State Info for all components
-import withAuthentication from '../Auth/Session/withAuthentication';
+import provideAuthUserContext from '../Auth/Session/provideAuthUserContext';
 
 class App extends React.Component {
   constructor(props) {
@@ -45,4 +45,4 @@ class App extends React.Component {
   }
 }
 
-export default withAuthentication(App);
+export default provideAuthUserContext(App);
