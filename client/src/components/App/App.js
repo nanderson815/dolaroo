@@ -8,7 +8,7 @@ import Navigation from '../Navigation/Navigation';
 import LandingPage from '../Landing';
 import HomePage from '../Dashboard';
 import AccountPage from '../Account/Account';
-import AdminPage from '../Admin';
+import AdminPage from '../Admin/Admin';
 
 // Auth components
 import SignUpForm from '../Auth/SignUp/SignUp';
