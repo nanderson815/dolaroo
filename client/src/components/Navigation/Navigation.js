@@ -5,16 +5,8 @@ import SignOutButton from '../Auth/SignOut/SignOut';
 import AuthUserContext from '../Auth/Session/AuthUserContext';
 
 class Navigation extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.navBarClass = '';
-
-    if (props.scroll) {
-      this.navBarClass = 'transparent z-depth-0';
-    } else {
-      this.navBarClass = 'z-depth-0 blue darken-4'
-    }
+  state = {
+    isTop: true
   }
 
   componentDidMount() {
@@ -23,9 +15,27 @@ class Navigation extends React.Component {
       edge: "left",
       inDuration: 250
     });
+
+    document.addEventListener('scroll', () => {
+      const isTop = window.scrollY < 100;
+      if (isTop !== this.state.isTop) {
+        // console.log(isTop);
+        this.setState({ isTop })
+      }
+    });
   }
 
   render() {
+
+    let navBarClass = '';
+
+    if (this.state.isTop) {
+      navBarClass = 'transparent z-depth-0';
+    } else {
+      navBarClass = 'z-depth-0 blue darken-4'
+    }
+
+
     const navigationAuth =
       <ul>
         <li><Link to="/">Landing</Link></li>
@@ -72,7 +82,7 @@ class Navigation extends React.Component {
         </ul>
 
         <div className='navbar-fixed'>
-          <nav className={this.navBarClass}>
+          <nav className={navBarClass}>
             <div className="container nav-wrapper">
               <a href="#" className="brand-logo center">Dollaroo</a>
               <a href="#!" data-target="mobile-menu" className="sidenav-trigger"><i className="material-icons">menu</i></a>
