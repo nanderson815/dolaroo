@@ -19,7 +19,7 @@ class Landing extends React.Component {
                                 <h5 className="white-text">All from your phone or tablet</h5>
 
                                 <div className="center-align">
-                                    <a className="waves-effect waves-light btn  blue darken-4">Sign Up Now</a>
+                                    <a className="waves-effect waves-light landing-btn btn  blue darken-4">Sign Up Now</a>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@ class Landing extends React.Component {
                             </div>
                             <div className="col s12 m3 offset-m1">
                                 <div className="center-align">
-                                    <a className="btn white blue-text text-darken-4">Learn More</a>
+                                    <a className="landing-btn btn white blue-text text-darken-4">Learn More</a>
                                 </div>
                             </div>
                         </div>
@@ -83,8 +83,8 @@ class Landing extends React.Component {
                                         <p className="white-text">An in-person consultation and product demo are the first step of the sign up process.
                                         Sign up today to be up and running in as little as two weeks.</p>
                                         <div className="center-align">
-                                            <a className="waves-effect waves-light btn  blue darken-4">Sign Up Now</a>
-                                            <a className="waves-effect waves-light btn  blue darken-4">More Info</a>
+                                            <a className="waves-effect waves-light landing-btn btn  blue darken-4">Sign Up Now</a>
+                                            <a className="waves-effect waves-light landing-btn btn  blue darken-4">More Info</a>
 
                                         </div>
                                     </div>
@@ -95,27 +95,27 @@ class Landing extends React.Component {
                     </div>
                 </section>
 
-                <footer class="page-footer blue darken-4">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col l6 s12">
-                                <h5 class="white-text">Footer Content</h5>
-                                <p class="grey-text text-lighten-4">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                <footer className="page-footer blue darken-4">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col l6 s12">
+                                <h5 className="white-text">Footer Content</h5>
+                                <p className="grey-text text-lighten-4">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                                 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</p>
                             </div>
-                            <div class="col l4 offset-l2 s12">
-                                <h5 class="white-text">Links</h5>
+                            <div className="col l4 offset-l2 s12">
+                                <h5 className="white-text">Links</h5>
                                 <ul>
-                                    <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                                    <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                                    <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                                    <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                                    <li><a className="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                                    <li><a className="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                                    <li><a className="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                                    <li><a className="grey-text text-lighten-3" href="#!">Link 4</a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="footer-copyright">
-                        <div class="container">
+                    <div className="footer-copyright">
+                        <div className="container">
                             © 2019 Copyright Text
                         </div>
                     </div>
