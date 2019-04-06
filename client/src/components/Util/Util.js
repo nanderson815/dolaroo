@@ -2,11 +2,15 @@ import axios from 'axios';
 
 class Util  {
 
-  apiGet = (api, token) => {
+  static apiGet = (api, token) => {
     return(axios.get(api, {headers: {"FIREBASE_AUTH_TOKEN": token}}));
-  } // apiGet
+  }
+  
+  static apiPost = (api, param, token) => {
+    return(axios.post(api, param, {headers: {"FIREBASE_AUTH_TOKEN": token}}));
+  } 
 
-  apiGetOld = (api, token) => {
+  static apiGetOld = (api, token) => {
     return new Promise((resolve, reject) => {
       axios.get(api, {headers: {"FIREBASE_AUTH_TOKEN": token}})
         .then(data => {
@@ -19,7 +23,7 @@ class Util  {
   } // apiGet
 
 
-  APIAysncGet = async (api, token) => {
+  static APIAysncGet = async (api, token) => {
     try {
       console.log(`got token: ${token}`);
       return(axios.get(api, {headers: {"FIREBASE_AUTH_TOKEN": token}}))

@@ -1,45 +1,26 @@
-import Util from "../Util/Util"
+import React from 'react';
 
-class User {
+const User = (props) => {
+    // decontruct props
+    let { uid, firstName, lastName, phoneNumber, email, role } =  props;
+    let { userMakeAdmin, userDelete } =  props;
 
-    getCurrentUser = (token) => {
-        const util = new Util();
-
-        // its a promise so return
-        return(util.apiGet(`/api/user`, token));
-    }
-
-    addUserToFirestore = (db, authUser) => {
-        return new Promise((resolve, reject) => {
-            let docRef = db.collection("users").doc(authUser.user.uid);
-            docRef.get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        // update
-                        console.log("User updated, authUser=", authUser);
-                        return db.collection('users').doc(authUser.user.uid).update({
-                            email: authUser.user.email
-                        });
-                    }
-                    // cretae if not existing
-                    console.log("New user created", authUser);
-                    return db.collection('users').doc(authUser.user.uid).set({
-                        username: authUser.user.displayName,
-                        phoneNumber: authUser.user.phoneNumber,
-                        uid: authUser.user.uid,
-                        email: authUser.user.email
-                    });
-                })
-                .then(() => {
-                    console.log("completed");
-                    return resolve();
-                })
-                .catch(err => {
-                    console.log("completed");
-                    return reject(err);
-                });
-        });
-    }
+    return ( 
+        <div className="card">
+            <div className="card-content">
+                <span className="flow-text card-title">{firstName} {lastName}</span>
+                <p className="truncate">email: {email}</p>
+                <p className="truncate">phoneNumber: {phoneNumber}</p>
+                <p className="truncate">role: {role}</p>
+            </div>
+            <div className="card-action">
+                <a href="#!" className="indigo-text text-darken-4">
+                    <i className="userDelete material-icons left" onClick={userDelete.bind(uid)}>delete</i>
+                </a>
+                <button onClick={userMakeAdmin.bind(uid)} className="btn">Make Admin</button>
+            </div>
+        </div>          
+    );
 }
 
 export default User;
