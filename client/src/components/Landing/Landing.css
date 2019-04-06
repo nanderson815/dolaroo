@@ -3,7 +3,7 @@ header {
     background: linear-gradient( rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.5) ), url("/images/smallbusiness.jpg");
     background-repeat: no-repeat;
     background-position: center; 
-    margin: 0px 0px -20px 0px;
+    margin: -65px 0px -20px 0px;
 }
 
 main {
@@ -17,7 +17,7 @@ main {
     margin-top: 10%;
 }
 
-.btn {
+.landing-btn {
     border-radius: 20px;
     font-weight: 500;
     margin: 15px 10px;
