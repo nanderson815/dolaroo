@@ -2,8 +2,8 @@ import React from 'react';
 
 const User = (props) => {
     // decontruct props
-    let { uid, firstName, lastName, phoneNumber, email, role } =  props;
-    let { userMakeAdmin, userDelete } =  props;
+    let { id, firstName, lastName, phoneNumber, email, role } =  props;
+    let { userMakeAdmin, userMakeCashier, userDelete } =  props;
 
     return ( 
         <div className="card">
@@ -15,9 +15,10 @@ const User = (props) => {
             </div>
             <div className="card-action">
                 <a href="#!" className="indigo-text text-darken-4">
-                    <i className="userDelete material-icons left" onClick={userDelete.bind(uid)}>delete</i>
+                    <i className="userDelete material-icons left" onClick={() => userDelete(id)}>delete</i>
                 </a>
-                <button onClick={userMakeAdmin.bind(uid)} className="btn">Make Admin</button>
+                <button onClick={() => userMakeAdmin(id)} className="btn">Make Admin</button>
+                <button onClick={() => userMakeCashier(id)} className="btn">Make Cashier</button>
             </div>
         </div>          
     );

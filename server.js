@@ -31,7 +31,7 @@ require("./routes/api-auth-routes.js")(app);
 require("./routes/api-user-routes.js")(app);
 require("./routes/api-note-routes.js")(app);
 
-app.use(express.static(path.join(__dirname, 'client', 'build')));
+//app.use(express.static(path.join(__dirname, 'client', 'build')));
 // //production mode - serve from build dir, else serve from public
 if (process.env.NODE_ENV === 'production') {
     console.log(`prod mode ${path.join(__dirname, 'client', 'build', 'index.html')}`);

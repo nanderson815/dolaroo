@@ -41,7 +41,7 @@ class SignInFormBase extends Component {
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then((authUser) => {
-        return(UserAPI.addUserToFirestore(this.props.firebase.db, authUser));
+        return(UserAPI.addAuthUserToFirestore(authUser));
       })
       .then(() => {
         // NOTE : DO NOT RESET STATE if component unmounts since we are going to redirect
@@ -69,7 +69,7 @@ class SignInFormBase extends Component {
       .doSignInWithGoogle()
       .then((authUser) => {
         console.log("Logged in with google to firebase");
-        return(UserAPI.addUserToFirestore(this.props.firebase.db, authUser));
+        return(UserAPI.addAuthUserToFirestore(this.props.firebase.db, authUser));
       })
       .then(() => {
         console.log("Added to firebase");

@@ -1,8 +1,5 @@
 import React from 'react';
-import User from './UserAPI';
-import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
-import { withFirebase } from '../Auth/Firebase/FirebaseContext';
-import Util from "../Util/Util"
+import User from './User';
 import UserAPI from "./UserAPI"
 
 class Users extends React.Component {
@@ -17,9 +14,17 @@ class Users extends React.Component {
 
     refreshPage = () => {
         // Get with security
-        UserAPI.getUsers(this.props.firebase.db)
+        UserAPI.getUsers()
         .then(res => {
-            const users = [...res.data];
+            const users = [];
+            res.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                let user = {}
+                user = doc.data();
+                user.id = doc.id;
+                users.push(user);
+            });
+
             this.setState({ users: users });
         })
         .catch(err => {
@@ -34,9 +39,9 @@ class Users extends React.Component {
     }
 
     // Delete this article from MongoDB
-    userDelete = (uid) => {
+    userDelete = (id) => {
 
-        UserAPI.delete(this.props.firebase.db, uid )
+        UserAPI.delete( id )
         .then(res => {
             console.log("Deleted user");
         })
@@ -45,12 +50,28 @@ class Users extends React.Component {
         });
     }
 
-    // Delete this article from MongoDB
-    userMakeAdmin = (uid) => {
+    // Make Admin
+    userMakeAdmin = (id) => {
 
-        UserAPI.makeAdmin(this.props.firebase.db, uid )
+        console.log(`Trying to make User ${id} Admin`);
+
+        UserAPI.makeAdmin( id )
         .then(res => {
-            console.log("Made User Admin");
+            console.log(`Made User ${id} Admin`);
+        })
+        .catch(err => {
+            console.error(err); 
+        });
+    }        
+    
+    // Make Cashier
+    userMakeCashier = (id) => {
+
+        console.log(`Trying to make User ${id} Cashier`);
+
+        UserAPI.makeAdmin( id )
+        .then(res => {
+            console.log(`Made User ${id} Cashier`);
         })
         .catch(err => {
             console.error(err); 
@@ -62,11 +83,12 @@ class Users extends React.Component {
             <div className="row">
             {this.state.users.map((user) => {
                 return(            
-                    <div key={user.uid} className="col s12 m6 l6">
+                    <div key={user.id} className="col s12 m6 l6">
                         <User 
                         userDelete={this.userDelete}
                         userMakeAdmin={this.userMakeAdmin}
-                        uid={user.uid}
+                        userMakeCashier={this.userMakeCashier}
+                        id={user.id}
                         firstName={user.firstName}
                         lastName={user.lastName}
                         phoneNumber={user.phoneNumber}
@@ -81,4 +103,4 @@ class Users extends React.Component {
     }
 }
 
-export default withAuthUserContext(withFirebase(Users));
+export default Users;

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 // for firebase conext and access to firebase app
 import { withFirebase } from '../Firebase/FirebaseContext';
+import UserAPI from "../../User/UserAPI"
 
 const INITIAL_STATE = {
   username: '',
@@ -12,7 +13,7 @@ const INITIAL_STATE = {
   error: null,
 };
 
-class SignUpFormBase extends Component {
+class SignUpForm extends Component {
   constructor(props) {
     super(props);
     console.log(props);
@@ -25,7 +26,6 @@ class SignUpFormBase extends Component {
 
     const { username, email, passwordOne } = this.state;
     console.log(this.props);
-    const db = this.props.firebase.db;  // ref to firebase firestore()
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
@@ -33,10 +33,7 @@ class SignUpFormBase extends Component {
         // clear the userinout fields
         this.setState({ ...INITIAL_STATE });
         // Now Create the user in firestore
-        return db.collection('users').doc(authUser.user.uid).set({
-          username: username,
-          email: email
-        });
+        return(UserAPI.addAuthUserToFirestore(authUser));
       })
       .then(() => {
         // redirect home
@@ -96,11 +93,4 @@ class SignUpFormBase extends Component {
   }
 }
 
-// Instead of using the Firebase Context Componentdirectly in the SignUpPage,
-//  which doesn’t need to know about the Firebase instance, use the higher-order component 
-//  to wrap SignUpForm. Afterward, the SignUpForm has access to the Firebase instance 
-//  via the higher-order component. It’s also possible to use the SignUpForm as standalone without the SignUpPage,
-//  because it is responsible to get the Firebase instance via the higher-order component.
-// withRouter gives the history props for redirect, withFirebase gives firebase props
-const SignUpForm = withRouter(withFirebase(SignUpFormBase));
-export default SignUpForm;
+export default withRouter(withFirebase(SignUpForm));

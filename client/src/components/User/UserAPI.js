@@ -2,13 +2,15 @@ import Util from "../Util/Util"
 
 class UserAPI {
 
-    static getCurrentUser = (token) => {
+    static getCurrentUser = () => {
         // its a promise so return
-        return(Util.apiGet(`/api/user`, token));
+        return(Util.apiGet(`/api/user`));
     }
 
-    static addUserToFirestore = (db, authUser) => {
+    static addAuthUserToFirestore = (authUser) => {
         return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
             let docRef = db.collection("users").doc(authUser.user.uid);
             docRef.get()
                 .then((doc) => {
@@ -39,13 +41,15 @@ class UserAPI {
         });
     }
 
-    static getUsers = (db) => {
+    static getUsers = () => {
         return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
             db.collection("users").get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    console.log(doc.id, " => ", doc.data());
-                });
+                // querySnapshot.forEach((doc) => {
+                //     // doc.data() is never undefined for query doc snapshots
+                //     console.log(doc.id, " => ", doc.data());
+                // });
                 resolve(querySnapshot);
             }).catch(err => {
                 reject(err);
@@ -54,19 +58,19 @@ class UserAPI {
     }
 
     // complete later
-    static delete = (db, uid) => {
+    static delete = (uid) => {
         return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
             return resolve();
         });
     }
 
-    // complete later
-    static makeAdmin = (db, uid) => {
-        return new Promise((resolve, reject) => {
-            return resolve();
-        });
+    // returns a promise 
+    static makeAdmin = (uid) => {
+        const db = Util.getFirestoreDB();
+        return(Util.apiPost(`/api/auth/setAdmin/${uid}`, { id: uid }));
     }
-
 }
 
 export default UserAPI;

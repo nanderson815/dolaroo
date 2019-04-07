@@ -1,6 +1,6 @@
 import React from 'react';
-import User from "../User/User";
-import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
+import UserAPI from "../User/UserAPI"
+import Users from "../User/Users"
 
 const INITIAL_STATE = {
     firstName: '',
@@ -25,9 +25,7 @@ class Account extends React.Component {
     getCurrentUser = (e) => {
       e.preventDefault();
 
-      const user = new User();
-
-      user.getCurrentUser(this.props.authUser.token)
+      UserAPI.getCurrentUser()
       .then(data => {
         const user = data.data;
         console.log(`Got current user from firestore: ${JSON.stringify(user)}`);
@@ -73,9 +71,10 @@ class Account extends React.Component {
               </div>
               <button onClick={this.getCurrentUser} className="btn lighten-1 z-depth-0">Test Get User</button>  
             </form>
+            <Users />
           </div>
-            );
+          );
     }
 }
 
-export default withAuthUserContext(Account);
+export default Account;
