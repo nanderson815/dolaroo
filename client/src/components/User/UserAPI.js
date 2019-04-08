@@ -43,20 +43,32 @@ class UserAPI {
 
     static getUsersClaims = async (uid) => {
         // its a promise so return
-        let res = await (Util.apiGet(`/api/auth/getClaims/${uid}`));
-        return res;
+        return new Promise((resolve, reject) => {
+            resolve(Util.apiGet(`/api/auth/getClaims/${uid}`));
+        })
     }
 
-    static getUsers = () => {
-        return new Promise((resolve, reject) => {
+    // Everything from top down must be async or awaits do NOT wait
+    static getUsers =  () => {
+
+        return new Promise( (resolve, reject) => {
             const db = Util.getFirestoreDB();
 
             db.collection("users").get().then((querySnapshot) => {
+                let users = [];
+
                 querySnapshot.forEach(async doc => {
-                    let res = await this.getUsersClaims(doc.id);
-                    console.log(`claims: ${JSON.stringify(res.data.customClaims)}`);
+                    // let res = await this.getUsersClaims(doc.id);
+                    let user = {};
+                    user = doc.data();
+                    user.id = doc.id;
+                    //user.claims = res.data.customClaims;   
+                    users.push(user); 
                 })
-                resolve(querySnapshot);
+
+                console.log(users);
+                // resolve([{"name":"paul"},{"name":"jim"}]);
+                return(resolve(users));
             }).catch(err => {
                 reject(err);
             });

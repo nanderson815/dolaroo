@@ -15,7 +15,7 @@ module.exports = function (app) {
         let uid = req.params.uid;
         try {
             admin.auth().getUser(uid).then((user) => {
-                console.log(`Retried users custom claims: ${JSON.stringify(user, null, 4)}`);
+                // console.log(`Retrieved users custom claims: ${JSON.stringify(user, null, 4)}`);
                 res.json(user);
             });
             

@@ -12,18 +12,11 @@ class Users extends React.Component {
         };
     }
 
-    refreshPage = () => {
+    refreshPage = async () => {
         // Get with security
         UserAPI.getUsers()
-        .then(res => {
-            const users = [];
-            res.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                let user = {}
-                user = doc.data();
-                user.id = doc.id;
-                users.push(user);
-            });
+        .then(users => {
+            console.log(`Users in refresh page: ${users}`);
 
             this.setState({ users: users });
         })
