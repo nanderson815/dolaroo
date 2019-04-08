@@ -2,6 +2,8 @@ import React from 'react';
 import UserAPI from "../User/UserAPI"
 import Users from "../User/Users"
 import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
+import M from "materialize-css/dist/js/materialize.min.js";
+
 
 // const INITIAL_STATE = {
 //     uid: "",
@@ -25,6 +27,9 @@ class Account extends React.Component {
     componentDidMount() {
       // props are null here - how do I initialize
       console.log(this.props.user);
+
+      let elem = document.querySelector("label");
+      elem.className += " active";
     }
   
     getCurrentUser = (e) => {
