@@ -29,6 +29,9 @@ class Account extends React.Component {
       .then(data => {
         const user = data.data;
         console.log(`Got current user from firestore: ${JSON.stringify(user)}`);
+        UserAPI.getUsersClaims(user.uid).then(res => {
+            console.log(`claims: ${JSON.stringify(res.data.customClaims)}`)    
+        });  
       })
       .catch(err => {
         console.error(`Error getting user ${err}`);

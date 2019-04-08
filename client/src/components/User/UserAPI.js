@@ -41,9 +41,10 @@ class UserAPI {
         });
     }
 
-    static getUsersClaims = (uid) => {
+    static getUsersClaims = async (uid) => {
         // its a promise so return
-        return(Util.apiGet(`/api/auth/getClaims/${uid}`));
+        let res = await (Util.apiGet(`/api/auth/getClaims/${uid}`));
+        return res;
     }
 
     static getUsers = () => {
@@ -51,6 +52,10 @@ class UserAPI {
             const db = Util.getFirestoreDB();
 
             db.collection("users").get().then((querySnapshot) => {
+                querySnapshot.forEach(async doc => {
+                    let res = await this.getUsersClaims(doc.id);
+                    console.log(`claims: ${JSON.stringify(res.data.customClaims)}`);
+                })
                 resolve(querySnapshot);
             }).catch(err => {
                 reject(err);
