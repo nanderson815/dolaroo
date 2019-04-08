@@ -41,15 +41,16 @@ class UserAPI {
         });
     }
 
+    static getUsersClaims = (uid) => {
+        // its a promise so return
+        return(Util.apiGet(`/api/auth/getClaims/${uid}`));
+    }
+
     static getUsers = () => {
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
 
             db.collection("users").get().then((querySnapshot) => {
-                // querySnapshot.forEach((doc) => {
-                //     // doc.data() is never undefined for query doc snapshots
-                //     console.log(doc.id, " => ", doc.data());
-                // });
                 resolve(querySnapshot);
             }).catch(err => {
                 reject(err);
@@ -68,7 +69,6 @@ class UserAPI {
 
     // returns a promise 
     static makeAdmin = (uid) => {
-        const db = Util.getFirestoreDB();
         return(Util.apiPost(`/api/auth/setAdmin/${uid}`, { id: uid }));
     }
 }

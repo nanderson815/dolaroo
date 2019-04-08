@@ -82,6 +82,7 @@ class Firebase {
       this.auth.currentUser.getIdTokenResult()
         .then((idTokenResult) => {
           // Confirm the user is an Admin.
+          // Note double bangs is used to convert truthy/falsy to true/fale
           if (!!idTokenResult.claims.admin) {
             resolve(true);
           } else {

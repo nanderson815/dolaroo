@@ -27,6 +27,18 @@ class Util  {
     return currentUserRole;
   }
 
+  static isUserAdmin = async () => {
+    const firebase = new Firebase();
+    const userIsAdmin = await firebase.auth.doIsUserAdmin();
+    return userIsAdmin;
+  }
+
+  static isUserCashier = async () => {
+    const firebase = new Firebase();
+    const userIsCashier = await firebase.auth.doIsUserCashier();
+    return userIsCashier;
+  }
+
   static getFirestoreDB = () => {
     const firebase = new Firebase();
     const db = firebase.db;
@@ -38,6 +50,7 @@ class Util  {
     const token = await firebase.doRefreshToken(true);
     return(axios.get(api, {headers: {"FIREBASE_AUTH_TOKEN": token}}));
   }
+
   
   static apiGetNoToken = (api) => {
     return(axios.get(api));
