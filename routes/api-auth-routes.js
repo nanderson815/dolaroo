@@ -40,7 +40,7 @@ module.exports = function (app) {
             // to get initial admin setup I temp dispable the check
             // if (req.user) {
             if (req.user && !!req.user.admin) {
-                    // set the claim for the user who's uid is passed
+                // set the claim for the user who's uid is passed
                 // Note, this is the uid of the user to make admin (NOT the auth users uid)
                 admin.auth().setCustomUserClaims(uid, {
                     admin: true
@@ -56,16 +56,37 @@ module.exports = function (app) {
         }
     }); // Route
 
+    const helperGetUser = (uid) => {
+        return new Promise((resolve, reject) => {
+            admin.auth().getUser(uid).then((user) => {
+                return(resolve(user));
+            }).catch(err => {
+                return(reject(err));
+            });
+        });
+    }
+
     app.post("/api/auth/setCashier/:uid", requiresLogin, (req, res) => {
         let uid = req.params.uid;
         try {
             // Authorize the current user
             if (req.user && !!req.user.admin) {
-                admin.auth().setCustomUserClaims(uid, {
-                    cashier: true
-                }).then(() => {
-                    res.json(uid);
-                });
+                // check if user is admin and if they are, do change to cashier since admin can do that
+                helperGetUser(uid).then(user => {
+                    if (user.claims && user.claims.admin) {
+                        // Do NOT change admin to cashier
+                        res.status(200).json("User is already admin who also has cashier priveleges");
+                    } else {
+                        admin.auth().setCustomUserClaims(uid, {
+                            cashier: true
+                        }).then(() => {
+                            res.json(uid);
+                        });
+                    }
+                }).catch(err => {
+                    // ignore since it is OK if couldnt set for most reasons
+                    res.status(200).json("OK");
+                })
             } else {
                 res.status(401).json(`Must be admin to make someone cashier..."`);
             }
