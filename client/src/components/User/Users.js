@@ -17,7 +17,8 @@ class Users extends React.Component {
         UserAPI.getUsers()
         .then(async users => {
             for (let i in users) {
-                users[i].firstName = "PAUL";
+                users[i].firstName = users[i].firstName || "Firstname";
+                users[i].lastName = users[i].lastName || "Lastname";
                 let res = await UserAPI.getUsersClaims(users[i].id);
                 users[i].claims = res.data.customClaims; 
             }
