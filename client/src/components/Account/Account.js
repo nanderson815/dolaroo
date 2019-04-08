@@ -3,6 +3,15 @@ import UserAPI from "../User/UserAPI"
 import Users from "../User/Users"
 import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
 
+// const INITIAL_STATE = {
+//     uid: "",
+//     displayName: "",
+//     email: "",
+//     phoneNumber: '',
+//     claims: '',
+//     error: null
+//   };
+  
 class Account extends React.Component {
 
     state = {};
@@ -69,19 +78,10 @@ class Account extends React.Component {
         email !== "" ||
         phoneNumber !== "";
 
-        let userRole;
-        if (claims && claims.admin) {
-            userRole = "admin"
-        } else if (claims && claims.cashier){
-            userRole = "admin"
-        } else {
-            userRole = "user"
-        }
-
         return ( 
             <div className="container">
             <form className="white" onSubmit={this.onSubmit}>
-                  <h5 className="grey-text text-darken-3">Account <span>(Role: {userRole})</span></h5>
+                  <h5 className="grey-text text-darken-3">Account <span>(Role: {claims})</span></h5>
 
               <div className="input-field">
                 <label htmlFor="displayName">Display Name</label>
