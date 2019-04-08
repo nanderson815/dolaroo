@@ -39,7 +39,6 @@ class Users extends React.Component {
 
     // Delete this article from MongoDB
     userDelete = (id) => {
-
         UserAPI.delete( id )
         .then(res => {
             console.log("Deleted user");
@@ -47,6 +46,7 @@ class Users extends React.Component {
         .catch(err => {
             console.error(err); 
         });
+        this.refreshPage();
     }
 
     // Make Admin

@@ -75,8 +75,21 @@ class UserAPI {
     static delete = (uid) => {
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
+            Util.apiPost(`/api/auth/deleteUser/${uid}`, { id: uid })
+            .then (() => {
+                console.log("Auth for User successfully deleted!");
+                db.collection("users").doc(uid).delete().then(() => {
+                    console.log("Firestore User successfully deleted!");
+                    return resolve();
+                }).catch((err) => {
+                    console.error("Error deleting firestor user ", err);
+                    return reject(err);
+                });
+            }).catch((err) => {
+                console.error("Error deleting auth user ", err);
+                return reject(err);
+            });
 
-            return resolve();
         });
     }
 
