@@ -41,11 +41,11 @@ class UserAPI {
         });
     }
 
-    static getUsersClaims = async (uid) => {
+    static getUsersClaims =  (uid) => {
         // its a promise so return
-        return new Promise((resolve, reject) => {
-            resolve(Util.apiGet(`/api/auth/getClaims/${uid}`));
-        })
+        // return new Promise((resolve, reject) => {
+            return(Util.apiGet(`/api/auth/getClaims/${uid}`));
+        // })
     }
 
     // Everything from top down must be async or awaits do NOT wait
@@ -57,17 +57,15 @@ class UserAPI {
             db.collection("users").get().then((querySnapshot) => {
                 let users = [];
 
-                querySnapshot.forEach(async doc => {
-                    // let res = await this.getUsersClaims(doc.id);
-                    let user = {};
-                    user = doc.data();
-                    user.id = doc.id;
-                    //user.claims = res.data.customClaims;   
-                    users.push(user); 
-                })
+                    querySnapshot.forEach (doc => {
+                        let user = {};
+                        user = doc.data();
+                        user.id = doc.id;
 
-                console.log(users);
-                // resolve([{"name":"paul"},{"name":"jim"}]);
+                        users.push(user); 
+                    });
+
+                // console.log(users);
                 return(resolve(users));
             }).catch(err => {
                 reject(err);

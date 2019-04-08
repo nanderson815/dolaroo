@@ -15,9 +15,14 @@ class Users extends React.Component {
     refreshPage = async () => {
         // Get with security
         UserAPI.getUsers()
-        .then(users => {
-            console.log(`Users in refresh page: ${users}`);
+        .then(async users => {
+            for (let i in users) {
+                users[i].firstName = "PAUL";
+                let res = await UserAPI.getUsersClaims(users[i].id);
+                users[i].claims = res.data.customClaims; 
+            }
 
+            // console.log(`Users in refresh page: ${JSON.stringify(users, null, 2)}`);
             this.setState({ users: users });
         })
         .catch(err => {
