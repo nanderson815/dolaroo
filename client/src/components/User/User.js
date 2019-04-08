@@ -10,7 +10,7 @@ const User = (props) => {
     if (claims && claims.admin) {
         userRole = "admin"
     } else if (claims && claims.cashier){
-        userRole = "admin"
+        userRole = "cashier"
     } else {
         userRole = "user"
     }

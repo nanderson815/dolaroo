@@ -84,18 +84,18 @@ class Account extends React.Component {
                   <h5 className="grey-text text-darken-3">Account <span>(Role: {claims})</span></h5>
 
               <div className="input-field">
-                <label htmlFor="displayName">Display Name</label>
+                <label className="active" htmlFor="displayName">Display Name</label>
                 <input type="text" name='displayName' value={displayName} onChange={this.onChange} />
               </div>
               <div className="input-field">
-                <label htmlFor="email">Email</label>
+                <label className="active" htmlFor="email">Email</label>
                 <input type="email" name='email' value={email} onChange={this.onChange} />
               </div>
               <div className="input-field">
-                <label htmlFor="phoneNumber">Password</label>
+                <label className="active" htmlFor="phoneNumber">Password</label>
                 <input type="text" name='phoneNumber' value={phoneNumber} onChange={this.onChange} />
               </div>
-              <div className="input-field">
+              <div>
                 <button disabled={isInvalid} className="btn lighten-1 z-depth-0">Sign Up</button>
                 {error && <p>{error.message}</p>}
               </div>

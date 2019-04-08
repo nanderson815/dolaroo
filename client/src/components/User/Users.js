@@ -71,12 +71,13 @@ class Users extends React.Component {
 
         console.log(`Trying to make User ${id} Cashier`);
 
-        UserAPI.makeAdmin( id )
+        UserAPI.makeCashier( id )
         .then(res => {
             console.log(`Made User ${id} Cashier`);
             this.refreshPage();
         })
         .catch(err => {
+            alert(err);
             console.error(err); 
         });
     }        

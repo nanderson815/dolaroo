@@ -99,6 +99,10 @@ class UserAPI {
     static makeAdmin = (uid) => {
         return(Util.apiPost(`/api/auth/setAdmin/${uid}`, { id: uid }));
     }
+    // returns a promise 
+    static makeCashier = (uid) => {
+        return(Util.apiPost(`/api/auth/setCashier/${uid}`, { id: uid }));
+    }
 }
 
 export default UserAPI;
