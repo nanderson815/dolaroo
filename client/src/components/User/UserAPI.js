@@ -56,15 +56,13 @@ class UserAPI {
 
             db.collection("users").get().then((querySnapshot) => {
                 let users = [];
+                querySnapshot.forEach (doc => {
+                    let user = {};
+                    user = doc.data();
+                    user.id = doc.id;
 
-                    querySnapshot.forEach (doc => {
-                        let user = {};
-                        user = doc.data();
-                        user.id = doc.id;
-
-                        users.push(user); 
-                    });
-
+                    users.push(user); 
+                });
                 // console.log(users);
                 return(resolve(users));
             }).catch(err => {
