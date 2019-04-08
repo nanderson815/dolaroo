@@ -1,20 +1,11 @@
 import React from 'react';
 import UserAPI from "../User/UserAPI"
 import Users from "../User/Users"
-import AuthUserContext, { withAuthUserContext } from "../Auth/Session/AuthUserContext";
+import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
 
-const INITIAL_STATE = {
-    uid: "",
-    displayName: "",
-    email: "",
-    phoneNumber: '',
-    claims: '',
-    error: null
-  };
-  
 class Account extends React.Component {
 
-    state = {...INITIAL_STATE};
+    state = {};
 
     onChange = event => {
         this.setState({
@@ -57,13 +48,17 @@ class Account extends React.Component {
 
       console.log(this.props.user);
       // destructure
-      const {
+      let {
         displayName,
         email,
         phoneNumber,
         claims
       } = this.props.user;
-      
+      displayName = displayName || "";
+      email = email || "";
+      phoneNumber = phoneNumber || "";
+      claims = claims || "";
+
 
       const {
         error
