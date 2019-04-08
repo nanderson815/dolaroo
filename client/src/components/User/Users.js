@@ -42,11 +42,12 @@ class Users extends React.Component {
         UserAPI.delete( id )
         .then(res => {
             console.log("Deleted user");
+            this.refreshPage();
         })
         .catch(err => {
+            alert(err);
             console.error(err); 
         });
-        this.refreshPage();
     }
 
     // Make Admin
@@ -57,8 +58,10 @@ class Users extends React.Component {
         UserAPI.makeAdmin( id )
         .then(res => {
             console.log(`Made User ${id} Admin`);
+            this.refreshPage();
         })
         .catch(err => {
+            alert(err);
             console.error(err); 
         });
     }        
@@ -71,6 +74,7 @@ class Users extends React.Component {
         UserAPI.makeAdmin( id )
         .then(res => {
             console.log(`Made User ${id} Cashier`);
+            this.refreshPage();
         })
         .catch(err => {
             console.error(err); 

@@ -69,7 +69,7 @@ class SignInFormBase extends Component {
       .doSignInWithGoogle()
       .then((authUser) => {
         console.log("Logged in with google to firebase");
-        return(UserAPI.addAuthUserToFirestore(this.props.firebase.db, authUser));
+        return(UserAPI.addAuthUserToFirestore(authUser));
       })
       .then(() => {
         console.log("Added to firebase");

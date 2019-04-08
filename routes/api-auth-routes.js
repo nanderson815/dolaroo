@@ -22,8 +22,8 @@ module.exports = function (app) {
                 if (/is no user/.test(err)) {
                     res.json(user);
                 } else {
-                    res.status(404).json(`Error caught in app.get("/api/auth/getClaims/${uid}" ${err}`); 
-                }       
+                    res.status(404).json(`Error caught in app.get("/api/auth/getClaims/${uid}" ${err}`);
+                }
             });
 
         } catch (err) {
@@ -37,16 +37,22 @@ module.exports = function (app) {
         let uid = req.params.uid;
         try {
             // Authorize the current user
-            if (req.user && !!req.user.admin ) {
+            // to get initial admin setup I temp dispable the check
+            // if (req.user) {
+            if (req.user && !!req.user.admin) {
                     // set the claim for the user who's uid is passed
-                    // Note, this is the uid of the user to make admin (NOT the auth users uid)
-                    admin.auth().setCustomUserClaims(uid, { admin: true }).then(() => {
-                        res.json(uid);
-                    });
+                // Note, this is the uid of the user to make admin (NOT the auth users uid)
+                admin.auth().setCustomUserClaims(uid, {
+                    admin: true
+                }).then(() => {
+                    res.json(uid);
+                });
+            } else {
+                res.status(401).json(`Must be admin to make someone admin..."`);
             }
         } catch (err) {
             // catch all error
-            res.status(500).json(`Error caught in route app.post("/api/auth/setAdmin..." ${err.errors[0].message}`);
+            res.status(500).json(`Error caught in route app.post("/api/auth/setAdmin..." ${err}`);
         }
     }); // Route
 
@@ -54,17 +60,19 @@ module.exports = function (app) {
         let uid = req.params.uid;
         try {
             // Authorize the current user
-            if (req.user && !!req.user.admin ) {
-                // set the claim for the user who's uid is passed
-                // Note, this is the uid of the user to make admin (NOT the auth users uid)
-                admin.auth().setCustomUserClaims(uid, { cashier: true }).then(() => {
+            if (req.user && !!req.user.admin) {
+                admin.auth().setCustomUserClaims(uid, {
+                    cashier: true
+                }).then(() => {
                     res.json(uid);
                 });
+            } else {
+                res.status(401).json(`Must be admin to make someone cashier..."`);
             }
-        } 
-        catch (err) {
+
+        } catch (err) {
             // catch all error
-            res.status(500).json(`Error caught in route app.post("/api/auth/setCashier..." ${err.errors[0].message}`);
+            res.status(500).json(`Error caught in route app.post("/api/auth/setCashier..." ${err}`);
         }
     }); // Route
 
@@ -73,21 +81,21 @@ module.exports = function (app) {
         let uid = req.params.uid;
         try {
             // Authorize the current user
-            if (req.user && !!req.user.admin ) {
+            if (req.user && !!req.user.admin) {
                 // delete the user
                 admin.auth().deleteUser(uid)
-                .then(() => {
-                    console.log('Successfully deleted auth user');
-                    res.json();
-                })
-                .catch((err) => {
-                    if (/is no user/.test(err)) {
+                    .then(() => {
+                        console.log('Successfully deleted auth user');
                         res.json();
-                    } else {
-                        console.error('Error deleting auth user:', error);
-                        res.status(404).json(`Error caught in app.get("/api/auth/getClaims/${uid}" ${err}`); 
-                    }       
-                });
+                    })
+                    .catch((err) => {
+                        if (/is no user/.test(err)) {
+                            res.json();
+                        } else {
+                            console.error('Error deleting auth user:', error);
+                            res.status(404).json(`Error caught in app.get("/api/auth/getClaims/${uid}" ${err}`);
+                        }
+                    });
             } else {
                 res.status(401).json(`Must be admin to delete user`);
             }

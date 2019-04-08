@@ -4,7 +4,9 @@ class UserAPI {
 
     static getCurrentUser = () => {
         // its a promise so return
-        return(Util.apiGet(`/api/user`));
+        return new Promise((resolve, reject) => {
+            resolve(Util.getCurrentAuthUser());
+        });
     }
 
     static addAuthUserToFirestore = (authUser) => {

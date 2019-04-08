@@ -1,20 +1,20 @@
 import React from 'react';
 import UserAPI from "../User/UserAPI"
 import Users from "../User/Users"
+import AuthUserContext, { withAuthUserContext } from "../Auth/Session/AuthUserContext";
 
 const INITIAL_STATE = {
-    firstName: '',
-    lastName: '',
+    uid: "",
+    displayName: "",
+    email: "",
     phoneNumber: '',
-    error: null,
+    claims: '',
+    error: null
   };
   
 class Account extends React.Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {...INITIAL_STATE};
-    }
+    state = {...INITIAL_STATE};
 
     onChange = event => {
         this.setState({
@@ -22,15 +22,30 @@ class Account extends React.Component {
         });
     };
 
+    componentDidMount() {
+      // props are null here - how do I initialize
+      console.log(this.props.user);
+    }
+  
     getCurrentUser = (e) => {
       e.preventDefault();
 
       UserAPI.getCurrentUser()
       .then(data => {
-        const user = data.data;
-        console.log(`Got current user from firestore: ${JSON.stringify(user)}`);
+        const user = data;
+        this.setState({
+          uid: user.uid,
+          displayName: user.displayName || "",
+          email: user.email,
+          phoneNumber: user.phoneNumber || ""
+        });
+  
+        //console.log(`Got current user from auth: ${JSON.stringify(user)}`);
         UserAPI.getUsersClaims(user.uid).then(res => {
-            console.log(`claims: ${JSON.stringify(res.data.customClaims)}`)    
+            // console.log(`claims: ${JSON.stringify(res.data.customClaims)}`) 
+            this.setState({
+              claims: res.data.customClaims || "user"
+            });
         });  
       })
       .catch(err => {
@@ -39,30 +54,47 @@ class Account extends React.Component {
     }
 
     render() {
-        // destructure
-        const {
-            firstName,
-            lastName,
-            phoneNumber,
-            error
-        } = this.state;
 
-        const isInvalid =
-            firstName !== "" ||
-            lastName === "" ||
-            phoneNumber === "";
+      console.log(this.props.user);
+      // destructure
+      const {
+        displayName,
+        email,
+        phoneNumber,
+        claims
+      } = this.props.user;
+      
+
+      const {
+        error
+      } = this.state;
+
+      const isInvalid =
+        displayName !== "" ||
+        email !== "" ||
+        phoneNumber !== "";
+
+        let userRole;
+        if (claims && claims.admin) {
+            userRole = "admin"
+        } else if (claims && claims.cashier){
+            userRole = "admin"
+        } else {
+            userRole = "user"
+        }
 
         return ( 
             <div className="container">
             <form className="white" onSubmit={this.onSubmit}>
-              <h5 className="grey-text text-darken-3">Account</h5>
+                  <h5 className="grey-text text-darken-3">Account <span>(Role: {userRole})</span></h5>
+
               <div className="input-field">
-                <label htmlFor="firstName">First Name</label>
-                <input type="text" name='firstName' value={firstName} onChange={this.onChange} />
+                <label htmlFor="displayName">Display Name</label>
+                <input type="text" name='displayName' value={displayName} onChange={this.onChange} />
               </div>
               <div className="input-field">
-                <label htmlFor="lastName">Last Name</label>
-                <input type="text" name='lastName' value={lastName} onChange={this.onChange} />
+                <label htmlFor="email">Email</label>
+                <input type="email" name='email' value={email} onChange={this.onChange} />
               </div>
               <div className="input-field">
                 <label htmlFor="phoneNumber">Password</label>
@@ -80,4 +112,4 @@ class Account extends React.Component {
     }
 }
 
-export default Account;
+export default withAuthUserContext(Account);
