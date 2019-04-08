@@ -3,8 +3,17 @@ import UserAPI from "./UserAPI";
 
 const User = (props) => {
     // decontruct props
-    let { id, firstName, lastName, phoneNumber, email, role } =  props;
+    let { id, firstName, lastName, phoneNumber, email, claims } =  props;
     let { userMakeAdmin, userMakeCashier, userDelete } =  props;
+
+    let userRole;
+    if (claims && claims.admin) {
+        userRole = "admin"
+    } else if (claims && claims.cashier){
+        userRole = "admin"
+    } else {
+        userRole = "user"
+    }
 
     return ( 
         <div className="card">
@@ -12,7 +21,7 @@ const User = (props) => {
                 <span className="flow-text card-title">{firstName} {lastName}</span>
                 <p className="truncate">email: {email}</p>
                 <p className="truncate">phoneNumber: {phoneNumber}</p>
-                <p className="truncate">role: {role}</p>
+                <p className="truncate">role: {userRole}</p>
             </div>
             <div className="card-action">
                 <a href="#!" className="indigo-text text-darken-4">

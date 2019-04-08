@@ -92,7 +92,7 @@ class Users extends React.Component {
                         lastName={user.lastName}
                         phoneNumber={user.phoneNumber}
                         email={user.email}
-                        role={user.role}
+                        claims={user.claims}
                         />
                     </div>
                     );
