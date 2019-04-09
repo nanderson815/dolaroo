@@ -14,9 +14,13 @@ class Home extends React.Component {
         cash: 0
     }
 
-    componentDidMount(){
-        DepositDB.get()
-        .then(res => this.setState({deposits: res}));
+    componentDidMount() {
+        DepositDB.get("deposits")
+            .then(res => this.setState({ deposits: res }));
+        DepositDB.get("credit")
+            .then(res => this.setState({ credit: res[0].balance}));
+        DepositDB.get("cash")
+            .then(res => this.setState({ cash: res[0].balance }));
 
     }
 
@@ -27,7 +31,7 @@ class Home extends React.Component {
                 <div className="container">
                     <div className="row">
                         <ProvisionalCredit credit={this.state.credit} />
-                        <Balance balance={this.state.cash}/>
+                        <Balance balance={this.state.cash} />
                     </div>
                     <div className="row">
                         <GraphCard />

@@ -3,11 +3,11 @@ import Util from "../../Util/Util"
 class DepositDB {
 
     // Get all deposits from firestore 
-    static get =  () => {
+    static get =  (collection) => {
         return new Promise( (resolve, reject) => {
             const db = Util.getFirestoreDB();   // active firestore db ref
 
-            db.collection("deposits").get().then((querySnapshot) => {
+            db.collection(collection).get().then((querySnapshot) => {
                 let deposits = [];
                 querySnapshot.forEach (doc => {
                     let deposit = {};
