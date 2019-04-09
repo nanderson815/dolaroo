@@ -4,6 +4,7 @@ import Deposit from './Deposit/Deposit';
 import Balance from './Balance/Balance';
 import GraphCard from './GraphCard/GraphCard';
 import './dashboard.css';
+import { withFirebaseContext } from '../Auth/Firebase/FirebaseContext';
 
 import DepositDB from './Deposit/DepositDB';
 
@@ -21,7 +22,7 @@ class Home extends React.Component {
             .then(res => this.setState({ credit: res[0].balance}));
         DepositDB.get("cash")
             .then(res => this.setState({ cash: res[0].balance }));
-
+        // this.props.firebase.db.get("")
     }
 
     render() {

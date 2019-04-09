@@ -1,5 +1,6 @@
 import React from 'react';
 import './provisionalCredit.css';
+import { Link } from 'react-router-dom';
 
 const ProvisionalCredit = (props) => {
 
@@ -13,7 +14,7 @@ const ProvisionalCredit = (props) => {
                     </div>
                     <div className="card-action pCard">
                         <div className="center-align">
-                            <a className="waves-effect waves-light dash-btn blue darken-4 btn">Pay Balance</a>
+                            <Link to="/payment" className="waves-effect waves-light dash-btn blue darken-4 btn">Pay Balance</Link>
                         </div>
                     </div>
                 </div>
