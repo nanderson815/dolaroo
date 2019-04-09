@@ -5,7 +5,15 @@ import Balance from './Balance/Balance';
 import GraphCard from './GraphCard/GraphCard';
 import './dashboard.css';
 
+import DepositDB from './Deposit/DepositDB';
+
 class Home extends React.Component {
+
+    componentDidMount(){
+        DepositDB.get().
+        then(res => console.log(res));
+
+    }
 
     render() {
         return (
