@@ -9,7 +9,7 @@ const ProvisionalCredit = (props) => {
                 <div className="card">
                     <div className="card-content pCard">
                         <span className="card-title">Provisional Credit</span>
-                        <h1 className="displayCredit">$9,252</h1>
+                        <h1 className="displayCredit">${props.credit}</h1>
                     </div>
                     <div className="card-action pCard">
                         <div className="center-align">
