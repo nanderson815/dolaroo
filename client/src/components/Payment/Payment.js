@@ -1,9 +1,11 @@
 import React from 'react';
 
-const Payment =(props) => {
+const Payment = (props) => {
     return (
         <div>
-            <h1>Payment Page</h1>
+            <div className="container">
+                <h1>Payment Page</h1>
+            </div>
         </div>
     )
 }

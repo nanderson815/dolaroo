@@ -28,7 +28,6 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                <div className="headerCard blue darken-4"></div>
                 <div className="container">
                     <div className="row">
                         <ProvisionalCredit credit={this.state.credit} />

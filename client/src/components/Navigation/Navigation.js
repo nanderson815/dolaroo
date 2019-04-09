@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import M from "materialize-css/dist/js/materialize.min.js";
 import SignOutButton from '../Auth/SignOut/SignOut';
 import AuthUserContext from '../Auth/Session/AuthUserContext';
+import { withRouter} from 'react-router-dom';
 
 class Navigation extends React.Component {
   state = {
@@ -29,7 +30,7 @@ class Navigation extends React.Component {
 
     let navBarClass = '';
 
-    if (this.state.isTop) {
+    if (this.state.isTop && this.props.history.location.pathname === "/") {
       navBarClass = 'transparent z-depth-0';
     } else {
       navBarClass = 'z-depth-0 blue darken-4'
@@ -99,4 +100,4 @@ class Navigation extends React.Component {
   }// render
 } //class
 
-export default Navigation;
+export default withRouter(Navigation);
