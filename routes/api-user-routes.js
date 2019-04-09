@@ -10,7 +10,7 @@ module.exports = function (app) {
         res.status(401).json(`Auth Error Caught in Server: ${err}`);
     });
 
-    // Route for getting all photos from photos table for the currently authenticated user
+    // Route for getting current user that is authenticated
     app.get("/api/user", requiresLogin, (req, res) => {
         try {
             res.json({

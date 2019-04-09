@@ -22,10 +22,16 @@ const config = {
   messagingSenderId: "87243866145"
 };
 
+// Firebase state already initialized so we dont do more that once
+// Kinda like a statuc property
+let firebaseInialized;
 class Firebase {
   constructor() {
     try {
-      firebase.initializeApp(config);
+      if (!firebaseInialized) {
+        firebase.initializeApp(config);
+        firebaseInialized = true;
+      }
     } catch (err) {
       // we skip the "already exists" message which is
       // not an actual error when we're hot-reloading
@@ -50,12 +56,52 @@ class Firebase {
     });
   }
 
+   // get custom claims
+   doGetAllCustomClaims = () => {
+    return new Promise((resolve, reject) => {
+      this.auth.currentUser.getIdTokenResult()
+        .then((idTokenResult) => {
+          if (idTokenResult.claims.admin) {
+            resolve("admin");
+          } else if (idTokenResult.claims.cashier) {
+            resolve("cashier");
+          } else {
+            resolve("user");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
+    });//promise
+  }// method  
+  // get custom claims
+  doGetUserRole = () => {
+    return new Promise((resolve, reject) => {
+      this.auth.currentUser.getIdTokenResult()
+        .then((idTokenResult) => {
+          if (idTokenResult.claims.admin) {
+            resolve("admin");
+          } else if (idTokenResult.claims.cashier) {
+            resolve("cashier");
+          } else {
+            resolve("user");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
+    });//promise
+  }// method  
+
   // get custom claims
   doIsUserAdmin = () => {
     return new Promise((resolve, reject) => {
       this.auth.currentUser.getIdTokenResult()
         .then((idTokenResult) => {
           // Confirm the user is an Admin.
+          // Note double bangs is used to convert truthy/falsy to true/fale
           if (!!idTokenResult.claims.admin) {
             resolve(true);
           } else {

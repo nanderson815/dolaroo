@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase/FirebaseContext';
 import AuthUserContext from '../Session/AuthUserContext';
-import User from "../../User/User"
+import UserAPI from "../../User/UserAPI"
 
 const INITIAL_STATE = {
   email: '',
@@ -35,14 +35,13 @@ class SignInFormBase extends Component {
     e.preventDefault();
 
     const { email, password } = this.state;
-    const user = new User();
 
     this.setState({ ...INITIAL_STATE });
 
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then((authUser) => {
-        return(user.addUserToFirestore(this.props.firebase.db, authUser));
+        return(UserAPI.addAuthUserToFirestore(authUser));
       })
       .then(() => {
         // NOTE : DO NOT RESET STATE if component unmounts since we are going to redirect
@@ -66,13 +65,11 @@ class SignInFormBase extends Component {
   handleGoogleLogin = (e) => {
     e.preventDefault();
 
-    const user = new User();
-
     this.props.firebase
       .doSignInWithGoogle()
       .then((authUser) => {
         console.log("Logged in with google to firebase");
-        return(user.addUserToFirestore(this.props.firebase.db, authUser));
+        return(UserAPI.addAuthUserToFirestore(authUser));
       })
       .then(() => {
         console.log("Added to firebase");

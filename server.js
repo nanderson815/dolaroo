@@ -5,7 +5,6 @@ require("dotenv").config();
 const port = process.env.PORT || 5000;
 
 const mongoose = require("mongoose");
-const axios = require("axios");
 
 // Require all models
 //const db = require("./models");
@@ -30,17 +29,9 @@ mongoose.connect(uri, {
 
 require("./routes/api-auth-routes.js")(app);
 require("./routes/api-user-routes.js")(app);
+require("./routes/api-note-routes.js")(app);
 
-// Make sure our React files are being served by our Express server.
-// Serve static files from the React frontend app
-// app.use(express.static(path.join(__dirname, 'client', 'build')));
-
-// app.get('*', function (req, res) {
-//     const index = path.join(__dirname, 'client', 'build', 'index.html');
-//     res.sendFile(index);
-// });
-
-app.use(express.static(path.join(__dirname, 'client', 'build')));
+//app.use(express.static(path.join(__dirname, 'client', 'build')));
 // //production mode - serve from build dir, else serve from public
 if (process.env.NODE_ENV === 'production') {
     console.log(`prod mode ${path.join(__dirname, 'client', 'build', 'index.html')}`);

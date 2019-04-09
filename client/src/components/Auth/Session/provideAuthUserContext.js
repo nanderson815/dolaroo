@@ -16,15 +16,20 @@ const provideAuthUserContext = Component => {
 
             this.state = {
                 authUser: null,
-                authUserRole: null,
-                token: null
+                uid: null,
+                displayName: null,
+                phoneNumber: null,
+                email: null,
+                token: null,
+                claims: null
             };
         }
 
         refreshToken = async () => {
             try {
                 let token = await this.props.firebase.doRefreshToken();
-                this.setState({token: token})
+                let claims = await this.props.firebase.doGetUserRole();
+                this.setState({token: token, claims: claims})
             } catch {
                 console.error("Error refreshng token");
                 this.setState({token: null})
@@ -39,7 +44,15 @@ const provideAuthUserContext = Component => {
             this.listener = this.props.firebase.auth.onAuthStateChanged(
                 authUser => {
                     if (authUser) {
-                        this.setState({authUser: authUser})
+                        const newState = {
+                            authUser: authUser,
+                            uid: authUser.uid,
+                            displayName: authUser.displayName,
+                            phoneNumber: authUser.phoneNumber,
+                            email: authUser.email
+                        }
+        
+                        this.setState({...newState})
                         this.refreshToken();
                     } else {
                         this.setState({
