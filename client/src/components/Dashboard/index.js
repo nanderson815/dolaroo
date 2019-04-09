@@ -10,8 +10,8 @@ import DepositDB from './Deposit/DepositDB';
 class Home extends React.Component {
 
     componentDidMount(){
-        DepositDB.get().
-        then(res => console.log(res));
+        DepositDB.get()
+        .then(res => console.log(res));
 
     }
 
