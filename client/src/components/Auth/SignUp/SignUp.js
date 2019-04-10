@@ -24,6 +24,7 @@ class SignUpForm extends Component {
   onSubmit = event => {
     event.preventDefault();
 
+    // eslint-disable-next-line no-unused-vars
     const { username, email, passwordOne } = this.state;
     console.log(this.props);
 

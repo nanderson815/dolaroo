@@ -1,5 +1,5 @@
 import React from 'react';
-import UserAPI from "./UserAPI";
+// import UserAPI from "./UserAPI";
 
 const User = (props) => {
     // decontruct props
