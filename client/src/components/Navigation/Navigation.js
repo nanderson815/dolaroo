@@ -41,7 +41,7 @@ class Navigation extends React.Component {
       <ul>
         <li><a href="/">Landing</a></li>
         <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/account">Account</a></li>
+        <li><a href="/account">Admin</a></li>
         <li><SignOutButton /></li>
       </ul>
       ;
@@ -50,7 +50,7 @@ class Navigation extends React.Component {
       <ul>
         <li><Link to="/">Landing</Link></li>
         <li><NavLink to="/dashboard">Home</NavLink></li>
-        <li><NavLink to="/account">Account</NavLink></li>
+        <li><NavLink to="/account">Admin</NavLink></li>
         <li><SignOutButton /></li>
       </ul>
       ;
