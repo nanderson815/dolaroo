@@ -4,7 +4,7 @@ import React from 'react';
 const GraphCard = (props) => {
     return (
         <div>
-            <div className="col s12 m4">
+            <div className="col s12 m6">
                 <div className="card">
                     <div className="card-content pCard">
                         <span className="card-title">{props.title ? props.title : 'Card Title'}</span>
@@ -12,7 +12,7 @@ const GraphCard = (props) => {
                     </div>
                     <div className="card-action pCard">
                         <div className="center-align">
-                            <a className="waves-effect waves-light dash-btn blue darken-4 btn">More Details</a>
+                            <a href="#!" className="waves-effect waves-light dash-btn blue darken-4 btn">More Details</a>
                         </div>
                     </div>
                 </div>

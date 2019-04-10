@@ -2,7 +2,7 @@ import React from 'react';
 import UserAPI from "../User/UserAPI"
 import Users from "../User/Users"
 import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
-import M from "materialize-css/dist/js/materialize.min.js";
+// import M from "materialize-css/dist/js/materialize.min.js";
 
 
 // const INITIAL_STATE = {

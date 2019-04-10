@@ -5,7 +5,7 @@ import './Balance.css'
 const Balance =(props) => {
     return (
         <div>
-            <div className="col s12 m6">
+            <div className="col s12 l6">
                 <div className="card">
                     <div className="card-content pCard">
                         <span className="card-title">Cash Balance</span>
@@ -13,7 +13,7 @@ const Balance =(props) => {
                     </div>
                     <div className="card-action pCard">
                         <div className="center-align ">
-                            <a className="waves-effect waves-light dash-btn blue darken-4 btn">New Deposit</a>
+                            <a href="!#" className="waves-effect waves-light dash-btn blue darken-4 btn">New Deposit</a>
                         </div>
                     </div>
                 </div>

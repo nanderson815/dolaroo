@@ -19,7 +19,7 @@ class Landing extends React.Component {
                                 <h5 className="white-text">All from your phone or tablet</h5>
 
                                 <div className="center-align">
-                                    <a className="waves-effect waves-light landing-btn btn  blue darken-4">Sign Up Now</a>
+                                    <a href="!#" className="waves-effect waves-light landing-btn btn  blue darken-4">Sign Up Now</a>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@ class Landing extends React.Component {
                             </div>
                             <div className="col s12 m3 offset-m1">
                                 <div className="center-align">
-                                    <a className="landing-btn btn white blue-text text-darken-4">Learn More</a>
+                                    <a href="!#" className="landing-btn btn white blue-text text-darken-4">Learn More</a>
                                 </div>
                             </div>
                         </div>
@@ -83,8 +83,8 @@ class Landing extends React.Component {
                                         <p className="white-text">An in-person consultation and product demo are the first step of the sign up process.
                                         Sign up today to be up and running in as little as two weeks.</p>
                                         <div className="center-align">
-                                            <a className="waves-effect waves-light landing-btn btn  blue darken-4">Sign Up Now</a>
-                                            <a className="waves-effect waves-light landing-btn btn  blue darken-4">More Info</a>
+                                            <a href="!#" className="waves-effect waves-light landing-btn btn  blue darken-4">Sign Up Now</a>
+                                            <a href="!#" className="waves-effect waves-light landing-btn btn  blue darken-4">More Info</a>
 
                                         </div>
                                     </div>

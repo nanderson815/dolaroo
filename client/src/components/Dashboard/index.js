@@ -1,10 +1,10 @@
 import React from 'react';
 import ProvisionalCredit from './ProvisionalCredit/provisionalCredit';
-import Deposit from './Deposit/Deposit';
+// import Deposit from './Deposit/Deposit';
 import Balance from './Balance/Balance';
 import GraphCard from './GraphCard/GraphCard';
 import './dashboard.css';
-import { withFirebaseContext } from '../Auth/Firebase/FirebaseContext';
+// import { withFirebaseContext } from '../Auth/Firebase/FirebaseContext';
 
 import DepositDB from './Deposit/DepositDB';
 
