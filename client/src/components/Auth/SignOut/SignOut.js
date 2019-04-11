@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 
 import { withFirebase } from '../Firebase/FirebaseContext';
 import AuthUserContext from '../Session/AuthUserContext';
+import SignOutAvatar from './SignOutAvatar'
 
 class SignOutButton extends React.Component {
 
@@ -20,9 +21,9 @@ class SignOutButton extends React.Component {
           {user => user.authUser ? null : <Redirect to="/signin" />}
         </AuthUserContext.Consumer>
 
-        <button type="button" onClick={this.handleSignout}>
-          Sign Out
-        </button>
+        <a href="#!" onClick={this.handleSignout}>
+          <SignOutAvatar />
+        </a>
       </div>
     )
   }

@@ -4,6 +4,7 @@ import M from "materialize-css/dist/js/materialize.min.js";
 import SignOutButton from '../Auth/SignOut/SignOut';
 import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 import { withRouter } from 'react-router-dom';
+import AccountAvatar from "../Account/AccountAvatar"
 
 class Navigation extends React.Component {
   state = {
@@ -51,7 +52,7 @@ class Navigation extends React.Component {
       <ul>
         <li><Link to="/">Landing</Link></li>
         <li><NavLink to="/dashboard">Home</NavLink></li>
-        <li><NavLink to="/account">Account</NavLink></li>
+        <li><NavLink to="/account"><AccountAvatar /></NavLink></li>
         <li><NavLink to="/admin">Admin</NavLink></li>
         <li><SignOutButton /></li>
       </ul>
