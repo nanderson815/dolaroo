@@ -2,27 +2,27 @@ import React from 'react';
 import UserAPI from "./UserAPI"
   
 class UserForm extends React.Component {
-  updateMode = false;
-
   state = {
-    uid: this.props.uid,
+    id: this.props.id,
     firstName: "",
     lastName: "",
     photoURL: "",
     phoneNumber: "",
     email: "",
+    uid: "",
     claims: "noauth",
     message: ""
   };
 
-  fetchUser = (uid) => {
-    UserAPI.get(uid)
+  fetchUser = (id) => {
+    UserAPI.get(id)
     .then(user => {
       this.setState({
         firstName: user.firstName || "",
         lastName: user.lastName || "",
         photoURL: user.photoURL || "",
         phoneNumber: user.phoneNumber || "",
+        uid: user.uid || "",
         claims: user.claims || "noauth",
         email: user.email
       });
@@ -36,21 +36,24 @@ class UserForm extends React.Component {
   };
 
   componentDidMount() {
-    console.log(`uid: ${this.state.uid}`);
-    if (this.state.uid) {
+    console.log(`id: ${this.state.id}`);
+    if (this.state.id) {
       this.updateMode = true;
-      this.fetchUser(this.state.uid);
+      this.fetchUser(this.state.id);
     } else {
       this.updateMode = false;
     }
   }
 
   addUser = () => {
-    console.log(`adding user to db with`);
+    console.log(`adding user to db`);
     const user = this.state;
-    UserAPI.updateFBOnly(user).then (user => {
+    UserAPI.updateFBOnly(user).then (id => {
       // set message to show update
-      this.setState({message: "New User Added - they must Sign Up to authorize"});
+      this.setState({
+        message: "New User Added - they must Sign Up to authorize",
+        id: id
+      });
     }).catch (err => {
       // set message to show update
       this.setState({message: `Error adding user ${err}`});
@@ -63,17 +66,17 @@ class UserForm extends React.Component {
     const user = this.state;
     UserAPI.update(user).then (user => {
       // set message to show update
-      this.setState({message: "Account Updated"});
+      this.setState({message: "User Updated"});
     }).catch (err => {
       // set message to show update
-      this.setState({message: `Error updating account ${err}`});
+      this.setState({message: `Error updating user ${err}`});
     });
   }
 
   saveUser = (e) => {
     e.preventDefault();
     // Update current user in firestore (and auth for some fields)
-    if (this.updateMode) {
+    if (this.state.id) {
       this.updateUser();
     } else {
       this.addUser();
@@ -100,7 +103,7 @@ class UserForm extends React.Component {
       } = this.state;
 
     let buttonText, emailEnabled;
-    if (this.updateMode) {
+    if (this.state.id) {
       buttonText = "Update";
       emailEnabled = false;
     } else {

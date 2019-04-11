@@ -103,13 +103,13 @@ class UserAPI {
     }
 
     // get user base on uid (id and uid are same)
-    static get = (uid) => {
+    static get = (id) => {
         // its a promise so return
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
 
             // then get from firestore
-            let docRef = db.collection("users").doc(uid);
+            let docRef = db.collection("users").doc(id);
             docRef.get().then((doc) => {
                 if (doc.exists) {
                     // update
@@ -152,13 +152,12 @@ class UserAPI {
         return new Promise(async (resolve, reject) => {
             const db = Util.getFirestoreDB();
             const authUser = await Util.getCurrentAuthUser();
-            let _id = "invaliduid"; // if not valid, make sure it wont find on set and will create
-            let _uid = "invaliduid"; // if not valid, make sure it wont find on set and will create
+            let _uid = "noauth";
             if (user.uid && user.uid !== undefined) {
-                _id = user.uid;
                 _uid = user.uid;
-            }
+             }
 
+            // we always want uid = id to keep auth and firestore in sync
             authUser.updateProfile({
                 displayName: `${user.firstName} ${user.lastName}`,
                 photoURL: user.photoURL,
@@ -167,7 +166,7 @@ class UserAPI {
                 console.log("Auth for User successfully updated!");
                 // update
                 console.log("User updated, user=", user);
-                db.collection('users').doc(_id).set({
+                db.collection('users').doc(user.id).set({
                     firstName: user.firstName,
                     lastName: user.lastName,
                     displayName: `${user.firstName} ${user.lastName}`,
@@ -196,32 +195,80 @@ class UserAPI {
     // Later - signup will ensure that user email exsists before allowing them to signup
     static updateFBOnly =  (user) => {
         console.log(`trying to update user in fb and auth: ${user}`);
+
         return new Promise(async (resolve, reject) => {
             const db = Util.getFirestoreDB();
-            let _id = "invaliduid"; // if not valid, make sure it wont find on set and will create
-            let _uid = "invaliduid"; // if not valid, make sure it wont find on set and will create
+            let _uid = "noauth"; // if not valid, make sure it wont find on set and will create
             if (user.uid && user.uid !== undefined) {
-                _id = user.uid;
                 _uid = user.uid;
             }
-            // update
-            db.collection('users').doc(_id).set({
-                firstName: user.firstName,
-                lastName: user.lastName,
-                displayName: `${user.firstName} ${user.lastName}`,
-                phoneNumber: user.phoneNumber,
-                uid: _uid,
-                email: user.email,
-                claims: user.claims ? user.claims : "noauth",
-                photoURL: user.photoURL ? user.photoURL : ""    
-            },{ merge: true }).then(() => {
-                console.log("completed");
-                resolve();
-            }).catch(err => {
-                console.error(`error updating user: ${err}`);
-                reject(err);
-            });
-        });
+
+            const _id = user.id ? user.id !== undefined : null;
+
+            if (user.id && user.id !== undefined) {
+                let docRef = db.collection("users").doc(_id);
+                docRef.get().then((doc) => {
+                    if (doc.exists) {
+                        // update
+                        db.collection('users').doc(user.id).update({
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            displayName: `${user.firstName} ${user.lastName}`,
+                            phoneNumber: user.phoneNumber,
+                            uid: _uid,
+                            email: user.email,
+                            claims: user.claims ? user.claims : "noauth",
+                            photoURL: user.photoURL ? user.photoURL : ""    
+                        }).then((doc) => {
+                            console.log("Document updated with ID: ", doc.id);
+                            resolve(doc.id);
+                        }).catch(err => {
+                            console.error(`error updating user: ${err}`);
+                            reject(err);
+                        });        
+                    } else {
+                        // set if not existing
+                        db.collection('users').doc(user.id).set({
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            displayName: `${user.firstName} ${user.lastName}`,
+                            phoneNumber: user.phoneNumber,
+                            uid: _uid,
+                            email: user.email,
+                            claims: user.claims ? user.claims : "noauth",
+                            photoURL: user.photoURL ? user.photoURL : ""    
+                        }).then((doc) => {
+                            console.log("Document set with ID: ", doc.id);
+                            resolve(doc.id);
+                        }).catch(err => {
+                            console.error(`error set user: ${err}`);
+                            reject(err);
+                        });        
+                    }
+                }).catch (err => {
+                    console.error(`error updating user (in getRef) with id: ${_id}, error: ${err}`);
+                    reject(err);
+                });
+            } else {
+                // add if didnt exist and let fb create the key
+                db.collection('users').add({
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    displayName: `${user.firstName} ${user.lastName}`,
+                    phoneNumber: user.phoneNumber,
+                    uid: _uid,
+                    email: user.email,
+                    claims: user.claims ? user.claims : "noauth",
+                    photoURL: user.photoURL ? user.photoURL : ""    
+                }).then((doc) => {
+                    console.log("Document created with ID: ", doc.id);
+                    resolve(doc.id);
+                }).catch(err => {
+                    console.error(`error updating user: ${err}`);
+                    reject(err);
+                });                      
+            }
+        }); // Promise
     }
 
     // returns a promise 

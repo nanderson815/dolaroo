@@ -5,17 +5,17 @@ class UserPage extends React.Component {
 
   render() {
     // deconstrcut prop from authContext
-    let { uid } =  this.props.location.state;
+    let { id } =  this.props.location.state;
 
     // Some props take time to get ready so return null when uid not avaialble
-    if (uid === null) {
+    if (id === null) {
       return null;
     }
 
     return ( 
       <div>
         <UserForm 
-          uid={uid}
+          id={id}
         />
       </div>
     );

@@ -4,14 +4,14 @@ import { withRouter } from 'react-router-dom';
 
 const User = (props) => {
     // decontruct props
-    let { id, uid, firstName, lastName, phoneNumber, email, photoURL, claims } =  props;
+    let { id, firstName, lastName, phoneNumber, email, photoURL, claims } =  props;
     let { userMakeAdmin, userMakeCashier, userDelete } =  props;
 
     if (!photoURL) {
         photoURL = "./images/noUserImage150x150.png";
     }     
 
-    if (uid === null ) {
+    if (id === null ) {
         return(null);
     }
     
@@ -19,9 +19,9 @@ const User = (props) => {
     const userEdit = () => {
         props.history.push({
             pathname: '/userpage',
-            state: {uid: props.id }
+            state: {id: props.id }
         });
-    }
+    };
     
     return ( 
         <div className="card horizontal">
