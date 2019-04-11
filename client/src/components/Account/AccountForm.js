@@ -11,7 +11,6 @@ class AccountForm extends React.Component {
   };
 
   fetchUser = (uid) => {
-    console.log(`fetching user with uid: ${uid}`);
     UserAPI.get(uid)
     .then(user => {
       this.setState({
@@ -30,7 +29,6 @@ class AccountForm extends React.Component {
 
 
   componentDidMount() {
-    console.log(`componentDidMount user with uid: ${this.state.uid}`);
     this.fetchUser(this.state.uid);
   }
 
@@ -64,7 +62,7 @@ class AccountForm extends React.Component {
       displayName,
       phoneNumber,  
       claims,
-      error
+      message
     } = this.state;
 
     const isValid = 
@@ -85,7 +83,7 @@ class AccountForm extends React.Component {
             </div>
             <div>
               <button disabled={!isValid} onClick={this.updateUser} className="btn lighten-1 z-depth-0">Update</button>
-              {<p>{error}</p>}
+              {<p>{message}</p>}
             </div>
         </div>
         );

@@ -148,6 +148,7 @@ class UserAPI {
     }
 
     static update =  (user) => {
+        console.log(`trying to update user in fb and auth: ${user}`);
         return new Promise(async (resolve, reject) => {
             const db = Util.getFirestoreDB();
             const authUser = await Util.getCurrentAuthUser();
@@ -165,7 +166,7 @@ class UserAPI {
                     phoneNumber: user.phoneNumber,
                     uid: user.uid,
                     email: user.email,
-                    photoURL: user.photoURL
+                    photoURL: user.photoURL ? user.photoURL : ""
                 },{ merge: true }).then(() => {
                     console.log("completed");
                     resolve();
