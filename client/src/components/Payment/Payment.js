@@ -21,6 +21,17 @@ class Payment extends Component {
         console.log(value)
     }
 
+    onSubmitHandler = event => {
+        event.preventDefault()
+        let radios = document.getElementsByName('group1');
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {   
+                console.log(radios[i].value);
+                break;
+            }
+        }
+    }
+
 
     render() {
         return (
@@ -47,7 +58,7 @@ class Payment extends Component {
                                         </p>
                                         <p>
                                             <label>
-                                                <input className="with-gap" name="group1" type="radio" />
+                                                <input className="with-gap" name="group1" type="radio" value={this.state.other}/>
                                                 <span> Other: ${this.state.other}
                                                     <span className="input-field">
                                                         <input id="otherVal" type="number" className="validate" onChange={this.onChangeHandler} value={this.state.other} />
@@ -56,7 +67,7 @@ class Payment extends Component {
                                             </label>
                                         </p>
                                         <br></br>
-                                        <button className="btn waves-effect waves-light" type="submit" name="action">Submit
+                                        <button className="btn waves-effect waves-light" type="submit" onClick={this.onSubmitHandler} name="action">Submit
                                         </button>
                                     </form>
 
