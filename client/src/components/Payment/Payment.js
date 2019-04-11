@@ -7,14 +7,18 @@ class Payment extends Component {
     state = {
         credit: 0,
         minimum: 25,
-        other: 0
+        other: ""
     }
 
     componentDidMount() {
-
         DepositDB.get("credit")
             .then(res => this.setState({ credit: res[0].balance }));
+    }
 
+    onChangeHandler = event => {
+        let value = event.target.value;
+        this.setState({ other: value });
+        console.log(value)
     }
 
 
@@ -44,13 +48,16 @@ class Payment extends Component {
                                         <p>
                                             <label>
                                                 <input className="with-gap" name="group1" type="radio" />
-                                                <span> Other: ${this.state.other} 
+                                                <span> Other: ${this.state.other}
                                                     <span className="input-field">
-                                                        <input id="last_name" type="text" className="validate" value={this.state.other}/>
+                                                        <input id="otherVal" type="number" className="validate" onChange={this.onChangeHandler} value={this.state.other} />
                                                     </span>
                                                 </span>
                                             </label>
                                         </p>
+                                        <br></br>
+                                        <button className="btn waves-effect waves-light" type="submit" name="action">Submit
+                                        </button>
                                     </form>
 
                                 </div>
