@@ -10,7 +10,7 @@ class AccountForm extends React.Component {
     photoURL: "",
     phoneNumber: "",
     email: "",
-    claims: this.props.claims,
+    claims: "",
     message: ""
   };
 
@@ -22,6 +22,7 @@ class AccountForm extends React.Component {
         lastName: user.lastName || "",
         photoURL: user.photoURL || "",
         phoneNumber: user.phoneNumber || "",
+        claims: user.claims || "user",
         email: user.email
       });
       // Dont need to get custom claims since they are passed in props from context
@@ -63,7 +64,6 @@ class AccountForm extends React.Component {
   render() {
 
     const {
-      uid,
       firstName,
       lastName,
       photoURL,
@@ -81,7 +81,7 @@ class AccountForm extends React.Component {
       return ( 
           <div className="container">
             <h5 className="grey-text text-darken-3">User <span>(Role: {claims})</span></h5>
-            <label className="active">Email: {email} Uid: {uid}</label>
+            <label className="active">Email: {email}</label>
             <div className="input-field">
               <label className="active" htmlFor="firstName">First Name</label>
               <input type="text" name='firstName' value={firstName} onChange={this.onChange} />
