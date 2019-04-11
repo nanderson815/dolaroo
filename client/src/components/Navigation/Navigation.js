@@ -4,7 +4,6 @@ import M from "materialize-css/dist/js/materialize.min.js";
 import SignOutButton from '../Auth/SignOut/SignOut';
 import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 import { withRouter } from 'react-router-dom';
-import AccountAvatar from "../Account/AccountAvatar";
 import AccountMenu from "../Account/AccountMenu";
 
 class Navigation extends React.Component {

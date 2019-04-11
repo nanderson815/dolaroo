@@ -5,8 +5,12 @@ class AccountForm extends React.Component {
 
   state = {
     uid: this.props.uid,
-    displayName: this.props.displayName,
-    phoneNumber: this.props.phoneNumber,
+    firstName: "",
+    lastName: "",
+    photoURL: "",
+    phoneNumber: "",
+    email: "",
+    claims: this.props.claims,
     message: ""
   };
 
@@ -14,9 +18,11 @@ class AccountForm extends React.Component {
     UserAPI.get(uid)
     .then(user => {
       this.setState({
-        displayName: user.displayName || "",
-        email: user.email,
-        phoneNumber: user.phoneNumber || ""
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        photoURL: user.photoURL || "",
+        phoneNumber: user.phoneNumber || "",
+        email: user.email
       });
       // Dont need to get custom claims since they are passed in props from context
       // and can not be changed here
@@ -27,9 +33,8 @@ class AccountForm extends React.Component {
     });
   };
 
-
   componentDidMount() {
-    console.log(`authUser.displayName: ${this.state.displayName}`);
+    console.log(`authUser.uid: ${this.state.uid}`);
     this.fetchUser(this.state.uid);
   }
 
@@ -59,15 +64,18 @@ class AccountForm extends React.Component {
 
     const {
       uid,
+      firstName,
+      lastName,
+      photoURL,
+      phoneNumber,
       email,
-      displayName,
-      phoneNumber,  
       claims,
       message
-    } = this.state;
+      } = this.state;
 
     const isValid = 
-      displayName !== "" &&
+      firstName !== "" &&
+      lastName !== "" &&
       phoneNumber !== "";
 
       return ( 
@@ -75,8 +83,16 @@ class AccountForm extends React.Component {
             <h5 className="grey-text text-darken-3">User <span>(Role: {claims})</span></h5>
             <label className="active">Email: {email} Uid: {uid}</label>
             <div className="input-field">
-              <label className="active" htmlFor="displayName">Display Name</label>
-              <input type="text" name='displayName' value={displayName} onChange={this.onChange} />
+              <label className="active" htmlFor="firstName">First Name</label>
+              <input type="text" name='firstName' value={firstName} onChange={this.onChange} />
+            </div>
+            <div className="input-field">
+              <label className="active" htmlFor="lastName">Last Name</label>
+              <input type="text" name='lastName' value={lastName} onChange={this.onChange} />
+            </div>
+            <div className="input-field">
+              <label className="active" htmlFor="photoURL">Photo URL</label>
+              <input type="text" name='photoURL' value={photoURL} onChange={this.onChange} />
             </div>
             <div className="input-field">
               <label className="active" htmlFor="phoneNumber">Phone Number</label>

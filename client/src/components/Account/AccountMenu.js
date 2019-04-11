@@ -1,10 +1,9 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountAvatar from "../Account/AccountAvatar";
 import SignOutButton from "../Auth/SignOut/SignOut";
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 class SimpleMenu extends React.Component {
   state = {

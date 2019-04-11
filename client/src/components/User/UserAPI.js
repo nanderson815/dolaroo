@@ -154,7 +154,7 @@ class UserAPI {
             const authUser = await Util.getCurrentAuthUser();
 
             authUser.updateProfile({
-                displayName: user.displayName,
+                displayName: `${user.firstName} ${user.lastName}`,
                 photoURL: user.photoURL,
             })
             .then(() => {
@@ -162,11 +162,14 @@ class UserAPI {
                 // update
                 console.log("User updated, user=", user);
                 db.collection('users').doc(user.uid).set({
-                    displayName: user.displayName,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    displayName: `${user.firstName} ${user.lastName}`,
                     phoneNumber: user.phoneNumber,
                     uid: user.uid,
                     email: user.email,
-                    photoURL: user.photoURL ? user.photoURL : ""
+                    claims: user.claims ? user.claims : "",
+                    photoURL: user.photoURL ? user.photoURL : ""    
                 },{ merge: true }).then(() => {
                     console.log("completed");
                     resolve();
