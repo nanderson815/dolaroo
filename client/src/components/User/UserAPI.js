@@ -147,7 +147,7 @@ class UserAPI {
         });
     }
 
-    static update =  (user) => {
+    static updateCurrent =  (user) => {
         console.log(`trying to update user in fb and auth: ${user}`);
         return new Promise(async (resolve, reject) => {
             const db = Util.getFirestoreDB();
@@ -185,6 +185,37 @@ class UserAPI {
             })
             .catch(err => {
                 console.log("completed");
+                reject(err);
+            });
+        });
+    }
+
+    static update =  (user) => {
+        console.log(`trying to update user in fb and auth: ${user}`);
+        return new Promise(async (resolve, reject) => {
+            const db = Util.getFirestoreDB();
+            let _uid = "noauth";
+            if (user.uid && user.uid !== undefined) {
+                _uid = user.uid;
+             }
+
+             // MAYBE out how to update this users auth profile - outside of account
+
+            // we always want uid = id to keep auth and firestore in sync
+            db.collection('users').doc(user.id).set({
+                firstName: user.firstName,
+                lastName: user.lastName,
+                displayName: `${user.firstName} ${user.lastName}`,
+                phoneNumber: user.phoneNumber,
+                uid: _uid,
+                email: user.email,
+                claims: user.claims ? user.claims : "",
+                photoURL: user.photoURL ? user.photoURL : ""    
+            },{ merge: true }).then(() => {
+                console.log("completed");
+                resolve();
+            }).catch(err => {
+                console.error(`error updating user: ${err}`);
                 reject(err);
             });
         });

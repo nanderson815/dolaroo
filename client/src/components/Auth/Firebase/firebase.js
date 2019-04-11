@@ -143,7 +143,7 @@ class Firebase {
         }).catch((err) => {
           console.error("User create failed!", err);
           return reject(err);
-        }) 
+        });
     }); // Promise  
   }
 
@@ -169,7 +169,6 @@ class Firebase {
   }
 
 
-
   doSignOut = () => {
     return(this.auth.signOut());
   }
@@ -182,7 +181,7 @@ class Firebase {
         }).catch((err) => {
           console.error("Login Failed!", err);
           return reject(err);
-        }) 
+        });
     }); // Promise
   }
 
@@ -194,7 +193,7 @@ class Firebase {
         }).catch((err) => {
           console.error("Login Failed!", err);
           return reject(err);
-        }) 
+        });
     }); // Promise
   }
 }

@@ -14,7 +14,7 @@ class Admin extends React.Component {
     render() {
         return ( 
             <div className="container">
-                <div class="row center-align">
+                <div className="row center-align">
                     <br />
                     <button className="btn center-align" onClick={this.createUser}>Create User</button>
                 </div>
