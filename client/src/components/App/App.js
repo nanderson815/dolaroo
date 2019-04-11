@@ -34,7 +34,7 @@ class App extends React.Component {
           <Route exact path="/signin" component={SignInForm} />
           <Route exact path="/pw-forget" component={PasswordForgetPage} />
           <Route exact path="/dashboard" component={HomePage} />
-          <Route exact path="/account" component={AccountPage} />
+          <Route exact path="/account" component={Account} />
           <Route exact path="/admin" component={Admin} />
           <Route exact path="/payment" component={Payment} />
           <Route exact path="/userpage" component={UserPage} />
