@@ -12,15 +12,14 @@ class Users extends React.Component {
         };
     }
 
-    refreshPage = async () => {
+    refreshPage = () => {
         // Get with security
         UserAPI.getUsers()
-        .then(async users => {
+        .then(users => {
             for (let i in users) {
-                users[i].firstName = users[i].firstName || "Firstname";
-                users[i].lastName = users[i].lastName || "Lastname";
-                let res = await UserAPI.getUsersClaims(users[i].id);
-                users[i].claims = res.data.customClaims; 
+                users[i].firstName = users[i].firstName || "First";
+                users[i].lastName = users[i].lastName || "Last";
+                users[i].claims = users[i].claims || "user"; 
             }
 
             // console.log(`Users in refresh page: ${JSON.stringify(users, null, 2)}`);
@@ -30,7 +29,6 @@ class Users extends React.Component {
             console.error(err); 
         });        
     };
-
 
     // Scrape all the users on mount
     componentDidMount() {
@@ -93,10 +91,12 @@ class Users extends React.Component {
                         userMakeAdmin={this.userMakeAdmin}
                         userMakeCashier={this.userMakeCashier}
                         id={user.id}
+                        uid={user.uid}
                         firstName={user.firstName}
                         lastName={user.lastName}
                         phoneNumber={user.phoneNumber}
                         email={user.email}
+                        photoURL={user.photoURL}
                         claims={user.claims}
                         />
                     </div>
