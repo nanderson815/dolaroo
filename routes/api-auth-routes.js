@@ -1,6 +1,7 @@
 "use strict";
 const admin = require("../middleware/authServerCommon");
 const requiresLogin = require('../middleware/requiresLogin.js');
+const UserDB = require("./UserDB");
 
 module.exports = function (app) {
 
@@ -44,7 +45,9 @@ module.exports = function (app) {
                 // Note, this is the uid of the user to make admin (NOT the auth users uid)
                 admin.auth().setCustomUserClaims(uid, {
                     admin: true
-                }).then(() => {
+                }).then(async () => {
+                    // now update firestore
+                    await UserDB.updateClaims(uid, "admin");
                     res.json(uid);
                 });
             } else {
@@ -79,7 +82,8 @@ module.exports = function (app) {
                     } else {
                         admin.auth().setCustomUserClaims(uid, {
                             cashier: true
-                        }).then(() => {
+                        }).then(async () => {
+                            await UserDB.updateClaims(uid, "cashier");
                             res.json(uid);
                         });
                     }
