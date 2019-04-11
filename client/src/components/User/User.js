@@ -1,37 +1,63 @@
 import React from 'react';
-// import UserAPI from "./UserAPI";
+import { withRouter } from 'react-router-dom';
+
 
 const User = (props) => {
     // decontruct props
-    let { id, firstName, lastName, phoneNumber, email, claims } =  props;
+    let { id, firstName, lastName, phoneNumber, email, photoURL, claims } =  props;
     let { userMakeAdmin, userMakeCashier, userDelete } =  props;
 
-    let userRole;
-    if (claims && claims.admin) {
-        userRole = "admin"
-    } else if (claims && claims.cashier){
-        userRole = "cashier"
-    } else {
-        userRole = "user"
-    }
+    if (!photoURL) {
+        photoURL = "./images/noUserImage150x150.png";
+    }     
 
+    if (id === null ) {
+        return(null);
+    }
+    
+    // Send to edit page
+    const userEdit = () => {
+        props.history.push({
+            pathname: '/userpage',
+            state: {id: props.id }
+        });
+    };
+    
     return ( 
-        <div className="card">
-            <div className="card-content">
-                <span className="flow-text card-title">{firstName} {lastName}</span>
-                <p className="truncate">email: {email}</p>
-                <p className="truncate">phoneNumber: {phoneNumber}</p>
-                <p className="truncate">role: {userRole}</p>
+        <div className="card horizontal">
+            <div className="card-image">
+                <img style={{maxHeight: '120px'}} src={photoURL} alt={firstName} />
             </div>
-            <div className="card-action">
-                <a href="#!" className="indigo-text text-darken-4">
-                    <i className="userDelete material-icons left" onClick={() => userDelete(id)}>delete</i>
-                </a>
-                <button onClick={() => userMakeAdmin(id)} className="btn">Make Admin</button>
-                <button onClick={() => userMakeCashier(id)} className="btn">Make Cashier</button>
+            <div className="card-stacked">
+                <div className="card-content">
+                    <span className="card-title">{firstName} {lastName}</span>
+                    <p>{email}</p>
+                    <p>{phoneNumber}</p>
+                    <p>Role: {claims}</p>
+                </div>
+                <div className="card-action">
+                    <div className="center-align">
+                        <i style={{cursor: 'pointer'}}
+                            className="userEdit material-icons left indigo-text text-darken-4"
+                            onClick={() => userEdit(id)}>edit
+                        </i>
+                        <i style={{cursor: 'pointer'}}
+                            className="userDelete material-icons left indigo-text text-darken-4"
+                            onClick={() => userDelete(id)}>delete
+                        </i>
+                        <i style={{cursor: 'pointer'}}
+                            className="makeCashier material-icons left indigo-text text-darken-4"
+                            onClick={() => userMakeCashier(id)}>account_balance
+                        </i>
+                        <i style={{cursor: 'pointer'}}
+                            className="makeAdmin material-icons left indigo-text text-darken-4"
+                            onClick={() => userMakeAdmin(id)}>account_circle
+                        </i>
+                    </div>
+                </div>
             </div>
-        </div>          
+        </div>
     );
 }
 
-export default User;
+export default withRouter(User);

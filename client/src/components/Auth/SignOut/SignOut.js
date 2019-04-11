@@ -20,8 +20,8 @@ class SignOutButton extends React.Component {
           {user => user.authUser ? null : <Redirect to="/signin" />}
         </AuthUserContext.Consumer>
 
-        <button type="button" onClick={this.handleSignout}>
-          Sign Out
+        <button className="btn" onClick={this.handleSignout}>
+          Logout
         </button>
       </div>
     )
