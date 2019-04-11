@@ -17,7 +17,6 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props.user.authUser);
         DepositDB.get("deposits")
             .then(res => this.setState({ deposits: res }));
         DepositDB.get("credit")

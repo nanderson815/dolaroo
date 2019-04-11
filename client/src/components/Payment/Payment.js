@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import DepositDB from '../Dashboard/Deposit/DepositDB';
+import M from "materialize-css/dist/js/materialize.min.js";
+import Modal from './PaymentModal';
+import Util from '../Util/Util';
 
 
 
@@ -13,6 +16,9 @@ class Payment extends Component {
     componentDidMount() {
         DepositDB.get("credit")
             .then(res => this.setState({ credit: res[0].balance }));
+
+        let elem = document.querySelector(".modal");
+        M.Modal.init(elem);
     }
 
     onChangeHandler = event => {
@@ -25,11 +31,20 @@ class Payment extends Component {
         event.preventDefault()
         let radios = document.getElementsByName('group1');
         for (var i = 0, length = radios.length; i < length; i++) {
-            if (radios[i].checked) {   
-                console.log(radios[i].value);
+            if (radios[i].checked) {
+                let amount = parseFloat(radios[i].value)
+                this.setState({ payment: amount }, () => this.submitPaymentHandler());
                 break;
             }
         }
+    }
+
+    submitPaymentHandler = () => {
+        const db = Util.getFirestoreDB();
+        db.collection('payments').add({
+            amount: this.state.payment,
+            time: Date.now()
+        });
     }
 
 
@@ -37,6 +52,7 @@ class Payment extends Component {
         return (
             <div>
                 <div className="container">
+                    <Modal payment={this.state.payment} />
                     <div className="row">
                         <div className="col s12">
                             <div className="card">
@@ -58,7 +74,7 @@ class Payment extends Component {
                                         </p>
                                         <p>
                                             <label>
-                                                <input className="with-gap" name="group1" type="radio" value={this.state.other}/>
+                                                <input className="with-gap" name="group1" type="radio" value={this.state.other} />
                                                 <span> Other: ${this.state.other}
                                                     <span className="input-field">
                                                         <input id="otherVal" type="number" className="validate" onChange={this.onChangeHandler} value={this.state.other} />
@@ -67,7 +83,8 @@ class Payment extends Component {
                                             </label>
                                         </p>
                                         <br></br>
-                                        <button className="btn waves-effect waves-light" type="submit" onClick={this.onSubmitHandler} name="action">Submit
+                                        <button className="btn waves-effect waves-light modal-trigger"
+                                            type="submit" href="#modal1" onClick={this.onSubmitHandler} name="action">Submit
                                         </button>
                                     </form>
 
