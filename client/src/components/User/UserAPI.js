@@ -72,6 +72,84 @@ class UserAPI {
         });
     }
 
+    // this registers new user that was previously created in firestore by admin 
+    // that has not been auth yet
+    static registerUser = (authUser) => {
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            let user ={};
+            let docRef = db.collection("users").where("email", "==", authUser.user.email);
+            docRef.get().then((doc) => {
+                if (!doc.exists) {
+                    // create new user with authUser info  only since none exist yet
+                    db.collection('users').doc(authUser.user.uid).set({
+                        displayName: authUser.user.displayName,
+                        phoneNumber: authUser.user.phoneNumber,
+                        uid: authUser.user.uid,
+                        claims: "noauth",
+                        photoURL: "",   
+                        email: authUser.user.email
+                    }).then((doc) => {
+                        console.log("new user created in fb from authUser");
+                        return resolve();
+                    }).catch(err => {
+                        console.error(`error created user from auhUser with uid:${authUser.user.uid}`);
+                        return reject(err);
+                    });                   
+                } else if (doc.id !== authUser.user.uid) {
+                    // save user info 
+                    user = doc.data();
+                    user.id = doc.id;
+                    // now create *new* fb doc with key as auth uid
+                    db.collection('users').doc(authUser.user.uid).set({
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        displayName: `${user.firstName} ${user.lastName}`,
+                        phoneNumber: user.phoneNumber,
+                        uid: authUser.user.uid,
+                        email: user.email,
+                        claims: user.claims ? user.claims : "",
+                        photoURL: user.photoURL ? user.photoURL : ""    
+                    }).then((doc) => {
+                        console.log(`new user created in fb from admin created user with user.id ${user.id}`);
+
+                        // now delete the *old* user records since its no longer valid
+                        db.collection("users").doc(user.id).delete().then(() => {
+                            console.log("Admin Created Firestore User successfully deleted!");
+                            return resolve();
+                        }).catch((err) => {
+                            console.error("Error deleting firestor user ", err);
+                            return reject(err);
+                        });
+                    }).catch(err => {
+                        console.error(`error created user from admin created user with email:${authUser.user.email}`);
+                        return reject(err);
+                    });
+                } else {
+                    // This means the authUser AND FB user doc already both exist, so just update auth info
+                    db.collection('users').doc(authUser.user.uid).set({
+                        displayName: authUser.user.displayName,
+                        phoneNumber: authUser.user.phoneNumber,
+                        uid: authUser.user.uid,
+                        email: authUser.user.email
+                    }).then((doc) => {
+                        console.log("new user created in fb from authUser");
+                        return resolve();
+                    }).catch(err => {
+                        console.error(`error created user from auhUser with uid:${authUser.user.uid}`);
+                        return reject(err);
+                    });
+                }
+            }).catch(err => {
+                console.error(`error getting user from fb with email:${authUser.user.email}`);
+                return reject(err);
+            });
+        });
+    }
+
+
+
     static getUsersClaims = (uid) => {
         // its a promise so return
         // return new Promise((resolve, reject) => {
