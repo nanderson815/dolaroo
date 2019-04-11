@@ -81,7 +81,10 @@ class AccountForm extends React.Component {
       return ( 
           <div className="container">
             <h5 className="grey-text text-darken-3">User <span>(Role: {claims})</span></h5>
-            <label className="active">Email: {email}</label>
+            <div className="input-field">
+              <label className="active" htmlFor="email">Email</label>
+              <input disabled={true} type="email" name='email' value={email} onChange={this.onChange} />
+            </div>
             <div className="input-field">
               <label className="active" htmlFor="firstName">First Name</label>
               <input type="text" name='firstName' value={firstName} onChange={this.onChange} />

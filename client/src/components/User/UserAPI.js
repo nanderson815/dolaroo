@@ -152,6 +152,12 @@ class UserAPI {
         return new Promise(async (resolve, reject) => {
             const db = Util.getFirestoreDB();
             const authUser = await Util.getCurrentAuthUser();
+            let _id = "invaliduid"; // if not valid, make sure it wont find on set and will create
+            let _uid = "invaliduid"; // if not valid, make sure it wont find on set and will create
+            if (user.uid && user.uid !== undefined) {
+                _id = user.uid;
+                _uid = user.uid;
+            }
 
             authUser.updateProfile({
                 displayName: `${user.firstName} ${user.lastName}`,
@@ -161,12 +167,12 @@ class UserAPI {
                 console.log("Auth for User successfully updated!");
                 // update
                 console.log("User updated, user=", user);
-                db.collection('users').doc(user.uid).set({
+                db.collection('users').doc(_id).set({
                     firstName: user.firstName,
                     lastName: user.lastName,
                     displayName: `${user.firstName} ${user.lastName}`,
                     phoneNumber: user.phoneNumber,
-                    uid: user.uid,
+                    uid: _uid,
                     email: user.email,
                     claims: user.claims ? user.claims : "",
                     photoURL: user.photoURL ? user.photoURL : ""    
@@ -185,6 +191,38 @@ class UserAPI {
         });
     }
 
+    // This update only puts user in FB - NO Auth
+    // It is meant to create a user and then they can login/authenticate
+    // Later - signup will ensure that user email exsists before allowing them to signup
+    static updateFBOnly =  (user) => {
+        console.log(`trying to update user in fb and auth: ${user}`);
+        return new Promise(async (resolve, reject) => {
+            const db = Util.getFirestoreDB();
+            let _id = "invaliduid"; // if not valid, make sure it wont find on set and will create
+            let _uid = "invaliduid"; // if not valid, make sure it wont find on set and will create
+            if (user.uid && user.uid !== undefined) {
+                _id = user.uid;
+                _uid = user.uid;
+            }
+            // update
+            db.collection('users').doc(_id).set({
+                firstName: user.firstName,
+                lastName: user.lastName,
+                displayName: `${user.firstName} ${user.lastName}`,
+                phoneNumber: user.phoneNumber,
+                uid: _uid,
+                email: user.email,
+                claims: user.claims ? user.claims : "noauth",
+                photoURL: user.photoURL ? user.photoURL : ""    
+            },{ merge: true }).then(() => {
+                console.log("completed");
+                resolve();
+            }).catch(err => {
+                console.error(`error updating user: ${err}`);
+                reject(err);
+            });
+        });
+    }
 
     // returns a promise 
     static makeAdmin = (uid) => {
