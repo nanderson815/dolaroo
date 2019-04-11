@@ -1,6 +1,6 @@
 import React from 'react';
 import './Balance.css'
-
+import { Link } from 'react-router-dom';
 
 const Balance =(props) => {
     return (
@@ -13,7 +13,7 @@ const Balance =(props) => {
                     </div>
                     <div className="card-action pCard">
                         <div className="center-align ">
-                            <a href="!#" className="waves-effect waves-light dash-btn blue darken-4 btn">New Deposit</a>
+                            <Link to="/dashboard/deposit" className="waves-effect waves-light dash-btn blue darken-4 btn">New Deposit</Link>
                         </div>
                     </div>
                 </div>

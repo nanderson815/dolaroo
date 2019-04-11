@@ -9,6 +9,7 @@ import LandingPage from '../Landing';
 import HomePage from '../Dashboard';
 import AccountPage from '../Account/Account';
 import Payment from '../Payment/Payment';
+import Deposit from '../Dashboard/Deposit/Deposit';
 
 
 // Auth components
@@ -32,6 +33,7 @@ class App extends React.Component {
           <Route exact path="/dashboard" component={HomePage} />
           <Route exact path="/account" component={AccountPage} />
           <Route exact path="/dashboard/payment" component={Payment} />
+          <Route exact path="/dashboard/deposit" component={Deposit} />
         </div>
       </Router>
     );
