@@ -29,6 +29,7 @@ class AccountForm extends React.Component {
 
 
   componentDidMount() {
+    console.log(`authUser.displayName: ${this.state.displayName}`);
     this.fetchUser(this.state.uid);
   }
 
