@@ -1,5 +1,6 @@
 import React from 'react';
-// import UserAPI from "./UserAPI";
+import { withRouter } from 'react-router-dom';
+
 
 const User = (props) => {
     // decontruct props
@@ -13,7 +14,15 @@ const User = (props) => {
     if (uid === null ) {
         return(null);
     }
-
+    
+    // Send to edit page
+    const userEdit = () => {
+        props.history.push({
+            pathname: '/userpage',
+            state: {uid: props.id }
+        });
+    }
+    
     return ( 
         <div className="card horizontal">
             <div className="card-image">
@@ -28,6 +37,10 @@ const User = (props) => {
                 </div>
                 <div className="card-action">
                     <div className="center-align">
+                        <i style={{cursor: 'pointer'}}
+                            className="userEdit material-icons left indigo-text text-darken-4"
+                            onClick={() => userEdit(id)}>edit
+                        </i>
                         <i style={{cursor: 'pointer'}}
                             className="userDelete material-icons left indigo-text text-darken-4"
                             onClick={() => userDelete(id)}>delete
@@ -47,4 +60,4 @@ const User = (props) => {
     );
 }
 
-export default User;
+export default withRouter(User);
