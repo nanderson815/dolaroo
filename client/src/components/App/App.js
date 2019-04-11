@@ -7,7 +7,8 @@ import {
 import Navigation from '../Navigation/Navigation';
 import LandingPage from '../Landing';
 import HomePage from '../Dashboard';
-import AccountPage from '../Account/Account';
+import Account from '../Account/Account';
+import Admin from '../Admin/Admin';
 import Payment from '../Payment/Payment';
 
 // Auth components
@@ -29,7 +30,8 @@ class App extends React.Component {
             <Route exact path="/signin" component={SignInForm} />
             <Route exact path="/pw-forget" component={PasswordForgetPage} />
             <Route exact path="/dashboard" component={HomePage} />
-            <Route exact path="/account" component={AccountPage} />
+            <Route exact path="/account" component={Account} />
+            <Route exact path="/admin" component={Admin} />
             <Route exact path="/payment" component={Payment} />
           </div>
         </Router>
