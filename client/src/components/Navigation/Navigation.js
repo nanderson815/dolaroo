@@ -4,7 +4,8 @@ import M from "materialize-css/dist/js/materialize.min.js";
 import SignOutButton from '../Auth/SignOut/SignOut';
 import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 import { withRouter } from 'react-router-dom';
-import AccountAvatar from "../Account/AccountAvatar"
+import AccountAvatar from "../Account/AccountAvatar";
+import AccountMenu from "../Account/AccountMenu";
 
 class Navigation extends React.Component {
   state = {
@@ -52,9 +53,8 @@ class Navigation extends React.Component {
       <ul>
         <li><Link to="/">Landing</Link></li>
         <li><NavLink to="/dashboard">Home</NavLink></li>
-        <li><NavLink to="/account"><AccountAvatar /></NavLink></li>
+        <li><AccountMenu /></li>
         <li><NavLink to="/admin">Admin</NavLink></li>
-        <li><SignOutButton /></li>
       </ul>
       ;
 
@@ -70,7 +70,7 @@ class Navigation extends React.Component {
       <ul>
         <li><Link to="/">Landing</Link></li>
         <li><NavLink to="/dashboard">Home</NavLink></li>
-        <li><SignOutButton /></li>
+        <li><AccountMenu /></li>
       </ul>
       ;
 
@@ -88,8 +88,6 @@ class Navigation extends React.Component {
         <li><NavLink to="/signin">Signin</NavLink></li>
       </ul>
       ;
-
-
 
     // get auth user from react-context firebase
     // Not the AuthUSerContext Provider passes the authUser
