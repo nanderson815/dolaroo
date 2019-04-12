@@ -45,6 +45,7 @@ class App extends React.Component {
           <Route exact path="/registerform" component={RegisterForm} />
           <Route exact path="/dashboard/payment" component={Payment} />
           <Route exact path="/dashboard/deposit" component={Deposit} />
+          <Route exact path="/register" component={Register} />
         </div>
       </Router>
 

@@ -2,6 +2,7 @@ import React from 'react';
 import './Landing.css';
 import Circle from './Circle/circle';
 import Step from './Steps/Steps';
+import { Link } from "react-router-dom";
 
 class Landing extends React.Component {
 
@@ -19,7 +20,7 @@ class Landing extends React.Component {
                                 <h5 className="white-text">All from your phone or tablet</h5>
 
                                 <div className="center-align">
-                                    <a href="!#" className="waves-effect waves-light landing-btn btn  blue darken-4">Sign Up Now</a>
+                                    <Link to="/register" className="waves-effect waves-light landing-btn btn  blue darken-4">Sign Up Now</Link>
                                 </div>
                             </div>
                         </div>
@@ -83,7 +84,7 @@ class Landing extends React.Component {
                                         <p className="white-text">An in-person consultation and product demo are the first step of the sign up process.
                                         Sign up today to be up and running in as little as two weeks.</p>
                                         <div className="center-align">
-                                            <a href="!#" className="waves-effect waves-light landing-btn btn  blue darken-4">Sign Up Now</a>
+                                            <Link to="/register" className="waves-effect waves-light landing-btn btn  blue darken-4">Sign Up Now</Link>
                                             <a href="!#" className="waves-effect waves-light landing-btn btn  blue darken-4">More Info</a>
 
                                         </div>
