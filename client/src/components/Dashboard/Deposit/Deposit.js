@@ -4,6 +4,7 @@ import M from "materialize-css/dist/js/materialize.min.js";
 import Modal from './DepositModal';
 import { withAuthUserContext } from '../../Auth/Session/AuthUserContext';
 import DepositDB from '../Deposit/DepositDB';
+import { Redirect } from 'react-router';
 
 
 class Deposit extends React.Component {
@@ -17,7 +18,7 @@ class Deposit extends React.Component {
         DepositDB.get("credit")
             .then(res => this.setState({ credit: res[0].balance }));
         DepositDB.get("cash")
-            .then(res => this.setState({cash: res[0].balance}))    
+            .then(res => this.setState({ cash: res[0].balance }))
         let elem = document.querySelector(".modal");
         M.Modal.init(elem);
     }
@@ -38,11 +39,11 @@ class Deposit extends React.Component {
 
         db.collection('deposits').add({
             amount: amount,
-            time: d.toString(), 
+            time: d.toString(),
             user: this.props.user.authUser.email,
             UID: this.props.user.authUser.uid
         });
-        
+
 
         db.collection('cash').doc('balance').update({
             balance: this.state.cash + amount
@@ -57,35 +58,41 @@ class Deposit extends React.Component {
 
 
     render() {
-        console.log(this.state);
-        return (
-            <div className="container">
-                <Modal />
-                <div className="col s12">
-                    <div className="card">
-                        <div className="card-content pCard">
-                            <span className="card-title">New Deposit</span>
-                            <div className="row">
-                                <form className="col s12">
-                                    <p>Note: This input will be replaced by a hardware component in deployment.</p>
-                                    <div className="input-field col s12 m6">
-                                        <input id="amount" type="number" onChange={this.onChangeHandler} value={this.state.amount ? this.state.amount : ""} className="validate" />
-                                        <label htmlFor="amount">Deposit Amount</label>
-                                    </div>
-                                </form>
+        if (this.props.user.authUser) {
+            return (
+                <div className="container">
+                    <Modal />
+                    <div className="col s12">
+                        <div className="card">
+                            <div className="card-content pCard">
+                                <span className="card-title">New Deposit</span>
+                                <div className="row">
+                                    <form className="col s12">
+                                        <p>Note: This input will be replaced by a hardware component in deployment.</p>
+                                        <div className="input-field col s12 m6">
+                                            <input id="amount" type="number" onChange={this.onChangeHandler} value={this.state.amount ? this.state.amount : ""} className="validate" />
+                                            <label htmlFor="amount">Deposit Amount</label>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-                        <div className="card-action pCard">
-                            <div className="center-align ">
-                                <button className="btn waves-effect waves-light modal-trigger"
-                                    type="submit" href="#modal1" onClick={this.onSubmitHandler} name="action">Submit
+                            <div className="card-action pCard">
+                                <div className="center-align ">
+                                    <button className="btn waves-effect waves-light modal-trigger"
+                                        type="submit" href="#modal1" onClick={this.onSubmitHandler} name="action">Submit
                                         </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        } else {
+            return (
+                <Redirect to="/" />
+            )
+        }
+
     }
 
 };

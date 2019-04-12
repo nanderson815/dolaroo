@@ -5,6 +5,7 @@ import Balance from './Balance/Balance';
 import GraphCard from './GraphCard/GraphCard';
 import './dashboard.css';
 import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
+import { Redirect } from 'react-router';
 // import { withFirebaseContext } from '../Auth/Firebase/FirebaseContext';
 
 import DepositDB from './Deposit/DepositDB';
@@ -46,7 +47,7 @@ class Home extends React.Component {
             );
         } else {
             return (
-                <h1>Please Sign in to view this page.</h1>
+                <Redirect to="/" />
             )
         }
 

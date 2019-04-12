@@ -24,7 +24,8 @@ const styles = theme => ({
 class Register extends React.Component {
     state = {
         firstName: "",
-        lastName: ""
+        lastName: "",
+        company: ""
     };
 
     handleChange = name => event => {
@@ -51,7 +52,7 @@ class Register extends React.Component {
                             /> */}
 
                             <TextField
-                                id="standard-textarea"
+                                id="firstName"
                                 label="First Name"
                                 placeholder="John"
                                 multiline
@@ -62,7 +63,7 @@ class Register extends React.Component {
                             />
 
                             <TextField
-                                id="standard-textarea"
+                                id="lastName"
                                 label="Last Name"
                                 placeholder="Doe"
                                 multiline
@@ -70,6 +71,30 @@ class Register extends React.Component {
                                 margin="normal"
                                 value={this.state.lastName}
                                 onChange={this.handleChange('lastName')}
+                            />
+
+                            <TextField
+                                id="companyName"
+                                label="Company Name"
+                                placeholder="Company Inc."
+                                multiline
+                                className={classes.textField}
+                                margin="normal"
+                                value={this.state.company}
+                                onChange={this.handleChange('company')}
+                            />
+
+                            <TextField
+                                id="email"
+                                label="Email"
+                                placeholder="JohnDoe@gmail.com"
+                                multiline
+                                className={classes.textField}
+                                type="email"
+                                name="email"
+                                autoComplete="email"
+                                margin="normal"
+                            
                             />
 
                         </form>
