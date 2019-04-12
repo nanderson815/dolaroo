@@ -13,6 +13,7 @@ import Payment from '../Payment/Payment';
 import Deposit from '../Dashboard/Deposit/Deposit';
 import UserPage from '../User/UserPage';
 import UserForm from '../User/UserForm';
+import Register from '../Register/Register';
 
 // Auth components
 import SignUpForm from '../Auth/SignUp/SignUp';
@@ -41,6 +42,7 @@ class App extends React.Component {
           <Route exact path="/userform" component={UserForm} />
           <Route exact path="/dashboard/payment" component={Payment} />
           <Route exact path="/dashboard/deposit" component={Deposit} />
+          <Route exact path="/register" component={Register} />
         </div>
       </Router>
 

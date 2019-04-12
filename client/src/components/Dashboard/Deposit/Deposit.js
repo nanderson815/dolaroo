@@ -61,14 +61,14 @@ class Deposit extends React.Component {
         return (
             <div className="container">
                 <Modal />
-                <div className="col s12 m2">
+                <div className="col s12">
                     <div className="card">
                         <div className="card-content pCard">
                             <span className="card-title">New Deposit</span>
                             <div className="row">
                                 <form className="col s12">
                                     <p>Note: This input will be replaced by a hardware component in deployment.</p>
-                                    <div className="input-field col s6">
+                                    <div className="input-field col s12 m6">
                                         <input id="amount" type="number" onChange={this.onChangeHandler} value={this.state.amount ? this.state.amount : ""} className="validate" />
                                         <label htmlFor="amount">Deposit Amount</label>
                                     </div>

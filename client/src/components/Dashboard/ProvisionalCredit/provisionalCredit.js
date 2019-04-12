@@ -1,6 +1,6 @@
 import React from 'react';
 import './provisionalCredit.css';
-import { Link, Route } from 'react-router-dom';
+// import { Link, Route } from 'react-router-dom';
 
 const ProvisionalCredit = (props) => {
 
