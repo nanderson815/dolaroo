@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 // for firebase conext and access to firebase app
 import { withFirebase } from '../Firebase/FirebaseContext';
-import UserAPI from "../../User/UserAPI"
+import UserAPI from "../../User/UserAPI";
 
 const INITIAL_STATE = {
   username: '',
