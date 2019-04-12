@@ -14,7 +14,7 @@ const ProvisionalCredit = (props) => {
                     </div>
                     <div className="card-action pCard">
                         <div className="center-align">
-                            <Link to="dashboard/payment" className="waves-effect waves-light dash-btn blue darken-4 btn">Pay Balance</Link>
+                            {/* <Link to="dashboard/payment" className="waves-effect waves-light dash-btn blue darken-4 btn">Pay Balance</Link> */}
                         </div>
                     </div>
                 </div>
