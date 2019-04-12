@@ -38,10 +38,8 @@ class UserForm extends React.Component {
   componentDidMount() {
     console.log(`id: ${this.state.id}`);
     if (this.state.id) {
-      this.updateMode = true;
       this.fetchUser(this.state.id);
     } else {
-      this.updateMode = false;
     }
   }
 

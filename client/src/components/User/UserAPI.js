@@ -1,4 +1,4 @@
-import Util from "../Util/Util"
+import Util from "../Util/Util";
 
 class UserAPI {
 
@@ -79,15 +79,20 @@ class UserAPI {
             const db = Util.getFirestoreDB();
 
             let user ={};
-            let docRef = db.collection("users").where("email", "==", authUser.user.email);
-            docRef.get().then((doc) => {
-                if (!doc.exists) {
+            let docRef = db.collection("users").where("email", "==", authUser.user.email).limit(1);
+            docRef.get().then((querySnapshot) => {
+                let user = null;
+                querySnapshot.forEach(doc => {
+                    user = doc.data();
+                    user.id = doc.id;
+                });
+                if (!user) {
                     // create new user with authUser info  only since none exist yet
                     db.collection('users').doc(authUser.user.uid).set({
                         displayName: authUser.user.displayName,
                         phoneNumber: authUser.user.phoneNumber,
                         uid: authUser.user.uid,
-                        claims: "noauth",
+                        claims: "user",
                         photoURL: "",   
                         email: authUser.user.email
                     }).then((doc) => {
@@ -97,19 +102,16 @@ class UserAPI {
                         console.error(`error created user from auhUser with uid:${authUser.user.uid}`);
                         return reject(err);
                     });                   
-                } else if (doc.id !== authUser.user.uid) {
-                    // save user info 
-                    user = doc.data();
-                    user.id = doc.id;
+                } else if (user.id !== authUser.user.uid) {
                     // now create *new* fb doc with key as auth uid
                     db.collection('users').doc(authUser.user.uid).set({
                         firstName: user.firstName,
                         lastName: user.lastName,
-                        displayName: `${user.firstName} ${user.lastName}`,
+                        displayName: authUser.user.displayName,
                         phoneNumber: user.phoneNumber,
                         uid: authUser.user.uid,
-                        email: user.email,
-                        claims: user.claims ? user.claims : "",
+                        email: authUser.user.email,
+                        claims: "user",
                         photoURL: user.photoURL ? user.photoURL : ""    
                     }).then((doc) => {
                         console.log(`new user created in fb from admin created user with user.id ${user.id}`);
@@ -148,8 +150,6 @@ class UserAPI {
         });
     }
 
-
-
     static getUsersClaims = (uid) => {
         // its a promise so return
         // return new Promise((resolve, reject) => {
@@ -181,6 +181,37 @@ class UserAPI {
     }
 
     // get user base on uid (id and uid are same)
+    // TO DO: - 
+    static getByEmail = (email) => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            // then get from firestore
+            let user = {};
+            let docRef = db.collection("users").where("email", "==", email).limit(1);
+            docRef.get().then((querySnapshot) => {
+                let user = null;
+                querySnapshot.forEach(doc => {
+                    user = doc.data();
+                    user.id = doc.id;
+                });
+
+                if (user) {
+                    console.log(`User with email: ${email} found!`);
+                    return(resolve(user));
+                } else {
+                    user.err = `User with email: ${email} not found in firestore`;
+                    console.log(user.err);
+                    return(resolve(user));
+                }
+            }).catch(err => {
+                reject(`Error getting user in UserAPI.get ${err}`);
+            });
+        });
+    }
+
+        // get user base on uid (id and uid are same)
     static get = (id) => {
         // its a promise so return
         return new Promise((resolve, reject) => {

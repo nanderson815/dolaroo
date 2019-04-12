@@ -62,6 +62,16 @@ class SignInFormBase extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  registerUser = (e) => {
+    e.preventDefault();
+
+    this.props.history.push({
+      pathname: '/registerpage',
+      state: {email: this.state.email }
+  });
+
+  }
+
   handleGoogleLogin = (e) => {
     e.preventDefault();
 
@@ -106,9 +116,10 @@ class SignInFormBase extends Component {
             <button disabled={isInvalid} className="btn lighten-1 z-depth-0">Login</button>
             {error && <p>{error.message}</p>}
           </div>
-          <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>    
-          <button onClick={this.handleGoogleLogin} className="btn lighten-1 z-depth-0">SignIn With Google</button>  
-        </form>
+          <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>  
+          <button onClick={this.registerUser} className="btn lighten-1 z-depth-0">Register</button>    
+          <button onClick={this.handleGoogleLogin} className="btn lighten-1 z-depth-0"> SignIn With Google</button>  
+        </form>;
     }
 
     return (
