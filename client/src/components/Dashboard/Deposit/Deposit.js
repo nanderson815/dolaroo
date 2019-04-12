@@ -3,14 +3,21 @@ import Util from '../../Util/Util';
 import M from "materialize-css/dist/js/materialize.min.js";
 import Modal from './DepositModal';
 import { withAuthUserContext } from '../../Auth/Session/AuthUserContext';
+import DepositDB from '../Deposit/DepositDB';
 
 
 class Deposit extends React.Component {
     state = {
+        cash: 0,
+        credit: 0,
         amount: 0
     }
 
     componentDidMount() {
+        DepositDB.get("credit")
+            .then(res => this.setState({ credit: res[0].balance }));
+        DepositDB.get("cash")
+            .then(res => this.setState({cash: res[0].balance}))    
         let elem = document.querySelector(".modal");
         M.Modal.init(elem);
     }
@@ -19,6 +26,8 @@ class Deposit extends React.Component {
         let amount = event.target.value;
         this.setState({ amount });
     }
+
+
 
     onSubmitHandler = (event) => {
         event.preventDefault();
@@ -33,12 +42,22 @@ class Deposit extends React.Component {
             user: this.props.user.authUser.email,
             UID: this.props.user.authUser.uid
         });
+        
+
+        db.collection('cash').doc('balance').update({
+            balance: this.state.cash + amount
+        });
+
+        db.collection('credit').doc('balance').update({
+            balance: this.state.credit + (.975 * amount)
+        });
+
+
     }
 
 
     render() {
-        let message = this.props.user.authUser ? this.props.user.authUser : null
-        console.log(message);
+        console.log(this.state);
         return (
             <div className="container">
                 <Modal />
