@@ -15,6 +15,7 @@ import UserPage from '../User/UserPage';
 import UserForm from '../User/UserForm';
 import RegisterPage from '../User/RegisterPage';
 import RegisterForm from '../User/RegisterForm';
+import Register from '../Register/Register';
 
 // Auth components
 import SignUpForm from '../Auth/SignUp/SignUp';
