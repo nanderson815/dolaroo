@@ -9,7 +9,7 @@ const Balance =(props) => {
                 <div className="card">
                     <div className="card-content pCard">
                         <span className="card-title">Cash Balance</span>
-                        <h1 className="displayDebit">${props.balance}</h1>
+                        <h1 className="displayDebit">${props.balance.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h1>
                     </div>
                     <div className="card-action pCard">
                         <div className="center-align ">

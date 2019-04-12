@@ -10,7 +10,7 @@ const ProvisionalCredit = (props) => {
                 <div className="card">
                     <div className="card-content pCard">
                         <span className="card-title">Provisional Credit</span>
-                        <h1 className="displayCredit">${props.credit}</h1>
+                        <h1 className="displayCredit">${props.credit.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h1>
                     </div>
                     <div className="card-action pCard">
                         <div className="center-align">
