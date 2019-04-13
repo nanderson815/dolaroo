@@ -9,6 +9,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import NumberFormat from 'react-number-format';
 import locatStyles from './Register.module.css';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
     container: {
@@ -115,7 +116,6 @@ class Register extends React.Component {
 
                         <h5>About You</h5>
                         <form className={classes.container} noValidate autoComplete="off">
-
                             <TextField
                                 id="firstName"
                                 label="First Name"
@@ -178,10 +178,6 @@ class Register extends React.Component {
                                     inputComponent: NumberFormatPhone,
                                 }}
                             />
-
-
-
-
                         </form>
                         <br></br>
                         <h5>About Your Business</h5>
@@ -243,9 +239,13 @@ class Register extends React.Component {
 
                                 </Select>
                             </FormControl>
+
+
                         </form>
-
-
+                        <br></br>
+                        <Button id="submit" variant="contained" color="primary" className={classes.button}>
+                            Register
+                            </Button>
 
                     </div>
                 </div >
