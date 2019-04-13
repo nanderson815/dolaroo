@@ -97,8 +97,8 @@ class Landing extends React.Component {
                 </section>
 
                 <footer className="page-footer blue darken-4">
-                    <div className="container">
-                        {/* <div className="row">
+                    {/* <div className="container">
+                        <div className="row">
                             <div className="col l6 s12">
                                 <h5 className="white-text">Footer Content</h5>
                                 <p className="grey-text text-lighten-4">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
@@ -113,8 +113,8 @@ class Landing extends React.Component {
                                     <li><a className="grey-text text-lighten-3" href="#!">Link 4</a></li>
                                 </ul>
                             </div>
-                        </div> */}
-                    </div>
+                        </div>
+                    </div> */}
                     <div className="footer-copyright">
                         <div className="container">
                             © 2019 Copyright Text
