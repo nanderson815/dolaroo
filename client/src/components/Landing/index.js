@@ -42,7 +42,7 @@ class Landing extends React.Component {
                             </div>
                             <div className="col s12 m3 offset-m1">
                                 <div className="center-align">
-                                    <a href="!#" className="landing-btn btn white blue-text text-darken-4">Learn More</a>
+                                    <Link to="/register" className="landing-btn btn white blue-text text-darken-4">Get Started</Link>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +85,7 @@ class Landing extends React.Component {
                                         Sign up today to be up and running in as little as two weeks.</p>
                                         <div className="center-align">
                                             <Link to="/register" className="waves-effect waves-light landing-btn btn  blue darken-4">Sign Up Now</Link>
-                                            <a href="!#" className="waves-effect waves-light landing-btn btn  blue darken-4">More Info</a>
+                                            {/* <a href="!#" className="waves-effect waves-light landing-btn btn  blue darken-4">More Info</a> */}
 
                                         </div>
                                     </div>
@@ -98,7 +98,7 @@ class Landing extends React.Component {
 
                 <footer className="page-footer blue darken-4">
                     <div className="container">
-                        <div className="row">
+                        {/* <div className="row">
                             <div className="col l6 s12">
                                 <h5 className="white-text">Footer Content</h5>
                                 <p className="grey-text text-lighten-4">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
@@ -113,7 +113,7 @@ class Landing extends React.Component {
                                     <li><a className="grey-text text-lighten-3" href="#!">Link 4</a></li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="footer-copyright">
                         <div className="container">
