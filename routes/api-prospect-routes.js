@@ -10,17 +10,4 @@ module.exports = function (app) {
                 .then(dbModel => res.json(dbModel))
         });
 
-    app.get("/api/propspect", (req, res) => {
-        try {
-            res.json({
-                uid: "ppppp",
-                name: "Paul",
-                email: "paul.linck@gmail.com"
-            });
-        } catch (err) {
-            // catch all error
-            res.status(500).json(`Error caught in route app.get("/api/user
-                 ..." ${err.errors[0].message}`);
-        }
-    }); // Route
 };
