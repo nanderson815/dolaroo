@@ -30,6 +30,8 @@ mongoose.connect(uri, {
 require("./routes/api-auth-routes.js")(app);
 require("./routes/api-user-routes.js")(app);
 require("./routes/api-note-routes.js")(app);
+require("./routes/api-prospect-routes.js")(app);
+
 
 //app.use(express.static(path.join(__dirname, 'client', 'build')));
 // //production mode - serve from build dir, else serve from public
