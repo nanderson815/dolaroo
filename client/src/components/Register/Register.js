@@ -7,7 +7,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import MaskedInput from 'react-text-mask';
+import NumberFormat from 'react-number-format';
+import locatStyles from './Register.module.css';
 
 const styles = theme => ({
     container: {
@@ -18,9 +20,6 @@ const styles = theme => ({
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         width: 300,
-    },
-    dense: {
-        marginTop: 19,
     },
     menu: {
         width: 200,
@@ -34,6 +33,54 @@ const styles = theme => ({
         marginTop: theme.spacing.unit * 2,
     },
 });
+
+function TextMaskCustom(props) {
+    const { inputRef, ...other } = props;
+
+    return (
+        <MaskedInput
+            {...other}
+            ref={ref => {
+                inputRef(ref ? ref.inputElement : null);
+            }}
+            mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+            placeholderChar={'\u2000'}
+            showMask
+        />
+    );
+}
+
+TextMaskCustom.propTypes = {
+    inputRef: PropTypes.func.isRequired,
+};
+
+function NumberFormatCustom(props) {
+    const { inputRef, onChange, ...other } = props;
+
+    return (
+        <NumberFormat
+            {...other}
+            className={locatStyles.input}
+            getInputRef={inputRef}
+            onValueChange={values => {
+                onChange({
+                    target: {
+                        value: values.value,
+                    },
+                });
+            }}
+            thousandSeparator
+            prefix="$"
+        />
+    );
+}
+
+NumberFormatCustom.propTypes = {
+    inputRef: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
+};
+
+
 
 class Register extends React.Component {
     state = {
@@ -61,15 +108,7 @@ class Register extends React.Component {
 
                         <h5>About You</h5>
                         <form className={classes.container} noValidate autoComplete="off">
-                            {/* <TextField
-                                id="standard-name"
-                                label="Name"
-                                className={classes.textField}
-                                value={this.state.name}
-                                onChange={this.handleChange('name')}
-                                margin="normal"
-                            /> */}
-
+                            
                             <TextField
                                 id="firstName"
                                 label="First Name"
@@ -135,13 +174,15 @@ class Register extends React.Component {
                             <TextField
                                 id="revenue"
                                 label="Revenue"
-                                placeholder="$1,000,000"
+                                // placeholder="$1,000,000"
                                 multiline
                                 className={classes.textField}
-                                type="number"
                                 margin="normal"
                                 value={this.state.revenue}
                                 onChange={this.handleChange('revenue')}
+                                InputProps={{
+                                    inputComponent: NumberFormatCustom,
+                                }}
                             />
 
 
@@ -177,6 +218,8 @@ class Register extends React.Component {
                                 </Select>
                             </FormControl>
                         </form>
+
+
 
                     </div>
                 </div >
