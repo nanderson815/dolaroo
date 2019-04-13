@@ -2,6 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 const styles = theme => ({
     container: {
@@ -19,13 +25,22 @@ const styles = theme => ({
     menu: {
         width: 200,
     },
+    formControl: {
+        margin: theme.spacing.unit,
+        minWidth: 200,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing.unit * 2,
+    },
 });
 
 class Register extends React.Component {
     state = {
         firstName: "",
         lastName: "",
-        company: ""
+        company: "",
+        revenue: "",
+        locations: ""
     };
 
     handleChange = name => event => {
@@ -40,7 +55,9 @@ class Register extends React.Component {
             <div className="container">
                 <div className="card">
                     <div className="card-content">
-                    <span className="card-title">Register Now</span>
+                        <span className="card-title">Register Now</span>
+
+                        <h5>About You</h5>
                         <form className={classes.container} noValidate autoComplete="off">
                             {/* <TextField
                                 id="standard-name"
@@ -73,6 +90,35 @@ class Register extends React.Component {
                                 onChange={this.handleChange('lastName')}
                             />
 
+
+
+                            <TextField
+                                id="email"
+                                label="Email"
+                                placeholder="JohnDoe@gmail.com"
+                                multiline
+                                className={classes.textField}
+                                type="email"
+                                name="email"
+                                autoComplete="email"
+                                margin="normal"
+                            />
+
+                            <TextField
+                                id="confirmEmail"
+                                label="Confirm Email"
+                                placeholder="JohnDoe@gmail.com"
+                                multiline
+                                className={classes.textField}
+                                type="email"
+                                name="email"
+                                autoComplete="email"
+                                margin="normal"
+                            />
+                        </form>
+                        <br></br>
+                        <h5>About Your Business</h5>
+                        <form className={classes.container} noValidate autoComplete="off">
                             <TextField
                                 id="companyName"
                                 label="Company Name"
@@ -85,19 +131,33 @@ class Register extends React.Component {
                             />
 
                             <TextField
-                                id="email"
-                                label="Email"
-                                placeholder="JohnDoe@gmail.com"
+                                id="revenue"
+                                label="Revenue"
+                                placeholder="$1,000,000"
                                 multiline
                                 className={classes.textField}
-                                type="email"
-                                name="email"
-                                autoComplete="email"
+                                type="number"
                                 margin="normal"
-                            
+                                value={this.state.revenue}
+                                onChange={this.handleChange('revenue')}
                             />
 
+
+                            <FormControl className={classes.formControl}>
+                                <InputLabel htmlFor="locations-helper">Number of Locations</InputLabel>
+                                <Select
+                                    value={this.state.locations}
+                                    onChange={this.handleChange('locations')}
+                                    input={<Input name="locations" id="locations-helper" />}
+
+                                >
+                                    <MenuItem value={"One"}>One</MenuItem>
+                                    <MenuItem value={"Two - Ten"}>Two - Ten</MenuItem>
+                                    <MenuItem value={"Ten+"}>Ten+</MenuItem>
+                                </Select>
+                            </FormControl>
                         </form>
+
                     </div>
                 </div >
             </div>
