@@ -7,7 +7,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import MaskedInput from 'react-text-mask';
 import NumberFormat from 'react-number-format';
 import locatStyles from './Register.module.css';
 
@@ -15,6 +14,9 @@ const styles = theme => ({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
+    },
+    inputFix: {
+        marginTop: 5
     },
     textField: {
         marginLeft: theme.spacing.unit,
@@ -34,25 +36,7 @@ const styles = theme => ({
     },
 });
 
-function TextMaskCustom(props) {
-    const { inputRef, ...other } = props;
 
-    return (
-        <MaskedInput
-            {...other}
-            ref={ref => {
-                inputRef(ref ? ref.inputElement : null);
-            }}
-            mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-            placeholderChar={'\u2000'}
-            showMask
-        />
-    );
-}
-
-TextMaskCustom.propTypes = {
-    inputRef: PropTypes.func.isRequired,
-};
 
 function NumberFormatCustom(props) {
     const { inputRef, onChange, ...other } = props;
@@ -75,6 +59,27 @@ function NumberFormatCustom(props) {
     );
 }
 
+function NumberFormatPhone(props) {
+    const { inputRef, onChange, ...other } = props;
+
+    return (
+        <NumberFormat
+            {...other}
+            className={locatStyles.input}
+            getInputRef={inputRef}
+            onValueChange={values => {
+                onChange({
+                    target: {
+                        value: values.value,
+                    },
+                });
+            }}
+            format="(###) ###-####"
+            mask=""
+        />
+    );
+}
+
 NumberFormatCustom.propTypes = {
     inputRef: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -89,7 +94,9 @@ class Register extends React.Component {
         company: "",
         revenue: "",
         locations: "",
-        cash: ""
+        email: "",
+        cash: "",
+        phone: "",
     };
 
     handleChange = name => event => {
@@ -108,7 +115,7 @@ class Register extends React.Component {
 
                         <h5>About You</h5>
                         <form className={classes.container} noValidate autoComplete="off">
-                            
+
                             <TextField
                                 id="firstName"
                                 label="First Name"
@@ -143,6 +150,8 @@ class Register extends React.Component {
                                 name="email"
                                 autoComplete="email"
                                 margin="normal"
+                                value={this.state.email}
+                                onChange={this.handleChange('email')}
                             />
 
                             <TextField
@@ -156,6 +165,23 @@ class Register extends React.Component {
                                 autoComplete="email"
                                 margin="normal"
                             />
+
+                            <TextField
+                                id="phone"
+                                label="Phone Number"
+                                multiline
+                                className={classes.textField}
+                                margin="normal"
+                                value={this.state.phone}
+                                onChange={this.handleChange('phone')}
+                                InputProps={{
+                                    inputComponent: NumberFormatPhone,
+                                }}
+                            />
+
+
+
+
                         </form>
                         <br></br>
                         <h5>About Your Business</h5>
@@ -173,7 +199,7 @@ class Register extends React.Component {
 
                             <TextField
                                 id="revenue"
-                                label="Revenue"
+                                label="Revenue (Approx.)"
                                 // placeholder="$1,000,000"
                                 multiline
                                 className={classes.textField}
