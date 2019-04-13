@@ -26,8 +26,9 @@ const styles = theme => ({
         width: 200,
     },
     formControl: {
-        margin: theme.spacing.unit,
-        minWidth: 200,
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        minWidth: 300,
     },
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
@@ -40,7 +41,8 @@ class Register extends React.Component {
         lastName: "",
         company: "",
         revenue: "",
-        locations: ""
+        locations: "",
+        cash: ""
     };
 
     handleChange = name => event => {
@@ -143,7 +145,7 @@ class Register extends React.Component {
                             />
 
 
-                            <FormControl className={classes.formControl}>
+                            <FormControl margin="normal" className={classes.formControl}>
                                 <InputLabel htmlFor="locations-helper">Number of Locations</InputLabel>
                                 <Select
                                     value={this.state.locations}
@@ -154,6 +156,24 @@ class Register extends React.Component {
                                     <MenuItem value={"One"}>One</MenuItem>
                                     <MenuItem value={"Two - Ten"}>Two - Ten</MenuItem>
                                     <MenuItem value={"Ten+"}>Ten+</MenuItem>
+                                </Select>
+                            </FormControl>
+
+                            <FormControl margin="normal" className={classes.formControl}>
+                                <InputLabel htmlFor="cash-helper">Percentage of Cash Transactions</InputLabel>
+                                <Select
+                                    value={this.state.cash}
+                                    onChange={this.handleChange('cash')}
+                                    input={<Input name="cash" id="cash-helper" />}
+
+                                >
+                                    <MenuItem value={"<10%"}> Less than 10% </MenuItem>
+                                    <MenuItem value={"10 -20"}>10% - 20% </MenuItem>
+                                    <MenuItem value={"20 -30"}>21% - 30% </MenuItem>
+                                    <MenuItem value={"30 - 40"}>31% - 40% </MenuItem>
+                                    <MenuItem value={"40 - 50"}>41% - 50% </MenuItem>
+                                    <MenuItem value={">50%"}>Greater than 50% </MenuItem>
+
                                 </Select>
                             </FormControl>
                         </form>
