@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from "axios";
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
@@ -97,12 +98,29 @@ class Register extends React.Component {
         locations: "",
         email: "",
         cash: "",
-        phone: "",
+        phone: ""
     };
 
     handleChange = name => event => {
         this.setState({ [name]: event.target.value });
     };
+
+    submitProspect = event => {
+        const propspect = this.state;
+        axios.post("/api/prospect", propspect)
+        .then(res => console.log(res.data))
+        .then(alert("Thank you for registering! We will contact you shortly."))
+        .then(this.setState({
+            firstName: "",
+            lastName: "",
+            company: "",
+            revenue: "",
+            locations: "",
+            email: "",
+            cash: "",
+            phone: ""
+        }))
+    }
 
 
     render() {
@@ -243,7 +261,7 @@ class Register extends React.Component {
 
                         </form>
                         <br></br>
-                        <Button id="submit" variant="contained" color="primary" className={classes.button}>
+                        <Button onClick={this.submitProspect} id="submit" variant="contained" color="primary" className={classes.button}>
                             Register
                             </Button>
 

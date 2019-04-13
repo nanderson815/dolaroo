@@ -14,6 +14,6 @@ var ProspectSchema = new Schema({
 
 });
 
-var Prospect = mongoose.model("Note", ProspectSchema);
+var Prospect = mongoose.model("Prospect", ProspectSchema);
 
 module.exports = Prospect;
