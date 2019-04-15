@@ -116,9 +116,9 @@ class SignInFormBase extends Component {
             <button disabled={isInvalid} className="btn lighten-1 z-depth-0">Login</button>
             {error && <p>{error.message}</p>}
           </div>
-          <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>  
           <button onClick={this.registerUser} className="btn lighten-1 z-depth-0">Register</button>    
-          <button onClick={this.handleGoogleLogin} className="btn lighten-1 z-depth-0"> SignIn With Google</button>  
+          {/*<p>Don't have an account? <Link to="/signup">Sign Up</Link></p>*/}
+          {/*<button onClick={this.handleGoogleLogin} className="btn lighten-1 z-depth-0"> SignIn With Google</button>*/}  
         </form>;
     }
 
