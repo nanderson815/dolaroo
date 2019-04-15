@@ -61,6 +61,7 @@ class Navigation extends React.Component {
       <ul>
         <li><a href="/">Landing</a></li>
         <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/account">Account</a></li>
         <li><SignOutButton /></li>
       </ul>
       ;
