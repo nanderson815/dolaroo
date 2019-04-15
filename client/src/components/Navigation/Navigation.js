@@ -85,16 +85,16 @@ class Navigation extends React.Component {
 
     const navigationNonAuthMobile =
       <ul>
-        <li><a href="/">Landing</a></li>
-        <li><a href="/signin">Signin</a></li>
-      </ul>
+        <li><NavLink onClick={this.forceCloseSideNav} to="/">Landing</NavLink></li>
+        <li><NavLink onClick={this.forceCloseSideNav} to="/signin">Sign In</NavLink></li>
+    </ul>
       ;
 
 
     const navigationNonAuth =
       <ul>
-        <li><NavLink onClick={this.forceCloseSideNav} to="/">Landing</NavLink></li>
-        <li><NavLink onClick={this.forceCloseSideNav} to="/signin">Sign In</NavLink></li>
+        <li><NavLink to="/">Landing</NavLink></li>
+        <li><NavLink to="/signin">Sign In</NavLink></li>
       </ul>
       ;
 
