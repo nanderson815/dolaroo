@@ -1,10 +1,10 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-
+import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 
 const User = (props) => {
     // decontruct props
-    let { id, firstName, lastName, phoneNumber, email, photoURL, claims } =  props;
+    let { id, uid, firstName, lastName, phoneNumber, email, photoURL, claims } =  props;
     let { userMakeAdmin, userMakeCashier, userDelete } =  props;
 
     if (!photoURL) {
@@ -22,6 +22,9 @@ const User = (props) => {
             state: {id: props.id }
         });
     };
+
+    // dont let you delete yourself
+    const editIsDisabled = (props.user && props.user.authUser && props.user.authUser.uid) ===  uid ? true: false;
     
     return ( 
         <div className="card horizontal">
@@ -37,22 +40,31 @@ const User = (props) => {
                 </div>
                 <div className="card-action">
                     <div className="center-align">
+                        {editIsDisabled ? <p><i>Current User - Cant Edit</i></p> : null}
+                        {editIsDisabled ? null : 
+                        <div>
                         <i style={{cursor: 'pointer'}}
+                            disabled={editIsDisabled}
                             className="userEdit material-icons left indigo-text text-darken-4"
                             onClick={() => userEdit(id)}>edit
                         </i>
                         <i style={{cursor: 'pointer'}}
+                            disabled={editIsDisabled}
                             className="userDelete material-icons left indigo-text text-darken-4"
                             onClick={() => userDelete(id)}>delete
                         </i>
                         <i style={{cursor: 'pointer'}}
+                            disabled={editIsDisabled}
                             className="makeCashier material-icons left indigo-text text-darken-4"
                             onClick={() => userMakeCashier(id)}>account_balance
                         </i>
                         <i style={{cursor: 'pointer'}}
+                            disabled={editIsDisabled}
                             className="makeAdmin material-icons left indigo-text text-darken-4"
                             onClick={() => userMakeAdmin(id)}>account_circle
                         </i>
+                        </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -60,4 +72,4 @@ const User = (props) => {
     );
 }
 
-export default withRouter(User);
+export default withAuthUserContext(withRouter(User));

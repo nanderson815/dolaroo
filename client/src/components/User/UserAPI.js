@@ -78,7 +78,7 @@ class UserAPI {
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
 
-            let user ={};
+            // let user ={};
             let docRef = db.collection("users").where("email", "==", authUser.user.email).limit(1);
             docRef.get().then((querySnapshot) => {
                 let user = null;
@@ -188,7 +188,7 @@ class UserAPI {
             const db = Util.getFirestoreDB();
 
             // then get from firestore
-            let user = {};
+            // let user = {};
             let docRef = db.collection("users").where("email", "==", email).limit(1);
             docRef.get().then((querySnapshot) => {
                 let user = null;
