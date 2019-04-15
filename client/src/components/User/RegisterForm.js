@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Auth/Firebase/FirebaseContext';
+import { withRouter } from 'react-router-dom';
 import UserAPI from "./UserAPI";
 
 class Register extends Component {
@@ -53,21 +54,39 @@ class Register extends Component {
     const { displayName, email, passwordOne } = this.state;
     console.log(this.props);
 
-    this.props.firebase
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(authUser => {
-        let userInfo = {...authUser};
-        userInfo.displayName = displayName;
-        // Now Create the user in firestore
-        return(UserAPI.registerUser(userInfo));
-      })
-      .then(() => {
-        // redirect home
-        this.props.history.push("/dashboard"); 
-      })
-      .catch(err => {
-        this.setState({ err });
-    });
+    // First get the email and ensure it is ready to register
+    UserAPI.getByEmail(email)
+    .then(user => {
+        if (user.err) {
+          console.error(user.err);
+          this.setState({ message: user.err });
+        } else {
+          // Now create auth user from signin
+          this.props.firebase
+            .doCreateUserWithEmailAndPassword(email, passwordOne)
+            .then(authUser => {
+              let userInfo = {...authUser};
+              userInfo.displayName = displayName;
+              // Now Create the user in firestore
+              UserAPI.registerUser(userInfo)
+                .then(() => {
+                  // redirect home
+                  this.props.history.push("/dashboard"); 
+                })
+                .catch(err => {
+                  this.setState({ message: err });
+                });
+              })
+            .catch(err => {
+                  console.error(err); 
+                  this.setState({ message: err.message });
+            });        
+        }
+    })
+    .catch(err => {
+        console.error(err); 
+        this.setState({ message: err });
+    });        
   };
 
   onChange = event => {
@@ -95,7 +114,7 @@ class Register extends Component {
         <form className="white" onSubmit={this.onSubmit}>
           <h5 className="grey-text text-darken-3">Register User</h5>
           <div className="input-field">
-            <label htmlFor="displayName">User Name</label>
+            <label htmlFor="displayName">Display Name</label>
             <input type="text" name='displayName' value={displayName} onChange={this.onChange} />
           </div>
           <div className="input-field">
@@ -112,6 +131,7 @@ class Register extends Component {
           </div>
           <div className="input-field">
             <button disabled={isInvalid} className="btn lighten-1 z-depth-0">Sign Up</button>
+            <p>Note: Administrator must enable your email in order to register and get access to this app</p>
             <p>{message}</p>
           </div>
         </form>
@@ -120,4 +140,4 @@ class Register extends Component {
   }
 }
 
-export default withFirebase(Register);
+export default withRouter(withFirebase(Register));

@@ -189,9 +189,9 @@ class UserAPI {
 
             // then get from firestore
             // let user = {};
+            let user = {};
             let docRef = db.collection("users").where("email", "==", email).limit(1);
             docRef.get().then((querySnapshot) => {
-                let user = null;
                 querySnapshot.forEach(doc => {
                     user = doc.data();
                     user.id = doc.id;
@@ -206,7 +206,7 @@ class UserAPI {
                     return(resolve(user));
                 }
             }).catch(err => {
-                reject(`Error getting user in UserAPI.get ${err}`);
+                reject(`Error getting user in UserAPI.getByEmail ${err}`);
             });
         });
     }

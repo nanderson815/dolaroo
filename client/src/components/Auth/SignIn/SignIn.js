@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
 
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase/FirebaseContext';
