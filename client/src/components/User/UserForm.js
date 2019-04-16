@@ -1,6 +1,58 @@
 import React from 'react';
-import UserAPI from "./UserAPI"
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import NumberFormat from 'react-number-format';
+import localStyles from './User.module.css';
+import Button from '@material-ui/core/Button';
+
+import UserAPI from "./UserAPI";
   
+const styles = theme => ({
+  container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+  },
+  inputFix: {
+      marginTop: 5
+  },
+  textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      width: 300,
+  },
+  menu: {
+      width: 200,
+  },
+  formControl: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      minWidth: 300,
+  },
+  selectEmpty: {
+      marginTop: theme.spacing.unit * 2,
+  },
+});
+
+function NumberFormatPhone(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+      <NumberFormat
+          {...other}
+          className={localStyles.input}
+          getInputRef={inputRef}
+          onValueChange={values => {
+              onChange({
+                  target: {
+                      value: values.value,
+                  },
+              });
+          }}
+          format="(###) ###-####"
+          mask=""
+      />
+  );
+}
 class UserForm extends React.Component {
   state = {
     id: this.props.id,
@@ -82,7 +134,6 @@ class UserForm extends React.Component {
   };
 
   onChange = event => {
-    event.preventDefault();
 
     this.setState({
         [event.target.name]: event.target.value
@@ -90,6 +141,8 @@ class UserForm extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     const {
       firstName,
       lastName,
@@ -114,36 +167,96 @@ class UserForm extends React.Component {
       lastName !== "" &&
       phoneNumber !== "";
 
-      return ( 
-          <div className="container">
-            <h5 className="grey-text text-darken-3">User <span>(Role: {claims})</span></h5>
-            <div className="input-field">
-              <label className="active" htmlFor="email">Email</label>
-              <input disabled={!emailEnabled} type="email" name='email' value={email} onChange={this.onChange} />
+    return ( 
+      <div className="container">
+        <div className="card">
+          <div className="card-content">
+            <span className="card-title">User (Role: {claims})</span>
+
+            <form className={classes.container}>
+              <TextField
+              disabled={!emailEnabled}
+              id="email"
+              name="email"
+              label="Email"
+              placeholder="example@gmail.com"
+              multiline
+              className={classes.textField}
+              type="email"
+              autoComplete="email"
+              margin="normal"
+              value={email}
+              onChange={this.onChange}
+              />
+
+              <TextField
+              id="firstName"
+              name="firstName"
+              label="First Name"
+              value={firstName}
+              placeholder="John"
+              multiline
+              className={classes.textField}
+              type="text"
+              margin="normal"
+              onChange={this.onChange}
+              />
+
+              <TextField
+              id="lastName"
+              name="lastName"
+              label="Last Name"
+              value={lastName}
+              placeholder="Smith"
+              multiline
+              className={classes.textField}
+              type="text"
+              margin="normal"
+              onChange={this.onChange}
+              />
+
+              <TextField
+              id="photoURL"
+              name="photoURL"
+              value={photoURL}
+              label="Photo URL"
+              placeholder="http://www.image.com/image.png"
+              multiline
+              className={classes.textField}
+              type="text"
+              margin="normal"
+              onChange={this.onChange}
+              />
+
+              <TextField
+              id="phoneNumber"
+              name="phoneNumber"
+              value={phoneNumber}
+              label="Phone Number"
+              multiline
+              className={classes.textField}
+              margin="normal"
+              onChange={this.onChange}
+              InputProps={{
+                  inputComponent: NumberFormatPhone,
+              }}
+              />
+                            
+            </form>
+            <br />
+            <div className="row">
+                <Button disabled={!isValid} onClick={this.saveUser} variant="contained" color="primary" className={classes.button}>
+                  {buttonText}
+                </Button>
             </div>
-            <div className="input-field">
-              <label className="active" htmlFor="firstName">First Name</label>
-              <input type="text" name='firstName' value={firstName} onChange={this.onChange} />
-            </div>
-            <div className="input-field">
-              <label className="active" htmlFor="lastName">Last Name</label>
-              <input type="text" name='lastName' value={lastName} onChange={this.onChange} />
-            </div>
-            <div className="input-field">
-              <label className="active" htmlFor="photoURL">Photo URL</label>
-              <input type="text" name='photoURL' value={photoURL} onChange={this.onChange} />
-            </div>
-            <div className="input-field">
-              <label className="active" htmlFor="phoneNumber">Phone Number</label>
-              <input type="text" name='phoneNumber' value={phoneNumber} onChange={this.onChange} />
-            </div>
-            <div>
-              <button disabled={!isValid} onClick={this.saveUser} className="btn lighten-1 z-depth-0">{buttonText}</button>
-              {<p>{message}</p>}
-            </div>
+
+            <p>{message}</p>
+
+          </div>
         </div>
-        );
+      </div>
+    );  
   }
 }
 
-export default UserForm;
+export default withStyles(styles)(UserForm);
