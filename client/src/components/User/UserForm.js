@@ -237,9 +237,9 @@ class UserForm extends React.Component {
               className={classes.textField}
               margin="normal"
               onChange={this.onChange}
-              InputProps={{
-                  inputComponent: NumberFormatPhone,
-              }}
+              // InputProps={{
+              //     inputComponent: NumberFormatPhone,
+              // }}
               />
                             
             </form>

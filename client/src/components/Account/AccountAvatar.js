@@ -20,8 +20,19 @@ const styles = {
 const IconAvatars = (props) => {
   const { classes } = props;
 
+  // image avatar
+  // <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" className={classes.avatar} />
+
   let avatar;
-  if (props.user.displayName) {
+  if (props.user.authUser && props.user.authUser.photoURL) {
+    // use image avatar
+    avatar = 
+    <Avatar 
+      alt={props.user.displayName || "account"} 
+      src={props.user.authUser.photoURL}
+      className={classes.avatar}>
+    </Avatar>;
+  } else if (props.user.displayName) {
     let res = props.user.displayName.split(" ");
     let initials = "";
     if (res[0][0]) {
@@ -39,6 +50,7 @@ const IconAvatars = (props) => {
       <AccountCircle />
     </Avatar>;
   }
+
   return (
     <div>
       {avatar}

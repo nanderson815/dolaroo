@@ -134,93 +134,93 @@ class AccountForm extends React.Component {
 
         const isValid = firstName !== "" && lastName !== "" && phoneNumber !== "";
 
-        return (
+        return ( 
             <div className="container">
-                <div className="card">
-                    <div className="card-content">
-                        <span className="card-title">User (Role: {claims})</span>
-                        <form className={classes.container}>
-                            <TextField
-                            id="email"
-                            name="email"
-                            label="Email"
-                            placeholder="example@gmail.com"
-                            multiline
-                            className={classes.textField}
-                            type="email"
-                            autoComplete="email"
-                            margin="normal"
-                            value={email}
-                            onChange={this.onChange}
-                            />
+            <div className="card">
+                <div className="card-content">
+                    <span className="card-title">User (Role: {claims})</span>
+                    <form className={classes.container}>
+                        <TextField
+                        id="email"
+                        name="email"
+                        label="Email"
+                        placeholder="example@gmail.com"
+                        multiline
+                        className={classes.textField}
+                        type="email"
+                        autoComplete="email"
+                        margin="normal"
+                        value={email}
+                        onChange={this.onChange}
+                        />
 
-                            <TextField
-                            id="firstName"
-                            name="firstName"
-                            label="First Name"
-                            value={firstName}
-                            placeholder="John"
-                            multiline
-                            className={classes.textField}
-                            type="text"
-                            margin="normal"
-                            onChange={this.onChange}
-                            />
+                        <TextField
+                        id="firstName"
+                        name="firstName"
+                        label="First Name"
+                        value={firstName}
+                        placeholder="John"
+                        multiline
+                        className={classes.textField}
+                        type="text"
+                        margin="normal"
+                        onChange={this.onChange}
+                        />
 
-                            <TextField
-                            id="lastName"
-                            name="lastName"
-                            label="Last Name"
-                            value={lastName}
-                            placeholder="Smith"
-                            multiline
-                            className={classes.textField}
-                            type="text"
-                            margin="normal"
-                            onChange={this.onChange}
-                            />
+                        <TextField
+                        id="lastName"
+                        name="lastName"
+                        label="Last Name"
+                        value={lastName}
+                        placeholder="Smith"
+                        multiline
+                        className={classes.textField}
+                        type="text"
+                        margin="normal"
+                        onChange={this.onChange}
+                        />
 
-                            <TextField
-                            id="photoURL"
-                            name="photoURL"
-                            value={photoURL}
-                            label="Photo URL"
-                            placeholder="http://www.image.com/image.png"
-                            multiline
-                            className={classes.textField}
-                            type="text"
-                            margin="normal"
-                            onChange={this.onChange}
-                            />
+                        <TextField
+                        id="photoURL"
+                        name="photoURL"
+                        value={photoURL}
+                        label="Photo URL"
+                        placeholder="http://www.image.com/image.png"
+                        multiline
+                        className={classes.textField}
+                        type="text"
+                        margin="normal"
+                        onChange={this.onChange}
+                        />
 
-                            <TextField
-                            id="phoneNumber"
-                            name="phoneNumber"
-                            value={phoneNumber}
-                            label="Phone Number"
-                            multiline
-                            className={classes.textField}
-                            margin="normal"
-                            onChange={this.onChange}
-                            InputProps={{
-                                inputComponent: NumberFormatPhone,
-                            }}
-                            />
-                                    
-                        </form>
-                        <br />
-                        <div className="row">
-                            <Button disabled={!isValid} onClick={this.updateUser} variant="contained" color="primary" className={classes.button}>
-                                Register
-                            </Button>
-                        </div>
-            
-                        <p>{message}</p>
-        
+                        <TextField
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        value={phoneNumber}
+                        label="Phone Number"
+                        multiline
+                        className={classes.textField}
+                        margin="normal"
+                        onChange={this.onChange}
+                        InputProps={{
+                            inputComponent: NumberFormatPhone,
+                        }}
+                        />
+                                
+                    </form>
+                    <br />
+                    <div className="row">
+                        <Button disabled={!isValid} onClick={this.updateUser} variant="contained" color="primary" className={classes.button}>
+                            Register
+                        </Button>
                     </div>
+        
+                    <p>{message}</p>
+    
                 </div>
             </div>
-        );  
+        </div>
+        ); 
     }
 }
 
