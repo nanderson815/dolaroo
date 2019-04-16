@@ -15,25 +15,11 @@ const styles = theme => ({
         display: 'flex',
         flexWrap: 'wrap',
     },
-    inputFix: {
-        marginTop: 5
-    },
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         width: 300,
-    },
-    menu: {
-        width: 200,
-    },
-    formControl: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        minWidth: 300,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing.unit * 2,
-    },
+    }
 });
 
 
@@ -63,7 +49,13 @@ class Deposit extends React.Component {
     state = {
         cash: 0,
         credit: 0,
-        amount: 0
+        amount: 0,
+        ones: 0,
+        fives: 0,
+        tens: 0,
+        twenties: 0,
+        fifties: 0,
+        hundreds: 0,
     }
 
     componentDidMount() {
@@ -75,10 +67,10 @@ class Deposit extends React.Component {
         M.Modal.init(elem);
     }
 
-    onChangeHandler = (event) => {
-        let amount = event.target.value;
-        this.setState({ amount });
-    }
+
+    handleChange = name => event => {
+        this.setState({ [name]: event.target.value });
+    };
 
 
 
@@ -109,8 +101,6 @@ class Deposit extends React.Component {
     }
 
 
-
-
     render() {
         const { classes } = this.props;
         if (this.props.user.authUser) {
@@ -123,7 +113,7 @@ class Deposit extends React.Component {
                                 <span className="card-title">New Deposit</span>
                                 <div className="row">
                                     <div className="col s12">
-                                        <p>Note: This input will be replaced by a hardware component in deployment.</p>
+                                        <p>Note: This input will be replaced by a hardware component in deployment. For now, enter the number of each bill denomination to be deposited</p>
 
                                         <form className={classes.container} noValidate autoComplete="off">
 
@@ -133,8 +123,8 @@ class Deposit extends React.Component {
                                                 multiline
                                                 className={classes.textField}
                                                 margin="normal"
-                                                value={this.state.amount ? this.state.amount : ""}
-                                                onChange={this.onChangeHandler}
+                                                value={this.state.ones ? this.state.ones : ""}
+                                                onChange={this.handleChange('ones')}
                                                 InputProps={{
                                                     inputComponent: NumberFormatCustom,
                                                 }}
@@ -146,8 +136,8 @@ class Deposit extends React.Component {
                                                 multiline
                                                 className={classes.textField}
                                                 margin="normal"
-                                                value={this.state.amount ? this.state.amount : ""}
-                                                onChange={this.onChangeHandler}
+                                                value={this.state.fives ? this.state.fives : ""}
+                                                onChange={this.handleChange('fives')}
                                                 InputProps={{
                                                     inputComponent: NumberFormatCustom,
                                                 }}
@@ -159,8 +149,8 @@ class Deposit extends React.Component {
                                                 multiline
                                                 margin="normal"
                                                 className={classes.textField}
-                                                value={this.state.amount ? this.state.amount : ""}
-                                                onChange={this.onChangeHandler}
+                                                value={this.state.tens ? this.state.tens : ""}
+                                                onChange={this.handleChange('tens')}
                                                 InputProps={{
                                                     inputComponent: NumberFormatCustom,
                                                 }}
@@ -168,18 +158,30 @@ class Deposit extends React.Component {
 
 
                                             <TextField
-                                                id="twentys"
+                                                id="twenties"
                                                 label="$20 Bills"
                                                 multiline
                                                 className={classes.textField}
                                                 margin="normal"
-                                                value={this.state.amount ? this.state.amount : ""}
-                                                onChange={this.onChangeHandler}
+                                                value={this.state.twenties ? this.state.twenties : ""}
+                                                onChange={this.handleChange('twenties')}
                                                 InputProps={{
                                                     inputComponent: NumberFormatCustom,
                                                 }}
                                             />
 
+                                            <TextField
+                                                id="fifties"
+                                                label="$50 Bills"
+                                                multiline
+                                                className={classes.textField}
+                                                margin="normal"
+                                                value={this.state.fifties ? this.state.fifties : ""}
+                                                onChange={this.handleChange('fifties')}
+                                                InputProps={{
+                                                    inputComponent: NumberFormatCustom,
+                                                }}
+                                            />
 
                                             <TextField
                                                 id="hundreds"
@@ -187,8 +189,8 @@ class Deposit extends React.Component {
                                                 multiline
                                                 className={classes.textField}
                                                 margin="normal"
-                                                value={this.state.amount ? this.state.amount : ""}
-                                                onChange={this.onChangeHandler}
+                                                value={this.state.hundreds ? this.state.hundreds : ""}
+                                                onChange={this.handleChange('hundreds')}
                                                 InputProps={{
                                                     inputComponent: NumberFormatCustom,
                                                 }}
