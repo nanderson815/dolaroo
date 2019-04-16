@@ -1,4 +1,6 @@
 import React from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import { withRouter } from 'react-router-dom';
 import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 
@@ -43,26 +45,38 @@ const User = (props) => {
                         {editIsDisabled ? <p><i>Current User - Cant Edit</i></p> : null}
                         {editIsDisabled ? null : 
                         <div>
-                        <i style={{cursor: 'pointer'}}
-                            disabled={editIsDisabled}
-                            className="userEdit material-icons left indigo-text text-darken-4"
-                            onClick={() => userEdit(id)}>edit
-                        </i>
-                        <i style={{cursor: 'pointer'}}
-                            disabled={editIsDisabled}
-                            className="userDelete material-icons left indigo-text text-darken-4"
-                            onClick={() => userDelete(id)}>delete
-                        </i>
-                        <i style={{cursor: 'pointer'}}
-                            disabled={editIsDisabled}
-                            className="makeCashier material-icons left indigo-text text-darken-4"
-                            onClick={() => userMakeCashier(id)}>account_balance
-                        </i>
-                        <i style={{cursor: 'pointer'}}
-                            disabled={editIsDisabled}
-                            className="makeAdmin material-icons left indigo-text text-darken-4"
-                            onClick={() => userMakeAdmin(id)}>account_circle
-                        </i>
+                        <Tooltip title="Edit">
+                            <i style={{cursor: 'pointer'}}
+                                disabled={editIsDisabled}
+                                className="userEdit material-icons left indigo-text text-darken-4"
+                                onClick={() => userEdit(id)}>edit
+                            </i>
+                        </Tooltip>
+
+                        <Tooltip title="Delete">
+                            <i style={{cursor: 'pointer'}}
+                                disabled={editIsDisabled}
+                                className="userDelete material-icons left indigo-text text-darken-4"
+                                onClick={() => userDelete(id)}>delete
+                            </i>
+                        </Tooltip>
+
+                        <Tooltip title="Make Cashier">
+                            <i style={{cursor: 'pointer'}}
+                                disabled={editIsDisabled}
+                                className="makeCashier material-icons left indigo-text text-darken-4"
+                                onClick={() => userMakeCashier(id)}>account_balance
+                            </i>
+                        </Tooltip>
+
+                        <Tooltip title="Make Admin">
+                            <i style={{cursor: 'pointer'}}
+                                disabled={editIsDisabled}
+                                className="makeAdmin material-icons left indigo-text text-darken-4"
+                                onClick={() => userMakeAdmin(id)}>account_circle
+                            </i>
+                        </Tooltip>
+
                         </div>
                         }
                     </div>
