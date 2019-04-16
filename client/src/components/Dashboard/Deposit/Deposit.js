@@ -7,6 +7,34 @@ import DepositDB from '../Deposit/DepositDB';
 import { Redirect } from 'react-router';
 import NumberFormat from 'react-number-format';
 import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
+
+
+const styles = theme => ({
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    inputFix: {
+        marginTop: 5
+    },
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 300,
+    },
+    menu: {
+        width: 200,
+    },
+    formControl: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        minWidth: 300,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing.unit * 2,
+    },
+});
 
 
 function NumberFormatCustom(props) {
@@ -25,7 +53,7 @@ function NumberFormatCustom(props) {
                 });
             }}
             thousandSeparator
-            prefix="$"
+        // prefix="$"
         />
     );
 }
@@ -84,6 +112,7 @@ class Deposit extends React.Component {
 
 
     render() {
+        const { classes } = this.props;
         if (this.props.user.authUser) {
             return (
                 <div className="container">
@@ -93,28 +122,16 @@ class Deposit extends React.Component {
                             <div className="card-content pCard">
                                 <span className="card-title">New Deposit</span>
                                 <div className="row">
-                                    <form className="col s12">
+                                    <div className="col s12">
                                         <p>Note: This input will be replaced by a hardware component in deployment.</p>
-                                        <div className="input-field col s12 m6">
-                                            {/* <input
-                                                id="amount"
-                                                type="number"
-                                                onChange={this.onChangeHandler}
-                                                value={this.state.amount ? this.state.amount : ""}
-                                                InputProps={{
-                                                    inputComponent: NumberFormatCustom,
-                                                }}
-                                                className="validate"
-                                            />
 
-                                            <label htmlFor="amount">Deposit Amount</label> */}
+                                        <form className={classes.container} noValidate autoComplete="off">
 
                                             <TextField
-                                                id="Amount"
-                                                label="Deposit Amount"
-                                                // placeholder="$1,000,000"
+                                                id="ones"
+                                                label="$1 Bills"
                                                 multiline
-                                                // className={classes.textField}
+                                                className={classes.textField}
                                                 margin="normal"
                                                 value={this.state.amount ? this.state.amount : ""}
                                                 onChange={this.onChangeHandler}
@@ -122,8 +139,63 @@ class Deposit extends React.Component {
                                                     inputComponent: NumberFormatCustom,
                                                 }}
                                             />
-                                        </div>
-                                    </form>
+
+                                            <TextField
+                                                id="fives"
+                                                label="$5 Bills"
+                                                multiline
+                                                className={classes.textField}
+                                                margin="normal"
+                                                value={this.state.amount ? this.state.amount : ""}
+                                                onChange={this.onChangeHandler}
+                                                InputProps={{
+                                                    inputComponent: NumberFormatCustom,
+                                                }}
+                                            />
+
+                                            <TextField
+                                                id="tens"
+                                                label="$10 Bills"
+                                                multiline
+                                                margin="normal"
+                                                className={classes.textField}
+                                                value={this.state.amount ? this.state.amount : ""}
+                                                onChange={this.onChangeHandler}
+                                                InputProps={{
+                                                    inputComponent: NumberFormatCustom,
+                                                }}
+                                            />
+
+
+                                            <TextField
+                                                id="twentys"
+                                                label="$20 Bills"
+                                                multiline
+                                                className={classes.textField}
+                                                margin="normal"
+                                                value={this.state.amount ? this.state.amount : ""}
+                                                onChange={this.onChangeHandler}
+                                                InputProps={{
+                                                    inputComponent: NumberFormatCustom,
+                                                }}
+                                            />
+
+
+                                            <TextField
+                                                id="hundreds"
+                                                label="$100 Bills"
+                                                multiline
+                                                className={classes.textField}
+                                                margin="normal"
+                                                value={this.state.amount ? this.state.amount : ""}
+                                                onChange={this.onChangeHandler}
+                                                InputProps={{
+                                                    inputComponent: NumberFormatCustom,
+                                                }}
+                                            />
+
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                             <div className="card-action pCard">
@@ -147,4 +219,4 @@ class Deposit extends React.Component {
 
 };
 
-export default withAuthUserContext(Deposit);
+export default withStyles(styles)(withAuthUserContext(Deposit));
