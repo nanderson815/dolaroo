@@ -91,6 +91,8 @@ NumberFormatCustom.propTypes = {
 
 class Register extends React.Component {
     state = {
+        disabled: true,
+        noError: false,
         firstName: "",
         lastName: "",
         company: "",
@@ -98,28 +100,48 @@ class Register extends React.Component {
         locations: "",
         email: "",
         cash: "",
-        phone: ""
+        phone: "",
+        errorText: ""
     };
 
     handleChange = name => event => {
-        this.setState({ [name]: event.target.value });
+        this.setState({ [name]: event.target.value }, () => this.enableButton());
+
     };
+
+    enableButton = () => {
+        if (this.state.firstName && this.state.lastName && this.state.email && this.state.company && this.state.revenue && this.state.locations
+            && this.state.cash && this.state.phone && this.state.noError === true) {
+            this.setState({ disabled: false });
+        } else {
+            this.setState({ disabled: true });
+        }
+    }
+
+    handleEmailValidator = event => {
+        if (event.target.value !== this.state.email) {
+            this.setState({ errorText: "Emails do not match!", noError: false }, () => this.enableButton())
+        } else {
+            this.setState({ errorText: "", noError: true }, () => this.enableButton())
+        }
+    }
 
     submitProspect = event => {
         const propspect = this.state;
         axios.post("/api/prospect", propspect)
-        .then(res => console.log(res.data))
-        .then(alert("Thank you for registering! We will contact you shortly."))
-        .then(this.setState({
-            firstName: "",
-            lastName: "",
-            company: "",
-            revenue: "",
-            locations: "",
-            email: "",
-            cash: "",
-            phone: ""
-        }))
+            .then(res => console.log(res.data))
+            .then(alert("Thank you for registering! We will contact you shortly."))
+            .then(this.setState({
+                errorText: "",
+                firstName: "",
+                lastName: "",
+                company: "",
+                revenue: "",
+                locations: "",
+                email: "",
+                cash: "",
+                phone: ""
+            }))
     }
 
 
@@ -182,6 +204,9 @@ class Register extends React.Component {
                                 name="email"
                                 autoComplete="email"
                                 margin="normal"
+                                onChange={this.handleEmailValidator}
+                                error={!!this.state.errorText}
+                                helperText={this.state.errorText}
                             />
 
                             <TextField
@@ -261,7 +286,7 @@ class Register extends React.Component {
 
                         </form>
                         <br></br>
-                        <Button onClick={this.submitProspect} id="submit" variant="contained" color="primary" className={classes.button}>
+                        <Button disabled={this.state.disabled} onClick={this.submitProspect} id="submit" variant="contained" color="primary" className={classes.button}>
                             Register
                             </Button>
 

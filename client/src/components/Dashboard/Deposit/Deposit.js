@@ -5,6 +5,30 @@ import Modal from './DepositModal';
 import { withAuthUserContext } from '../../Auth/Session/AuthUserContext';
 import DepositDB from '../Deposit/DepositDB';
 import { Redirect } from 'react-router';
+import NumberFormat from 'react-number-format';
+import TextField from '@material-ui/core/TextField';
+
+
+function NumberFormatCustom(props) {
+    const { inputRef, onChange, ...other } = props;
+
+    return (
+        <NumberFormat
+            {...other}
+            // className={locatStyles.input}
+            getInputRef={inputRef}
+            onValueChange={values => {
+                onChange({
+                    target: {
+                        value: values.value,
+                    },
+                });
+            }}
+            thousandSeparator
+            prefix="$"
+        />
+    );
+}
 
 
 class Deposit extends React.Component {
@@ -57,6 +81,8 @@ class Deposit extends React.Component {
     }
 
 
+
+
     render() {
         if (this.props.user.authUser) {
             return (
@@ -70,15 +96,39 @@ class Deposit extends React.Component {
                                     <form className="col s12">
                                         <p>Note: This input will be replaced by a hardware component in deployment.</p>
                                         <div className="input-field col s12 m6">
-                                            <input id="amount" type="number" onChange={this.onChangeHandler} value={this.state.amount ? this.state.amount : ""} className="validate" />
-                                            <label htmlFor="amount">Deposit Amount</label>
+                                            {/* <input
+                                                id="amount"
+                                                type="number"
+                                                onChange={this.onChangeHandler}
+                                                value={this.state.amount ? this.state.amount : ""}
+                                                InputProps={{
+                                                    inputComponent: NumberFormatCustom,
+                                                }}
+                                                className="validate"
+                                            />
+
+                                            <label htmlFor="amount">Deposit Amount</label> */}
+
+                                            <TextField
+                                                id="Amount"
+                                                label="Deposit Amount"
+                                                // placeholder="$1,000,000"
+                                                multiline
+                                                // className={classes.textField}
+                                                margin="normal"
+                                                value={this.state.amount ? this.state.amount : ""}
+                                                onChange={this.onChangeHandler}
+                                                InputProps={{
+                                                    inputComponent: NumberFormatCustom,
+                                                }}
+                                            />
                                         </div>
                                     </form>
                                 </div>
                             </div>
                             <div className="card-action pCard">
                                 <div className="center-align ">
-                                    <button className="btn waves-effect waves-light modal-trigger"
+                                    <button className="btn waves-effect waves-light blue darken-4 modal-trigger"
                                         type="submit" href="#modal1" onClick={this.onSubmitHandler} name="action">Submit
                                         </button>
                                 </div>
