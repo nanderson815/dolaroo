@@ -1,6 +1,7 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
-import AccountForm from "./AccountForm"
+import AccountForm from "./AccountForm";
   
 class Account extends React.Component {
 
@@ -30,17 +31,23 @@ class Account extends React.Component {
       return null;
     }
 
-    return ( 
-      <div>
-        <AccountForm 
-          uid={uid}
-          displayName={displayName}
-          email={email}
-          phoneNumber={phoneNumber}
-          claims={claims}
-        />
-      </div>
-    );
+    if (this.props.user.authUser) {
+      return ( 
+        <div>
+          <AccountForm 
+            uid={uid}
+            displayName={displayName}
+            email={email}
+            phoneNumber={phoneNumber}
+            claims={claims}
+          />
+        </div>
+      );
+    } else {
+        return (
+          <Redirect to="/signin" />
+        );
+    }
   }
 }
 

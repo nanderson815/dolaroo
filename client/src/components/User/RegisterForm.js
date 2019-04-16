@@ -1,6 +1,43 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import Button from '@material-ui/core/Button';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
 import { withFirebase } from '../Auth/Firebase/FirebaseContext';
+import { withRouter } from 'react-router-dom';
 import UserAPI from "./UserAPI";
+
+const styles = theme => ({
+  container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+  },
+  inputFix: {
+      marginTop: 5
+  },
+  textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      width: 300,
+  },
+  menu: {
+      width: 200,
+  },
+  formControl: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      minWidth: 300,
+  },
+  selectEmpty: {
+      marginTop: theme.spacing.unit * 2,
+  },
+});
 
 class Register extends Component {
   constructor(props) {
@@ -13,6 +50,8 @@ class Register extends Component {
     displayName: '',
     passwordOne: '',
     passwordTwo: '',
+    showPasswordOne: false,
+    showPasswordTwo: false,
     message: null,
   };
 
@@ -46,41 +85,75 @@ class Register extends Component {
     }
   }
 
-  onSubmit = event => {
+  registerUser = event => {
     event.preventDefault();
 
     // eslint-disable-next-line no-unused-vars
     const { displayName, email, passwordOne } = this.state;
     console.log(this.props);
 
-    this.props.firebase
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(authUser => {
-        let userInfo = {...authUser};
-        userInfo.displayName = displayName;
-        // Now Create the user in firestore
-        return(UserAPI.registerUser(userInfo));
-      })
-      .then(() => {
-        // redirect home
-        this.props.history.push("/dashboard"); 
-      })
-      .catch(err => {
-        this.setState({ err });
-    });
+    // First get the email and ensure it is ready to register
+    UserAPI.getByEmail(email)
+    .then(user => {
+        if (user.err) {
+          console.error(user.err);
+          this.setState({ message: user.err });
+        } else {
+          // Now create auth user from signin
+          this.props.firebase
+            .doCreateUserWithEmailAndPassword(email, passwordOne)
+            .then(authUser => {
+              let userInfo = {...authUser};
+              userInfo.displayName = displayName;
+              // Now Create the user in firestore
+              UserAPI.registerUser(userInfo)
+                .then(() => {
+                  // redirect home
+                  this.props.history.push("/dashboard"); 
+                })
+                .catch(err => {
+                  this.setState({ message: err });
+                });
+              })
+            .catch(err => {
+                  console.error(err); 
+                  this.setState({ message: err.message });
+            });        
+        }
+    })
+    .catch(err => {
+        console.error(err); 
+        this.setState({ message: err });
+    });        
   };
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  handleClickShowPasswordOne = (e) => {
+    e.preventDefault();
+
+    this.setState(state => ({ showPasswordOne: !state.showPasswordOne }));
+  };
+
+  handleClickShowPasswordTwo = (e) => {
+    e.preventDefault();
+
+    this.setState(state => ({ showPasswordTwo: !state.showPasswordTwo }));
+  };
+
+
   render() {
+    const { classes } = this.props;
+
     const {
       displayName,
       email,
-      foundEmail,
       passwordOne,
       passwordTwo,
+      showPasswordOne,
+      showPasswordTwo,
       message
     } = this.state;
 
@@ -92,32 +165,91 @@ class Register extends Component {
 
     return (
       <div className="container">
-        <form className="white" onSubmit={this.onSubmit}>
-          <h5 className="grey-text text-darken-3">Register User</h5>
-          <div className="input-field">
-            <label htmlFor="displayName">User Name</label>
-            <input type="text" name='displayName' value={displayName} onChange={this.onChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="email">Email</label>
-            <input disabled={foundEmail} type="email" name='email' value={email} onChange={this.onChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="passwordOne">Password</label>
-            <input type="password" name='passwordOne' value={passwordOne} onChange={this.onChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="passwordTwo">Confirm Password</label>
-            <input type="password" name='passwordTwo' value={passwordTwo} onChange={this.onChange} />
-          </div>
-          <div className="input-field">
-            <button disabled={isInvalid} className="btn lighten-1 z-depth-0">Sign Up</button>
+        <div className="card">
+          <div className="card-content">
+            <span className="card-title">Register</span>
+            <form className={classes.container}>
+              <TextField
+                id="displayName"
+                name="displayName"
+                label="Display Name"
+                placeholder="John Smith"
+                multiline
+                className={classes.textField}
+                type="text"
+                margin="normal"
+                value={displayName}
+                onChange={this.onChange}
+              />
+
+              <TextField
+                id="email"
+                name="email"
+                label="Email"
+                placeholder="example@gmail.com"
+                multiline
+                className={classes.textField}
+                type="email"
+                autoComplete="email"
+                margin="normal"
+                value={email}
+                onChange={this.onChange}
+              />
+
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="passwordOne">Password</InputLabel>
+                <Input
+                id="passwordOne"
+                name="passwordOne"
+                type={showPasswordOne ? 'text' : 'password'}
+                value={passwordOne}
+                onChange={this.onChange}
+                endAdornment={
+                    <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={this.handleClickShowPasswordOne}
+                    >
+                        {showPasswordOne ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                }
+                />
+              </FormControl>
+              
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="passwordTwo">Confirm Password</InputLabel>
+                <Input
+                id="passwordTwo"
+                name="passwordTwo"
+                type={showPasswordTwo ? 'text' : 'password'}
+                value={passwordTwo}
+                onChange={this.onChange}
+                endAdornment={
+                    <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={this.handleClickShowPasswordTwo}
+                    >
+                        {showPasswordTwo ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                }
+                />
+              </FormControl>
+              
+            </form>
+            <br />
+            <div className="row">
+                <Button disabled={isInvalid} onClick={this.registerUser} variant="contained" color="primary" className={classes.button}>
+                    Register
+                </Button>
+            </div>
+
+            <p>Note: Administrator must enable your email in order to register and get access to this app</p>
             <p>{message}</p>
+
           </div>
-        </form>
+        </div>
       </div>
     );
   }
 }
 
-export default withFirebase(Register);
+export default withStyles(styles)(withRouter(withFirebase(Register)));

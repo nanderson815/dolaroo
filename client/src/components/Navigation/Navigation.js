@@ -15,7 +15,8 @@ class Navigation extends React.Component {
     let elem = document.querySelector(".sidenav");
     M.Sidenav.init(elem, {
       edge: "left",
-      inDuration: 250
+      inDuration: 250,
+      closeOnClick: true
     });
 
     document.addEventListener('scroll', () => {
@@ -26,6 +27,14 @@ class Navigation extends React.Component {
       }
     });
   }
+
+  forceCloseSideNav() {
+    let elem = document.querySelector(".sidenav");
+    let instance = M.Sidenav.getInstance(elem);
+
+    instance.close();
+  }
+
 
   render() {
 
@@ -40,11 +49,11 @@ class Navigation extends React.Component {
 
     const navigationAdminMobile =
       <ul>
-        <li><a href="/">Landing</a></li>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/account">Account</a></li>
-        <li><a href="/admin">Admin</a></li>
-        <li><SignOutButton /></li>
+        <li><NavLink onClick={this.forceCloseSideNav} to="/">Landing</NavLink></li>
+        <li><NavLink onClick={this.forceCloseSideNav} to="/dashboard">Home</NavLink></li>
+        <li><NavLink onClick={this.forceCloseSideNav} to="/account">Account</NavLink></li>
+        <li><NavLink onClick={this.forceCloseSideNav} to="/admin">Admin</NavLink></li>
+        <li onClick={this.forceCloseSideNav}><SignOutButton /></li>
       </ul>
       ;
 
@@ -59,9 +68,10 @@ class Navigation extends React.Component {
 
     const navigationAuthMobile =
       <ul>
-        <li><a href="/">Landing</a></li>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><SignOutButton /></li>
+      <li><NavLink onClick={this.forceCloseSideNav} to="/">Landing</NavLink></li>
+      <li><NavLink onClick={this.forceCloseSideNav} to="/dashboard">Home</NavLink></li>
+      <li><NavLink onClick={this.forceCloseSideNav} to="/account">Account</NavLink></li>
+      <li onClick={this.forceCloseSideNav}> <SignOutButton /></li>
       </ul>
       ;
 
@@ -75,16 +85,16 @@ class Navigation extends React.Component {
 
     const navigationNonAuthMobile =
       <ul>
-        <li><a href="/">Landing</a></li>
-        <li><a href="/signin">Signin</a></li>
-      </ul>
+        <li><NavLink onClick={this.forceCloseSideNav} to="/">Landing</NavLink></li>
+        <li><NavLink onClick={this.forceCloseSideNav} to="/signin">Sign In</NavLink></li>
+    </ul>
       ;
 
 
     const navigationNonAuth =
       <ul>
-        <li><Link to="/">Landing</Link></li>
-        <li><NavLink to="/signin">Signin</NavLink></li>
+        <li><NavLink to="/">Landing</NavLink></li>
+        <li><NavLink to="/signin">Sign In</NavLink></li>
       </ul>
       ;
 
@@ -93,10 +103,10 @@ class Navigation extends React.Component {
     // in its value={} paramater (see withAuthentication component in Auth/Session)
     // ANY COMPONENT that needs authUser info uses consumer this way
 
-    let navBar, navBarMobile
+    let navBar, navBarMobile;
     if (this.props.user.authUser && this.props.user.claims === "admin") {
       navBar = navigationAdmin;
-      navBarMobile = navigationAdminMobile
+      navBarMobile = navigationAdminMobile;
     } else if (this.props.user.authUser) {
       navBar = navigationAuth;
       navBarMobile = navigationAuthMobile;

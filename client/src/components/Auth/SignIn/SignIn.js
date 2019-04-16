@@ -1,137 +1,213 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom'
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import Button from '@material-ui/core/Button';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-
 import { withFirebase } from '../Firebase/FirebaseContext';
 import AuthUserContext from '../Session/AuthUserContext';
-import UserAPI from "../../User/UserAPI"
+import UserAPI from "../../User/UserAPI";
 
 const INITIAL_STATE = {
   email: '',
   password: '',
   error: null,
+  showPassword: false
 };
 
-class SignInFormBase extends Component {
-  constructor(props) {
-    super(props);
+const styles = theme => ({
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    inputFix: {
+        marginTop: 5
+    },
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 300,
+    },
+    menu: {
+        width: 200,
+    },
+    formControl: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        minWidth: 300,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing.unit * 2,
+    },
+});
 
-    this._isMounted = false;
-
-    this.state = { ...INITIAL_STATE };
-  }
-
-  componentDidMount() {
-    this._isMounted = true;
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
-  onSubmit = e => {
-    e.preventDefault();
-
-    const { email, password } = this.state;
-
-    this.setState({ ...INITIAL_STATE });
-
-    this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then((authUser) => {
-        return(UserAPI.addAuthUserToFirestore(authUser));
-      })
-      .then(() => {
-        // NOTE : DO NOT RESET STATE if component unmounts since we are going to redirect
-        // this causes memory leaks - Igot an error explaining all that
-        if (this._isMounted) {
-          this.setState({ ...INITIAL_STATE });
-        }
-      })
-      .catch(error => {
-        if (this._isMounted) {
-          this.setState({ error });
-        }
-      });
-
-  };
-
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  registerUser = (e) => {
-    e.preventDefault();
-
-    this.props.history.push({
-      pathname: '/registerpage',
-      state: {email: this.state.email }
-  });
-
-  }
-
-  handleGoogleLogin = (e) => {
-    e.preventDefault();
-
-    this.props.firebase
-      .doSignInWithGoogle()
-      .then((authUser) => {
-        console.log("Logged in with google to firebase");
-        return(UserAPI.addAuthUserToFirestore(authUser));
-      })
-      .then(() => {
-        console.log("Added to firebase");
-      })
-      .catch(err => {
-        console.error("Error logging in with google", err);
-      });
-  }
-
-  render() {
-    let firebaseAuthKey;
-    const { email, password, error } = this.state;
-
-    const isInvalid = password === '' || email === '';
-
-    let SignInScreen;
-
-    if (localStorage.getItem(firebaseAuthKey) === "1") {
-      SignInScreen = <p>Loading New Page After Google Login ...</p>;
-    }
-    else {
-      SignInScreen = 
-        <form className="white" onSubmit={this.onSubmit}>
-          <h5 className="grey-text text-darken-3">Sign In</h5>
-          <div className="active input-field">
-            <label htmlFor="email">Email</label>
-            <input type="email" id='email' name='email' value={email} onChange={this.onChange} />
-          </div>
-          <div className="active input-field">
-            <label htmlFor="password">Password</label>
-            <input type="password" id='password' name='password' value={password} onChange={this.onChange} />
-          </div>
-          <div className="input-field">
-            <button disabled={isInvalid} className="btn lighten-1 z-depth-0">Login</button>
-            {error && <p>{error.message}</p>}
-          </div>
-          <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>  
-          <button onClick={this.registerUser} className="btn lighten-1 z-depth-0">Register</button>    
-          <button onClick={this.handleGoogleLogin} className="btn lighten-1 z-depth-0"> SignIn With Google</button>  
-        </form>;
+class SignInFormBase extends React.Component {
+    constructor(props) {
+        super(props);
+    
+        this._isMounted = false;
+    
+        this.state = { ...INITIAL_STATE };
     }
 
-    return (
-      <div className="container">
-        <AuthUserContext.Consumer>
-          {user => user.authUser ? <Redirect to="/dashboard" /> : null}
-        </AuthUserContext.Consumer>
-        {SignInScreen}
-      </div>
-    );
-  }
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+    
+    onChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
+
+    handleClickShowPassword = (e) => {
+        e.preventDefault();
+
+        this.setState(state => ({ showPassword: !state.showPassword }));
+    };
+    
+    signInUser = e => {
+        e.preventDefault();
+    
+        const { email, password } = this.state;
+    
+        // dont reset unless goood login
+        // this.setState({ ...INITIAL_STATE });
+    
+        this.props.firebase
+          .doSignInWithEmailAndPassword(email, password)
+          .then((authUser) => {
+            return(UserAPI.addAuthUserToFirestore(authUser));
+          })
+          .then(() => {
+            // NOTE : DO NOT RESET STATE if component unmounts since we are going to redirect
+            // this causes memory leaks - Igot an error explaining all that
+            if (this._isMounted) {
+              this.setState({ ...INITIAL_STATE });
+            }
+          })
+          .catch(error => {
+            if (this._isMounted) {
+              this.setState({ error });
+            }
+          });    
+      };
+
+    registerUser = (e) => {
+        e.preventDefault();
+    
+        this.props.history.push({
+          pathname: '/registerpage',
+          state: {email: this.state.email }
+        });
+    }
+    
+    handleGoogleLogin = (e) => {
+    e.preventDefault();
+
+    this.props.firebase
+        .doSignInWithGoogle()
+        .then((authUser) => {
+            console.log("Logged in with google to firebase");
+            return(UserAPI.addAuthUserToFirestore(authUser));
+        })
+        .then(() => {
+            console.log("Added to firebase");
+        })
+        .catch(err => {
+            console.error("Error logging in with google", err);
+        });
+    }
+
+    render() {
+        const { classes } = this.props;
+
+        let firebaseAuthKey;
+        const { email, password, showPassword, error } = this.state;
+    
+        const isInvalid = password === '' || email === '';
+    
+        let SignInScreen;
+    
+        if (localStorage.getItem(firebaseAuthKey) === "1") {
+          SignInScreen = <p>Loading New Page After Google Login ...</p>;
+        }
+        else {
+          SignInScreen = 
+            <div className="card">
+                <div className="card-content">
+                    <span className="card-title">Sign In</span>
+                    <form className={classes.container}>
+                        <TextField
+                            id="email"
+                            label="Email"
+                            placeholder="example@gmail.com"
+                            multiline
+                            className={classes.textField}
+                            type="email"
+                            name="email"
+                            autoComplete="email"
+                            margin="normal"
+                            value={email}
+                            onChange={this.onChange}
+                        />
+
+                        <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="password">Password</InputLabel>
+                                <Input
+                                id="password"
+                                name="password"
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={this.onChange}
+                                endAdornment={
+                                    <IconButton
+                                        aria-label="Toggle password visibility"
+                                        onClick={this.handleClickShowPassword}
+                                    >
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                }
+                                />
+                        </FormControl>
+                        </form>
+                        <br />
+                        <div className="row">
+                            <Button disabled={isInvalid} onClick={this.signInUser} variant="contained" color="primary" className={classes.button}>
+                                Login
+                            </Button>
+                        </div>
+                        <div className="row">
+                            <Button onClick={this.registerUser} variant="contained" color="primary" className={classes.button}>
+                                Register
+                            </Button>
+                            {error && <p>{error.message}</p>}
+                        </div>
+                        {/*<p>Don't have an account? <Link to="/signup">Sign Up</Link></p>*/}
+                        {/*<button onClick={this.handleGoogleLogin} className="btn lighten-1 z-depth-0"> SignIn With Google</button>*/}  
+                </div>
+            </div>;
+        }
+
+        return (
+            <div className="container">
+              <AuthUserContext.Consumer>
+                {user => user.authUser ? <Redirect to="/dashboard" /> : null}
+              </AuthUserContext.Consumer>
+              {SignInScreen}
+            </div>
+        );   
+    }
 }
 
 const SignInForm = withRouter(withFirebase(SignInFormBase));
-export default SignInForm;
+export default withStyles(styles)(SignInForm);

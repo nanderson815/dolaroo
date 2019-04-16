@@ -1,6 +1,7 @@
 "use strict";
 const admin = require("../middleware/authServerCommon");
 
+// Backend functions for user DB in firestore and auth
 class UserDB {
     static updateClaims (uid, claims) {
         return new Promise(async (resolve, reject) => {

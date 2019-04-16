@@ -1,6 +1,11 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router';
+
+
+import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
 import User from './User';
-import UserAPI from "./UserAPI"
+import UserAPI from "./UserAPI";
 
 class Users extends React.Component {
     constructor(props) {
@@ -78,33 +83,48 @@ class Users extends React.Component {
             alert(err);
             console.error(err); 
         });
-    }        
+    }       
     
+    // go back to where you came from
+    goBack = () => {
+        this.props.history.goBack();
+    }
+
     render() {
-        return (
-            <div className="row">
-            {this.state.users.map((user) => {
-                return(            
-                    <div key={user.id} className="col s12 m6 l6">
-                        <User 
-                        userDelete={this.userDelete}
-                        userMakeAdmin={this.userMakeAdmin}
-                        userMakeCashier={this.userMakeCashier}
-                        id={user.id}
-                        uid={user.uid}
-                        firstName={user.firstName}
-                        lastName={user.lastName}
-                        phoneNumber={user.phoneNumber}
-                        email={user.email}
-                        photoURL={user.photoURL}
-                        claims={user.claims}
-                        />
-                    </div>
-                    );
-            })}
-            </div>
-        );
+        if (this.props.user.authUser && this.props.user.claims === "admin") {
+            return (
+                <div className="row">
+                {this.state.users.map((user) => {
+                    return(            
+                        <div key={user.id} className="col s12 m6 l6">
+                            <User 
+                            userDelete={this.userDelete}
+                            userMakeAdmin={this.userMakeAdmin}
+                            userMakeCashier={this.userMakeCashier}
+                            id={user.id}
+                            uid={user.uid}
+                            firstName={user.firstName}
+                            lastName={user.lastName}
+                            phoneNumber={user.phoneNumber}
+                            email={user.email}
+                            photoURL={user.photoURL}
+                            claims={user.claims}
+                            />
+                        </div>
+                        );
+                })}
+                </div>
+            );
+        } else if (this.props.user.authUser) {                
+            return (
+                <Redirect to="/dashboard" />
+            );  
+        } else  {                
+            return (
+                <Redirect to="/signin" />
+            );      
+        }
     }
 }
 
-export default Users;
+export default withRouter(withAuthUserContext(Users));

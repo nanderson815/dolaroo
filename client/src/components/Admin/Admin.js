@@ -1,7 +1,10 @@
 import React from 'react';
-import Users from "../User/Users"
+import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
-  
+
+import Users from "../User/Users"
+import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
+
 class Admin extends React.Component {
   
     // route to new use create
@@ -11,17 +14,32 @@ class Admin extends React.Component {
         });
     }
 
+    // go back to where you came from
+    goBack = () => {
+        this.props.history.goBack();
+    }
+
     render() {
-        return ( 
-            <div className="container">
-                <div className="row center-align">
-                    <br />
-                    <button className="btn center-align" onClick={this.createUser}>Create User</button>
+        if (this.props.user.authUser && this.props.user.claims === "admin") {
+            return ( 
+                <div className="container">
+                    <div className="row center-align">
+                        <br />
+                        <button className="btn center-align" onClick={this.createUser}>Create User</button>
+                    </div>
+                    <Users />
                 </div>
-                <Users />
-          </div>
-          );
+            );
+        } else if (this.props.user.authUser) {                
+            return (
+                <Redirect to="/dashboard" />
+            );  
+        } else  {                
+            return (
+                <Redirect to="/signin" />
+            );      
+        }
     }
 }
 
-export default withRouter(Admin);
+export default withRouter(withAuthUserContext(Admin));
