@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 
 const styles = {
   avatar: {
@@ -18,15 +19,35 @@ const styles = {
 
 const IconAvatars = (props) => {
   const { classes } = props;
+
+  let avatar;
+  if (props.user.displayName) {
+    let res = props.user.displayName.split(" ");
+    let initials = "";
+    if (res[0][0]) {
+      initials += res[0][0];
+      if (res[1][0]) {
+        initials += res[1][0];
+      }
+    } else {
+      initials = "OP";
+    }
+    avatar = <Avatar className={classes.pinkAvatar}>{initials}</Avatar>;
+  } else {
+    avatar = 
+    <Avatar className={classes.pinkAvatar}>
+      <AccountCircle />
+    </Avatar>;
+  }
   return (
-      <Avatar className={classes.pinkAvatar}>
-        <AccountCircle />
-      </Avatar>
+    <div>
+      {avatar}
+    </div>
   );
-}
+};
 
 IconAvatars.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(IconAvatars);
+export default withAuthUserContext(withStyles(styles)(IconAvatars));
