@@ -56,8 +56,6 @@ class DepositByUser extends React.Component {
             return (deposit.amount); 
         });
 
-        //const today = date();
-
         return (
             <Plot
             data= {[
@@ -78,8 +76,7 @@ class DepositByUser extends React.Component {
                         autorange: true,
                         range: [earliestDate, latestDate],
                         rangeselector: selectorOptions,
-                        rangeslider: {},
-                        /*type: 'date'*/
+                        rangeslider: {earliestDate, latestDate},
                       }          
                 }
             }
@@ -94,6 +91,8 @@ class DepositByUser extends React.Component {
         if (!this.props.user) {
             return null;
         }
+
+        const displayName = this.props.user.displayName;
   
         if (this.props.user.authUser) {
             return ( 
@@ -101,8 +100,8 @@ class DepositByUser extends React.Component {
                     <div className="col s12 m6">
                         <div className="card">
                             <div className="card-content pCard">
-                                <span className="card-title">{this.props.title ? this.props.title : 'Card Title'}</span>
-                                {this.plotDeposits()}
+                            <span className="card-title">{this.props.title ? this.props.title : 'DepositByUser'} : {displayName}</span>
+                            {this.plotDeposits()}
                             </div>
                             <div className="card-action pCard">
                                 <div className="center-align">
