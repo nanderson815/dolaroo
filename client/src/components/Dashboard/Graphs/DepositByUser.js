@@ -12,7 +12,7 @@ class DepositByUser extends React.Component {
         return [ date.getFullYear(), mnth, day ].join("-");
     }    
     
-    plotDeposits = () => {
+    plotDeposits = (uid) => {
         const selectorOptions = {
             buttons: [{
                 step: 'month',
@@ -39,7 +39,11 @@ class DepositByUser extends React.Component {
             }]
         };
     
-        const sortedByDate = this.props.deposits.sort((a, b) => {
+        const filteredByUid = this.props.deposits.filter((deposit) => {
+            return  deposit.uid === uid;
+        });
+
+        const sortedByDate = filteredByUid.sort((a, b) => {
             return  (a.time > b.time) ? 1 : -1;
         });
         // convert to javascript date object so plotly can recognize it as a proper date
@@ -101,7 +105,7 @@ class DepositByUser extends React.Component {
                         <div className="card">
                             <div className="card-content pCard">
                             <span className="card-title">{this.props.title ? this.props.title : 'DepositByUser'} : {displayName}</span>
-                            {this.plotDeposits()}
+                            {this.plotDeposits(this.props.user.authUser.uid)}
                             </div>
                             <div className="card-action pCard">
                                 <div className="center-align">
