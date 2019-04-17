@@ -8,6 +8,8 @@ import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 import { Redirect } from 'react-router';
 // import { withFirebaseContext } from '../Auth/Firebase/FirebaseContext';
 
+import DepositByUser from "./Graphs/DepositByUser";
+
 import DepositDB from './Deposit/DepositDB';
 
 class Home extends React.Component {
@@ -38,7 +40,10 @@ class Home extends React.Component {
                             <Balance balance={this.state.cash} />
                         </div>
                         <div className="row">
-                            <GraphCard />
+                            <DepositByUser 
+                                title={"Deposits By User"}
+                                deposits={this.state.deposits}
+                            />
                             <GraphCard />
                             <GraphCard />
                         </div>

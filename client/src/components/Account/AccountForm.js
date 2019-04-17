@@ -119,6 +119,10 @@ class AccountForm extends React.Component {
         });
     };
 
+    handleChange = name => event => {
+        this.setState({ [name]: event.target.value });
+    };
+
     render() {
         const { classes } = this.props;
 
@@ -201,7 +205,7 @@ class AccountForm extends React.Component {
                         multiline
                         className={classes.textField}
                         margin="normal"
-                        onChange={this.onChange}
+                        onChange={this.handleChange('phoneNumber')}
                         InputProps={{
                             inputComponent: NumberFormatPhone,
                         }}
@@ -211,7 +215,7 @@ class AccountForm extends React.Component {
                     <br />
                     <div className="row">
                         <Button disabled={!isValid} onClick={this.updateUser} variant="contained" color="primary" className={classes.button}>
-                            Register
+                            Update
                         </Button>
                     </div>
         

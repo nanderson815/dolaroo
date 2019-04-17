@@ -140,6 +140,11 @@ class UserForm extends React.Component {
     });
   };
 
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
+
+
   render() {
     const { classes } = this.props;
 
@@ -236,10 +241,10 @@ class UserForm extends React.Component {
               multiline
               className={classes.textField}
               margin="normal"
-              onChange={this.onChange}
-              // InputProps={{
-              //     inputComponent: NumberFormatPhone,
-              // }}
+              onChange={this.handleChange('phoneNumber')}
+              InputProps={{
+                  inputComponent: NumberFormatPhone,
+              }}
               />
                             
             </form>

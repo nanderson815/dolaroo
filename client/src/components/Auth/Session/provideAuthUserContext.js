@@ -50,9 +50,9 @@ const provideAuthUserContext = Component => {
                             displayName: authUser.displayName,
                             phoneNumber: authUser.phoneNumber,
                             email: authUser.email
-                        }
+                        };
         
-                        this.setState({...newState})
+                        this.setState({...newState});
                         this.refreshToken();
                     } else {
                         this.setState({
