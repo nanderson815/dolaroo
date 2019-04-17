@@ -29,6 +29,7 @@ function NumberFormatCustom(props) {
     return (
         <NumberFormat
             {...other}
+            other={other}
             // className={locatStyles.input}
             getInputRef={inputRef}
             onValueChange={values => {
@@ -69,25 +70,32 @@ class Deposit extends React.Component {
 
 
     handleChange = name => event => {
-        this.setState({ [name]: event.target.value });
+        if (event.target.value) {
+            this.setState({ [name]: parseInt(event.target.value) });
+        }
+        else {
+            this.setState({ [name]: 0 });
+        }
     };
 
-
-
-    onSubmitHandler = (event) => {
-        event.preventDefault();
+    updateDatabase = () => {
         const db = Util.getFirestoreDB();
-
         let d = Date(Date.now());
-        let amount = parseFloat(this.state.amount);
+
+        let amount =this.state.amount
 
         db.collection('deposits').add({
             amount: amount,
+            ones: this.state.ones,
+            fives: this.state.fives,
+            tens: this.state.tens,
+            twenties: this.state.twenties,
+            fifties: this.state.fifties,
+            hundreds: this.state.hundreds,
             time: d.toString(),
             user: this.props.user.authUser.email,
-            UID: this.props.user.authUser.uid
+            smalluid: this.props.user.authUser.uid
         });
-
 
         db.collection('cash').doc('balance').update({
             balance: this.state.cash + amount
@@ -96,8 +104,17 @@ class Deposit extends React.Component {
         db.collection('credit').doc('balance').update({
             balance: this.state.credit + (.975 * amount)
         });
+    }
 
 
+
+    onSubmitHandler = (event) => {
+        event.preventDefault();
+
+        const total = (this.state.ones) + (this.state.fives * 5) + (this.state.tens * 10) + (this.state.twenties * 20) + (this.state.fifties * 50) + (this.state.hundreds * 100);
+
+        this.setState({amount: total}, this.updateDatabase);
+        
     }
 
 
@@ -106,7 +123,7 @@ class Deposit extends React.Component {
         if (this.props.user.authUser) {
             return (
                 <div className="container">
-                    <Modal />
+                    <Modal amount={this.state.amount} />
                     <div className="col s12">
                         <div className="card">
                             <div className="card-content pCard">
@@ -121,6 +138,7 @@ class Deposit extends React.Component {
                                                 id="ones"
                                                 label="$1 Bills"
                                                 multiline
+                                                denomination={1}
                                                 className={classes.textField}
                                                 margin="normal"
                                                 value={this.state.ones ? this.state.ones : ""}
@@ -197,6 +215,7 @@ class Deposit extends React.Component {
                                             />
 
                                         </form>
+
                                     </div>
                                 </div>
                             </div>
