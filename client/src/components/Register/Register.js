@@ -178,8 +178,6 @@ class Register extends React.Component {
                                 onChange={this.handleChange('lastName')}
                             />
 
-
-
                             <TextField
                                 id="email"
                                 label="Email"
