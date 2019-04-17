@@ -25,7 +25,7 @@ class Admin extends React.Component {
                 <div className="container">
                     <div className="row center-align">
                         <br />
-                        <button className="btn center-align" onClick={this.createUser}>Create User</button>
+                        <button className="btn center-align blue darken-4" onClick={this.createUser}>Create User</button>
                     </div>
                     <Users />
                 </div>
