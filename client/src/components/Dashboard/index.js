@@ -9,6 +9,7 @@ import { Redirect } from 'react-router';
 // import { withFirebaseContext } from '../Auth/Firebase/FirebaseContext';
 
 import DepositByUser from "./Graphs/DepositByUser";
+import DepositByAll from "./Graphs/DepositByAll";
 
 import DepositDB from './Deposit/DepositDB';
 
@@ -44,7 +45,10 @@ class Home extends React.Component {
                                 title={"Deposits By User"}
                                 deposits={this.state.deposits}
                             />
-                            <GraphCard />
+                            <DepositByAll 
+                                title={"All Deposits"}
+                                deposits={this.state.deposits}
+                            />
                             <GraphCard />
                         </div>
                     </div>
@@ -53,7 +57,7 @@ class Home extends React.Component {
         } else {
             return (
                 <Redirect to="/" />
-            )
+            );
         }
 
     }
