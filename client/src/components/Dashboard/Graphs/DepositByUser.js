@@ -37,22 +37,22 @@ class DepositByUser extends React.Component {
             }, {
                 step: 'all',
             }]
-        }
+        };
     
         const sortedByDate = this.props.deposits.sort((a, b) => {
             return  (a.time > b.time) ? 1 : -1;
         });
+        // convert to javascript date object so plotly can recognize it as a proper date
         const times = sortedByDate.map((deposit) => {
-            return (deposit.time);
+            let jsDate = new Date(deposit.time);
+            return (jsDate);
         });
 
-        const earliestUTC = times.length > 0 ? times[0] : 0;
-        const earliestDate = this.convertDate(earliestUTC);
-        const latestUTC = times.length > 0 ? times[times.length-1] : 0;
-        const latestDate = this.convertDate(latestUTC);
+        const earliestDate = times.length > 0 ? times[0] : new Date();
+        const latestDate = times.length > 0 ? times[times.length-1] : new Date();
         console.log(`early: ${earliestDate}, late ${latestDate}`);
 
-        const amounts = this.props.deposits.map((deposit) => {
+        const amounts = sortedByDate.map((deposit) => {
             return (deposit.amount); 
         });
 
@@ -76,7 +76,7 @@ class DepositByUser extends React.Component {
                     /* title: 'Deposits By User' */
                     xaxis: {
                         autorange: true,
-                        range: ["2019-04-01", "2019-04-17"],
+                        range: [earliestDate, latestDate],
                         rangeselector: selectorOptions,
                         rangeslider: {},
                         /*type: 'date'*/
