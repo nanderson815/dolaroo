@@ -2,3 +2,7 @@
 .card {
     min-height: 225px;
 }
+
+.modebar {
+    display: none !important;
+}

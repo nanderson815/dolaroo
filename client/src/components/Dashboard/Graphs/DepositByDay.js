@@ -96,7 +96,7 @@ class DepositByDay extends React.Component {
                     name: 'Deposits by User',
                     x: days,
                     y: amounts,
-                    marker: {color: 'blue'},
+                    marker: { color: 'rgb(13, 71, 161)'},
                     "hoverinfo": "x+y",
                     "line": {"width": 0.5}, 
                 },
@@ -128,7 +128,7 @@ class DepositByDay extends React.Component {
         if (this.props.user.authUser) {
             return ( 
                 <div>
-                    <div className="col s12 m6">
+                    <div className="col s12 l6">
                         <div className="card">
                             <div className="card-content pCard">
                             <span className="card-title">{this.props.title ? this.props.title : 'DepositByDay'}</span>
