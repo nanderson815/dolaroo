@@ -10,7 +10,7 @@ const Modal = props => {
                     <h5>Amount: ${props.amount}</h5>
                 </div>
                 <div className="modal-footer">
-                    <Link to="/dashboard" className="modal-close waves-effect waves-green btn-flat">OK</Link>
+                    <Link to="/dashboard" className="modal-close waves-effect waves-green btn-flat">Accept</Link>
                 </div>
             </div>
         </div>
