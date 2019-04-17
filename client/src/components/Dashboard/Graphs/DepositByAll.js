@@ -4,8 +4,8 @@ import { Redirect } from 'react-router';
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
-class DepositByUser extends React.Component {
-    plotDeposits = (uid) => {
+class DepositByAll extends React.Component {
+    plotDeposits = () => {
         const selectorOptions = {
             buttons: [
             {
@@ -38,11 +38,7 @@ class DepositByUser extends React.Component {
             }]
         };
     
-        const filteredByUid = this.props.deposits.filter((deposit) => {
-            return  deposit.uid === uid;
-        });
-
-        const sortedByDate = filteredByUid.sort((a, b) => {
+        const sortedByDate = this.props.deposits.sort((a, b) => {
             return  (a.time > b.time) ? 1 : -1;
         });
         // convert to javascript date object so plotly can recognize it as a proper date
@@ -62,20 +58,19 @@ class DepositByUser extends React.Component {
             <Plot
             data= {[
                 {
-                    type: 'bar',
-                    mode: 'stack',
-                    name: 'Deposits by User',
-                    x: times,
-                    y: amounts,
-                    marker: {color: 'blue'},
                     "hoverinfo": "x+y",
                     "line": {"width": 0.5}, 
+                    "marker": {"size": 8, color: "blue"},        
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    name: 'Deposits By User',
+                    x: times,
+                    y: amounts,
                 },
             ]}
             layout = {
                 {
                     autosize: true,
-                    /* title: 'Deposits By User' */
                     xaxis: {
                         autorange: true,
                         range: [earliestDate, latestDate],
@@ -95,8 +90,6 @@ class DepositByUser extends React.Component {
         if (!this.props.user) {
             return null;
         }
-
-        const displayName = this.props.user.displayName;
   
         if (this.props.user.authUser) {
             return ( 
@@ -104,8 +97,8 @@ class DepositByUser extends React.Component {
                     <div className="col s12 m6">
                         <div className="card">
                             <div className="card-content pCard">
-                            <span className="card-title">{this.props.title ? this.props.title : 'DepositByUser'} : {displayName}</span>
-                            {this.plotDeposits(this.props.user.authUser.uid)}
+                            <span className="card-title">{this.props.title ? this.props.title : 'DepositByAll'}</span>
+                            {this.plotDeposits()}
                             </div>
                             <div className="card-action pCard">
                                 <div className="center-align">
@@ -124,4 +117,4 @@ class DepositByUser extends React.Component {
     }
 }
 
-export default withAuthUserContext(DepositByUser);
+export default withAuthUserContext(DepositByAll);
