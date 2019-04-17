@@ -5,13 +5,6 @@ import { Redirect } from 'react-router';
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
 class DepositByUser extends React.Component {
-    convertDate = (str) => {
-        var date = new Date(str),
-            mnth = ("0" + (date.getMonth()+1)).slice(-2),
-            day  = ("0" + date.getDate()).slice(-2);
-        return [ date.getFullYear(), mnth, day ].join("-");
-    }    
-    
     plotDeposits = (uid) => {
         const selectorOptions = {
             buttons: [
@@ -60,7 +53,6 @@ class DepositByUser extends React.Component {
 
         const earliestDate = times.length > 0 ? times[0] : new Date();
         const latestDate = times.length > 0 ? times[times.length-1] : new Date();
-        console.log(`early: ${earliestDate}, late ${latestDate}`);
 
         const amounts = sortedByDate.map((deposit) => {
             return (deposit.amount); 

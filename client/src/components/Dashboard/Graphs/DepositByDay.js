@@ -1,11 +1,13 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
+import _ from "underscore";
+import moment from "moment";
 import { Redirect } from 'react-router';
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
-class DepositByAll extends React.Component {
-    plotDeposits = () => {
+class DepositByDay extends React.Component {    
+    plotDeposits = (uid) => {
         const selectorOptions = {
             buttons: [
             {
@@ -41,36 +43,68 @@ class DepositByAll extends React.Component {
         const sortedByDate = this.props.deposits.sort((a, b) => {
             return  (a.time > b.time) ? 1 : -1;
         });
-        // convert to javascript date object so plotly can recognize it as a proper date
-        const times = sortedByDate.map((deposit) => {
+
+        // split deposits by day into object with all deposits for each day
+        let groups = _.groupBy(sortedByDate, (deposit) => {
             let jsDate = new Date(deposit.time);
-            return (jsDate);
+            return moment(jsDate).startOf('day').format();
         });
 
-        const earliestDate = times.length > 0 ? times[0] : new Date();
-        const latestDate = times.length > 0 ? times[times.length-1] : new Date();
-
-        const amounts = sortedByDate.map((deposit) => {
-            return (deposit.amount); 
+        // turn complex object into array by day with total for the day and each days deposits (for stacking later)
+        var dayDeposits = _.map(groups, (deposit, day) => {
+            let totalObj = deposit.reduce((a, b) => {
+                return({amount: a.amount + b.amount});
+            });
+            let total = totalObj.amount;
+            return {
+                day: day,
+                total: total,
+                times: deposit
+            };
         });
+        console.log(dayDeposits);
+
+        // convert to javascript date object so plotly can recognize it as a proper date
+        const days = dayDeposits.map((deposit) => {
+            let jsDate = new Date(deposit.day);
+            // Convert to just day without time
+            let month = '' + (jsDate.getMonth() + 1);
+            let day = '' + jsDate.getDate();
+            let year = jsDate.getFullYear();
+    
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+    
+            return [year, month, day].join('-');
+        });
+
+        const earliestDate = days.length > 0 ? days[0] : new Date();
+        const latestDate = days.length > 0 ? days[days.length-1] : new Date();
+
+        const amounts = dayDeposits.map((deposit) => {
+            return (deposit.total); 
+        });
+
+        // STILL NEED To stack all deposits for that day
 
         return (
             <Plot
             data= {[
                 {
+                    type: 'bar',
+                    mode: 'stack',
+                    name: 'Deposits by User',
+                    x: days,
+                    y: amounts,
+                    marker: {color: 'blue'},
                     "hoverinfo": "x+y",
                     "line": {"width": 0.5}, 
-                    "marker": {"size": 8, color: "blue"},        
-                    type: 'scatter',
-                    mode: 'lines+markers',
-                    name: 'Deposits By User',
-                    x: times,
-                    y: amounts,
                 },
             ]}
             layout = {
                 {
                     autosize: true,
+                    /* title: 'Deposits By User' */
                     xaxis: {
                         autorange: true,
                         range: [earliestDate, latestDate],
@@ -97,7 +131,7 @@ class DepositByAll extends React.Component {
                     <div className="col s12 m6">
                         <div className="card">
                             <div className="card-content pCard">
-                            <span className="card-title">{this.props.title ? this.props.title : 'DepositByAll'}</span>
+                            <span className="card-title">{this.props.title ? this.props.title : 'DepositByDay'}</span>
                             {this.plotDeposits()}
                             </div>
                             <div className="card-action pCard">
@@ -117,4 +151,4 @@ class DepositByAll extends React.Component {
     }
 }
 
-export default withAuthUserContext(DepositByAll);
+export default withAuthUserContext(DepositByDay);
