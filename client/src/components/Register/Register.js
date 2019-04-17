@@ -178,8 +178,6 @@ class Register extends React.Component {
                                 onChange={this.handleChange('lastName')}
                             />
 
-
-
                             <TextField
                                 id="email"
                                 label="Email"
@@ -238,7 +236,7 @@ class Register extends React.Component {
 
                             <TextField
                                 id="revenue"
-                                label="Revenue (Approx.)"
+                                label="Annual Revenue (Approx.)"
                                 // placeholder="$1,000,000"
                                 multiline
                                 className={classes.textField}

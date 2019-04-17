@@ -15,12 +15,12 @@ class SignOutButton extends React.Component {
 
   render() {
     return(
-      <div>
+      <div className="center-align">
         <AuthUserContext.Consumer>
           {user => user.authUser ? null : <Redirect to="/signin" />}
         </AuthUserContext.Consumer>
 
-        <button className="btn" onClick={this.handleSignout}>
+        <button className="btn blue darken-4" onClick={this.handleSignout}>
           Logout
         </button>
       </div>
