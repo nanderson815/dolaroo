@@ -2,7 +2,6 @@ import React from 'react';
 import ProvisionalCredit from './ProvisionalCredit/provisionalCredit';
 // import Deposit from './Deposit/Deposit';
 import Balance from './Balance/Balance';
-import GraphCard from './GraphCard/GraphCard';
 import './dashboard.css';
 import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 import { Redirect } from 'react-router';
