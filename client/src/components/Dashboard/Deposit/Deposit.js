@@ -94,7 +94,7 @@ class Deposit extends React.Component {
             hundreds: this.state.hundreds,
             time: d.toString(),
             user: this.props.user.authUser.email,
-            smalluid: this.props.user.authUser.uid
+            uid: this.props.user.authUser.uid
         });
 
         db.collection('cash').doc('balance').update({
