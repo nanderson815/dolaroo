@@ -13,8 +13,12 @@ main {
 
 }
 
-.textbox {
+/* .textbox {
     margin-top: 10%;
+} */
+
+.textboxCont {
+    height: 100%;
 }
 
 .landing-btn {
