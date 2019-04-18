@@ -92,7 +92,7 @@ class Deposit extends React.Component {
             fifties: this.state.fifties,
             hundreds: this.state.hundreds,
             time: new Date(),
-            user: this.props.user.authUser.email,
+            email: this.props.user.authUser.email,
             uid: this.props.user.authUser.uid
         });
 

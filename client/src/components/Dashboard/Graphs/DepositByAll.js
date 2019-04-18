@@ -79,9 +79,10 @@ class DepositByAll extends React.Component {
                         }
                     }
                 }
-                displayModeBar={false}
                 useResizeHandler={true}
                 style={{ width: "100%", height: "100%" }}
+                config={{displayModeBar: false}}
+                
             />
         );
     }
