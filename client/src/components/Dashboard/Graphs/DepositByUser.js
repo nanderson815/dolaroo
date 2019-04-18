@@ -1,6 +1,7 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 import { Redirect } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
@@ -47,8 +48,7 @@ class DepositByUser extends React.Component {
         });
         // convert to javascript date object so plotly can recognize it as a proper date
         const times = sortedByDate.map((deposit) => {
-            let jsDate = new Date(deposit.time);
-            return (jsDate);
+            return (deposit.time.toDate());
         });
 
         const earliestDate = times.length > 0 ? times[0] : new Date();
@@ -92,6 +92,14 @@ class DepositByUser extends React.Component {
         );
     }
 
+
+    // go to details
+    viewDetails = () => {
+        this.props.history.push({
+            pathname: '/depositlist'
+        });
+    }
+
     render() {
         console.log(this.props)
         // Some props take time to get ready so return null when uid not avaialble
@@ -112,7 +120,7 @@ class DepositByUser extends React.Component {
                             </div>
                             <div className="card-action pCard">
                                 <div className="center-align">
-                                    <a href="#!" className="waves-effect waves-light dash-btn blue darken-4 btn">More Details</a>
+                                    <button onClick={this.viewDetails} className="waves-effect waves-light dash-btn blue darken-4 btn">More Details</button>
                                 </div>
                             </div>
                         </div>
@@ -127,4 +135,4 @@ class DepositByUser extends React.Component {
     }
 }
 
-export default withAuthUserContext(DepositByUser);
+export default withRouter(withAuthUserContext(DepositByUser));

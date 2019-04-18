@@ -3,6 +3,7 @@ import Plot from 'react-plotly.js';
 import _ from "underscore";
 import moment from "moment";
 import { Redirect } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
@@ -46,7 +47,7 @@ class DepositByDay extends React.Component {
 
         // split deposits by day into object with all deposits for each day
         let groups = _.groupBy(sortedByDate, (deposit) => {
-            let jsDate = new Date(deposit.time);
+            let jsDate = deposit.time.toDate();
             return moment(jsDate).startOf('day').format();
         });
 
@@ -62,7 +63,7 @@ class DepositByDay extends React.Component {
                 times: deposit
             };
         });
-        console.log(dayDeposits);
+        // console.log(dayDeposits);
 
         // convert to javascript date object so plotly can recognize it as a proper date
         const days = dayDeposits.map((deposit) => {
@@ -121,6 +122,14 @@ class DepositByDay extends React.Component {
         );
     }
 
+  
+    // go to details
+    viewDetails = () => {
+        this.props.history.push({
+            pathname: '/depositlist'
+        });
+    }
+    
     render() {
         // Some props take time to get ready so return null when uid not avaialble
         if (!this.props.user) {
@@ -138,7 +147,7 @@ class DepositByDay extends React.Component {
                             </div>
                             <div className="card-action pCard">
                                 <div className="center-align">
-                                    <a href="#!" className="waves-effect waves-light dash-btn blue darken-4 btn">More Details</a>
+                                    <button onClick={this.viewDetails} className="waves-effect waves-light dash-btn blue darken-4 btn">More Details</button>
                                 </div>
                             </div>
                         </div>
@@ -153,4 +162,4 @@ class DepositByDay extends React.Component {
     }
 }
 
-export default withAuthUserContext(DepositByDay);
+export default withRouter(withAuthUserContext(DepositByDay));
