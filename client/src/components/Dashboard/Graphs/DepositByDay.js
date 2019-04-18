@@ -63,7 +63,7 @@ class DepositByDay extends React.Component {
                 times: deposit
             };
         });
-        console.log(dayDeposits);
+        // console.log(dayDeposits);
 
         // convert to javascript date object so plotly can recognize it as a proper date
         const days = dayDeposits.map((deposit) => {

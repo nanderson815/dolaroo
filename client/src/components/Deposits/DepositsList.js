@@ -19,7 +19,7 @@ class DepositList extends React.Component {
 
     getDeposits = () => {
         // Get with security
-        DepositDB.get("deposits")
+        DepositDB.getByDate("deposits")
         .then(deposits => {
             const sortedByDate = deposits.sort((a, b) => {
                 return  (new Date(a.time) < new Date(b.time)) ? 1 : -1;

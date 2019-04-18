@@ -7,8 +7,8 @@ import moment from "moment";
 const DepositItem = (props) => {
     // decontruct props
     let { uid, amount, ones, fives, tens, twenties, fifties, hundreds, time, user } =  props.deposit;
-    // let jsDate = new Date(time);
-    const dateTime = moment(time).format("YYYY-MM-DD HH:mm:ss");
+    let jsDate = new Date(time);
+    const dateTime = moment(jsDate).format("YYYY-MM-DD HH:mm:ss");
 
     return ( 
         <li className="collection-item avatar z-depth-2">

@@ -23,16 +23,33 @@ class DepositDB {
     }
 
     // Get all deposits from firestore BY DATE
-    static getByDate =  () => {
+    // Join user
+    static getByDate =  (collection) => {
+
         return new Promise( (resolve, reject) => {
             const db = Util.getFirestoreDB();   // active firestore db ref
 
+            let deposits = [];
             db.collection("deposits").orderBy("time", "desc").get().then((querySnapshot) => {
-                let deposits = [];
                 querySnapshot.forEach (doc => {
                     let deposit = {};
                     deposit = doc.data();
                     deposit.id = doc.id;
+                    // default user is the denormalized email on the deposit table
+                    deposit.displayName = doc.data().user;
+                    // this does not work since resolve gets called beforee inside async finishes
+                    // once again, doing async inside loop is no good
+                    // const uid = doc.data().uid;
+                    // let docRef = db.collection("users").doc(uid);
+                    // docRef.get().then((docUser) => {
+                    //     if (docUser.exists) {
+                    //         deposit.displayName = docUser.data().displayName;
+                    //     }
+                    //     deposits.push(deposit); 
+                    // }).catch (err => {
+                    //     // push even if uid not found
+                    //     deposits.push(deposit); 
+                    // });
                     deposits.push(deposit); 
                 });
                 return(resolve(deposits));
