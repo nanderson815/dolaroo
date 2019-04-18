@@ -18,7 +18,7 @@ const DepositItem = (props) => {
                 <div className ="col s6 m3">{user}</div>
                 <div className ="col s12 m3 offset-m3">${amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
             </h5>
-            <div className="row">
+            <div className="row grey-text">
                 <blockquote>Ones: ${ones*1},
                 Fives: ${fives*5},
                 Tens: ${tens*10},
