@@ -8,6 +8,7 @@ import { Redirect } from 'react-router';
 import NumberFormat from 'react-number-format';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
+// import { Timestamp } from '@google-cloud/firestore';
 
 
 const styles = theme => ({

@@ -10,6 +10,7 @@ import { Redirect } from 'react-router';
 import DepositByUser from "./Graphs/DepositByUser";
 import DepositByDay from "./Graphs/DepositByDay";
 import DepositByAll from "./Graphs/DepositByAll";
+import DepositByDenomination from "./Graphs/DepositByDenomination";
 
 import DepositDB from './Deposit/DepositDB';
 
@@ -51,6 +52,10 @@ class Home extends React.Component {
                             />
                             <DepositByAll 
                                 title={"All Deposits"}
+                                deposits={this.state.deposits}
+                            />
+                            <DepositByDenomination 
+                                title={"Deposit By Denomination"}     
                                 deposits={this.state.deposits}
                             />
                         </div>
