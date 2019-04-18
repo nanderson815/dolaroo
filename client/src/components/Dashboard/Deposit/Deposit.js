@@ -8,6 +8,7 @@ import { Redirect } from 'react-router';
 import NumberFormat from 'react-number-format';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
+// import { Timestamp } from '@google-cloud/firestore';
 
 
 const styles = theme => ({
@@ -80,7 +81,6 @@ class Deposit extends React.Component {
 
     updateDatabase = () => {
         const db = Util.getFirestoreDB();
-        let d = Date(Date.now());
 
         let amount =this.state.amount
 
@@ -92,8 +92,8 @@ class Deposit extends React.Component {
             twenties: this.state.twenties,
             fifties: this.state.fifties,
             hundreds: this.state.hundreds,
-            time: d.toString(),
-            user: this.props.user.authUser.email,
+            time: new Date(),
+            email: this.props.user.authUser.email,
             uid: this.props.user.authUser.uid
         });
 
