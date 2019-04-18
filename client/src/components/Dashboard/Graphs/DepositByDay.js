@@ -42,7 +42,7 @@ class DepositByDay extends React.Component {
         };
     
         const sortedByDate = this.props.deposits.sort((a, b) => {
-            return  (a.time > b.time) ? 1 : -1;
+            return  (new Date(a.time) > new Date(b.time)) ? 1 : -1;
         });
 
         // split deposits by day into object with all deposits for each day
