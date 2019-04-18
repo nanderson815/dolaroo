@@ -80,7 +80,6 @@ class Deposit extends React.Component {
 
     updateDatabase = () => {
         const db = Util.getFirestoreDB();
-        let d = Date(Date.now());
 
         let amount =this.state.amount
 
@@ -92,7 +91,7 @@ class Deposit extends React.Component {
             twenties: this.state.twenties,
             fifties: this.state.fifties,
             hundreds: this.state.hundreds,
-            time: d.toString(),
+            time: new Date(),
             user: this.props.user.authUser.email,
             uid: this.props.user.authUser.uid
         });
