@@ -3,6 +3,7 @@ import Plot from 'react-plotly.js';
 import _ from "underscore";
 import moment from "moment";
 import { Redirect } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
@@ -119,6 +120,13 @@ class DepositByDay extends React.Component {
         );  
     }
   
+    // go to details
+    viewDetails = () => {
+        this.props.history.push({
+            pathname: '/depositlist'
+        });
+    }
+    
     render() {
         // Some props take time to get ready so return null when uid not avaialble
         if (!this.props.user) {
@@ -136,7 +144,7 @@ class DepositByDay extends React.Component {
                             </div>
                             <div className="card-action pCard">
                                 <div className="center-align">
-                                    <a href="#!" className="waves-effect waves-light dash-btn blue darken-4 btn">More Details</a>
+                                    <button onClick={this.viewDetails} className="waves-effect waves-light dash-btn blue darken-4 btn">More Details</button>
                                 </div>
                             </div>
                         </div>
@@ -151,4 +159,4 @@ class DepositByDay extends React.Component {
     }
 }
 
-export default withAuthUserContext(DepositByDay);
+export default withRouter(withAuthUserContext(DepositByDay));

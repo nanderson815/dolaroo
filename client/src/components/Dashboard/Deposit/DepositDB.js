@@ -1,4 +1,4 @@
-import Util from "../../Util/Util"
+import Util from "../../Util/Util";
 
 class DepositDB {
 
@@ -8,6 +8,26 @@ class DepositDB {
             const db = Util.getFirestoreDB();   // active firestore db ref
 
             db.collection(collection).get().then((querySnapshot) => {
+                let deposits = [];
+                querySnapshot.forEach (doc => {
+                    let deposit = {};
+                    deposit = doc.data();
+                    deposit.id = doc.id;
+                    deposits.push(deposit); 
+                });
+                return(resolve(deposits));
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
+
+    // Get all deposits from firestore BY DATE
+    static getByDate =  () => {
+        return new Promise( (resolve, reject) => {
+            const db = Util.getFirestoreDB();   // active firestore db ref
+
+            db.collection("deposits").orderBy("time", "desc").get().then((querySnapshot) => {
                 let deposits = [];
                 querySnapshot.forEach (doc => {
                     let deposit = {};

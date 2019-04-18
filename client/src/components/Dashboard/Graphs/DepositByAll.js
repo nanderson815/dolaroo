@@ -1,6 +1,7 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 import { Redirect } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
@@ -84,7 +85,14 @@ class DepositByAll extends React.Component {
             />
         );  
     }
-  
+
+    // go to details
+    viewDetails = () => {
+        this.props.history.push({
+            pathname: '/depositlist'
+        });
+    }
+    
     render() {
         // Some props take time to get ready so return null when uid not avaialble
         if (!this.props.user) {
@@ -102,7 +110,7 @@ class DepositByAll extends React.Component {
                             </div>
                             <div className="card-action pCard">
                                 <div className="center-align">
-                                    <a href="#!" className="waves-effect waves-light dash-btn blue darken-4 btn">More Details</a>
+                                    <button onClick={this.viewDetails} className="waves-effect waves-light dash-btn blue darken-4 btn">More Details</button>
                                 </div>
                             </div>
                         </div>
@@ -117,4 +125,4 @@ class DepositByAll extends React.Component {
     }
 }
 
-export default withAuthUserContext(DepositByAll);
+export default withRouter(withAuthUserContext(DepositByAll));
