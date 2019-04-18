@@ -35,21 +35,6 @@ class DepositDB {
                     let deposit = {};
                     deposit = doc.data();
                     deposit.id = doc.id;
-                    // default user is the denormalized email on the deposit table
-                    deposit.displayName = doc.data().user;
-                    // this does not work since resolve gets called beforee inside async finishes
-                    // once again, doing async inside loop is no good
-                    // const uid = doc.data().uid;
-                    // let docRef = db.collection("users").doc(uid);
-                    // docRef.get().then((docUser) => {
-                    //     if (docUser.exists) {
-                    //         deposit.displayName = docUser.data().displayName;
-                    //     }
-                    //     deposits.push(deposit); 
-                    // }).catch (err => {
-                    //     // push even if uid not found
-                    //     deposits.push(deposit); 
-                    // });
                     deposits.push(deposit); 
                 });
                 return(resolve(deposits));

@@ -44,12 +44,11 @@ class DepositByUser extends React.Component {
         });
 
         const sortedByDate = filteredByUid.sort((a, b) => {
-            return  (new Date(a.time) > new Date(b.time)) ? 1 : -1;
+            return  (a.time > b.time) ? 1 : -1;
         });
         // convert to javascript date object so plotly can recognize it as a proper date
         const times = sortedByDate.map((deposit) => {
-            let jsDate = new Date(deposit.time);
-            return (jsDate);
+            return (deposit.time.toDate());
         });
 
         const earliestDate = times.length > 0 ? times[0] : new Date();
