@@ -20,7 +20,7 @@ class Admin extends React.Component {
     }
 
     render() {
-        if (this.props.user.authUser && this.props.user.claims === "admin") {
+        if (this.props.user.authUser && this.props.user.isAdmin) {
             return ( 
                 <div className="container">
                     <div className="row center-align">

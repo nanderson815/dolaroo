@@ -21,7 +21,10 @@ const provideAuthUserContext = Component => {
                 phoneNumber: null,
                 email: null,
                 token: null,
-                claims: null
+                claims: null,
+                isAdmin: false,
+                isCashier: false,
+                isUser: false,
             };
         }
 
@@ -29,10 +32,16 @@ const provideAuthUserContext = Component => {
             try {
                 let token = await this.props.firebase.doRefreshToken();
                 let claims = await this.props.firebase.doGetUserRole();
-                this.setState({token: token, claims: claims})
+                this.setState({
+                    token: token,
+                    claims: claims.name,
+                    isAdmin: claims.isAdmin,
+                    isCashier: claims.isCashier,
+                    isUser: claims.isUser
+                 });
             } catch {
                 console.error("Error refreshng token");
-                this.setState({token: null})
+                this.setState({token: null});
             }
         }
 

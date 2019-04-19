@@ -76,7 +76,7 @@ module.exports = function (app) {
             if (req.user && !!req.user.admin) {
                 // check if user is admin and if they are, do change to cashier since admin can do that
                 helperGetUser(uid).then(user => {
-                    if (user.claims && user.claims === "admin") {
+                    if (user.claims && user.isAdmin) {
                         // Do NOT change admin to cashier
                         res.status(200).json("User is already admin who also has cashier priveleges");
                     } else {

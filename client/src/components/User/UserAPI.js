@@ -52,13 +52,28 @@ class UserAPI {
                             email: authUser.user.email
                         });
                     }
-                    // cretae if not existing
+                    // create if not existing
+                    // parse displayName if exists
+
                     console.log("New user created", authUser);
+                    const arrayName = authUser.displayName.split(" ");
+                    let firstName="", lastName="";
+                    if (arrayName.length > 1) {
+                        firstName = arrayName[0];
+                        lastName = arrayName[0];
+                    }
                     return db.collection('users').doc(authUser.user.uid).set({
                         displayName: authUser.user.displayName,
                         phoneNumber: authUser.user.phoneNumber,
                         uid: authUser.user.uid,
-                        email: authUser.user.email
+                        email: authUser.user.email,
+                        photoURL: authUser.photoURL ? authUser.photoURL : "",
+                        firstName: firstName,
+                        lastName: lastName,
+                        claims: "user",
+                        isAdmin: false,
+                        isCashier: false,
+                        isUser: true
                     });
                 })
                 .then(() => {
@@ -88,16 +103,24 @@ class UserAPI {
                 });
                 if (!user) {
                     // create new user with authUser info  only since none exist yet
+                    const arrayName = authUser.displayName.split(" ");
+                    let firstName="", lastName="";
+                    if (arrayName.length > 1) {
+                        firstName = arrayName[0];
+                        lastName = arrayName[0];
+                    }
                     db.collection('users').doc(authUser.user.uid).set({
                         displayName: authUser.user.displayName,
                         phoneNumber: authUser.user.phoneNumber,
                         uid: authUser.user.uid,
+                        email: authUser.user.email,
+                        photoURL: authUser.photoURL ? authUser.photoURL : "",
+                        firstName: firstName,
+                        lastName: lastName,
                         claims: "user",
                         isAdmin: false,
                         isCashier: false,
-                        isUser: true,
-                        photoURL: "",   
-                        email: authUser.user.email
+                        isUser: true
                     }).then((doc) => {
                         console.log("new user created in fb from authUser");
                         return resolve();
@@ -136,6 +159,7 @@ class UserAPI {
                     });
                 } else {
                     // This means the authUser AND FB user doc already both exist, so just update auth info
+                    // this should really never heappen so just a backstop in case DB corrupted
                     db.collection('users').doc(authUser.user.uid).set({
                         displayName: authUser.user.displayName,
                         phoneNumber: authUser.user.phoneNumber,
@@ -364,6 +388,9 @@ class UserAPI {
                             uid: _uid,
                             email: user.email,
                             claims: user.claims ? user.claims : "noauth",
+                            isAdmin: user.isAdmin,
+                            isCashier: user.isCashier,
+                            isUser: user.isUser,                        
                             photoURL: user.photoURL ? user.photoURL : ""    
                         }).then((doc) => {
                             console.log("Document updated with ID: ", doc.id);
@@ -382,6 +409,9 @@ class UserAPI {
                             uid: _uid,
                             email: user.email,
                             claims: user.claims ? user.claims : "noauth",
+                            isAdmin: user.isAdmin,
+                            isCashier: user.isCashier,
+                            isUser: user.isUser,                        
                             photoURL: user.photoURL ? user.photoURL : ""    
                         }).then((doc) => {
                             console.log("Document set with ID: ", doc.id);
@@ -405,6 +435,9 @@ class UserAPI {
                     uid: _uid,
                     email: user.email,
                     claims: user.claims ? user.claims : "noauth",
+                    isAdmin: user.isAdmin,
+                    isCashier: user.isCashier,
+                    isUser: user.isUser,                        
                     photoURL: user.photoURL ? user.photoURL : ""    
                 }).then((doc) => {
                     console.log("Document created with ID: ", doc.id);

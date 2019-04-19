@@ -81,11 +81,14 @@ class Firebase {
       this.auth.currentUser.getIdTokenResult()
         .then((idTokenResult) => {
           if (idTokenResult.claims.admin) {
-            resolve("admin");
+            const claims = {name: "admin", isAdmin: true, isCashier: false, isUser: false};
+            resolve(claims);
           } else if (idTokenResult.claims.cashier) {
-            resolve("cashier");
+            const claims = {name: "cashier", isAdmin: false, isCashier: true, isUser: false};
+            resolve(claims);
           } else {
-            resolve("user");
+            const claims = {name: "user", isAdmin: false, isCashier: false, isUser: true};
+            resolve(claims);
           }
         })
         .catch((err) => {
