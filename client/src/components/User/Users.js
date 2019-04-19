@@ -110,11 +110,13 @@ class Users extends React.Component {
                             email={user.email}
                             photoURL={user.photoURL}
                             claims={user.claims}
+                            isAdmin={user.isAdmin}
+                            isCashier={user.isCashier}
+                            isUser={user.isUser}
                             />
                         </div>
                         );
                 })}
-                <div>{this.state.message}</div>
                 </div>
             );
         } else if (this.props.user.authUser) {                

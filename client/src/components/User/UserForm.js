@@ -108,10 +108,17 @@ class UserForm extends React.Component {
     const user = this.state;
     UserAPI.addUserToFireStore(user).then (id => {
       // set message to show update
-      this.setState({
-        message: "New User Added - they must Sign Up to authorize",
-        id: id
+      // this.setState({
+      //   message: "New User Added - they must Sign Up to authorize",
+      //   id: id
+      // });
+
+      // go to user list page??  Passing message??
+      this.props.history.push({
+        pathname: '/admin',
+        state: {message: "New User Added - they must Sign Up to authorize" }
       });
+      
     }).catch (err => {
       // set message to show update
       this.setState({message: `Error adding user ${err}`});
@@ -126,6 +133,10 @@ class UserForm extends React.Component {
       // set message to show update
       this.setState({message: "User Updated"});
       // should we go to user list page??  Passing message??
+      this.props.history.push({
+        pathname: '/admin',
+        state: {message: "User Updated" }
+      });
     }).catch (err => {
       // set message to show update
       this.setState({message: `Error updating user ${err}`});

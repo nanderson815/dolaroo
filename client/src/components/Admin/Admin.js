@@ -20,6 +20,8 @@ class Admin extends React.Component {
     }
 
     render() {
+        const message = this.props && this.props.location && this.props.location.state ? this.props.location.state.message : "";
+
         if (this.props.user.authUser && this.props.user.isAdmin) {
             return ( 
                 <div className="container">
@@ -28,6 +30,7 @@ class Admin extends React.Component {
                         <button className="btn center-align blue darken-4" onClick={this.createUser}>Create User</button>
                     </div>
                     <Users />
+                    <div>{message}</div>
                 </div>
             );
         } else if (this.props.user.authUser) {                
