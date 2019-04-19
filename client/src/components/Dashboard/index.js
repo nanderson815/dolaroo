@@ -55,7 +55,7 @@ class Home extends React.Component {
                                 deposits={this.state.deposits}
                             />
                             <DepositByDenomination 
-                                title={"Deposit By Denomination"}     
+                                title={"Number of Bills By Denomination"}     
                                 deposits={this.state.deposits}
                             />
                         </div>

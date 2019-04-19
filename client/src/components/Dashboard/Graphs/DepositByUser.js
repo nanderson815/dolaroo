@@ -101,7 +101,6 @@ class DepositByUser extends React.Component {
     }
 
     render() {
-        console.log(this.props)
         // Some props take time to get ready so return null when uid not avaialble
         if (!this.props.user) {
             return null;
