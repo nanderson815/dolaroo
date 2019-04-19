@@ -49,7 +49,7 @@ class UserAPI {
                         // update
                         console.log("User updated, authUser=", authUser);
                         return db.collection('users').doc(authUser.user.uid).update({
-                            email: authUser.user.email
+                            email: authUser.user.email.toLowerCase()
                         });
                     }
                     // create if not existing
@@ -66,7 +66,7 @@ class UserAPI {
                         displayName: authUser.user.displayName,
                         phoneNumber: authUser.user.phoneNumber,
                         uid: authUser.user.uid,
-                        email: authUser.user.email,
+                        email: authUser.user.email.toLowerCase(),
                         photoURL: authUser.photoURL ? authUser.photoURL : "",
                         firstName: firstName,
                         lastName: lastName,
@@ -102,7 +102,7 @@ class UserAPI {
                     user.id = doc.id;
                 });
                 if (!user) {
-                    // create new user with authUser info  only since none exist yet
+                    // create new user with authUser info only since none exist yet
                     const arrayName = authUser.displayName.split(" ");
                     let firstName="", lastName="";
                     if (arrayName.length > 1) {
@@ -110,10 +110,10 @@ class UserAPI {
                         lastName = arrayName[0];
                     }
                     db.collection('users').doc(authUser.user.uid).set({
-                        displayName: authUser.user.displayName,
+                        displayName: authUser.displayName,
                         phoneNumber: authUser.user.phoneNumber,
                         uid: authUser.user.uid,
-                        email: authUser.user.email,
+                        email: authUser.user.email.toLowerCase(),
                         photoURL: authUser.photoURL ? authUser.photoURL : "",
                         firstName: firstName,
                         lastName: lastName,
@@ -144,18 +144,17 @@ class UserAPI {
                         photoURL: user.photoURL ? user.photoURL : ""    
                     }).then((doc) => {
                         console.log(`new user created in fb from admin created user with user.id ${user.id}`);
-
                         // now delete the *old* user records since its no longer valid
                         db.collection("users").doc(user.id).delete().then(() => {
                             console.log("Admin Created Firestore User successfully deleted!");
-                            return resolve();
+                            resolve();
                         }).catch((err) => {
-                            console.error("Error deleting firestor user ", err);
-                            return reject(err);
+                            console.error("Error deleting firestore user ", err);
+                            reject(`Error deleting firestore user ${err}`);
                         });
                     }).catch(err => {
                         console.error(`error created user from admin created user with email:${authUser.user.email}`);
-                        return reject(err);
+                        reject(`Error deleting firestore user ${err}`);
                     });
                 } else {
                     // This means the authUser AND FB user doc already both exist, so just update auth info
@@ -164,13 +163,13 @@ class UserAPI {
                         displayName: authUser.user.displayName,
                         phoneNumber: authUser.user.phoneNumber,
                         uid: authUser.user.uid,
-                        email: authUser.user.email
+                        email: authUser.user.email.toLowerCase()
                     }).then((doc) => {
                         console.log("new user created in fb from authUser");
-                        return resolve();
+                        resolve();
                     }).catch(err => {
                         console.error(`error created user from auhUser with uid:${authUser.user.uid}`);
-                        return reject(err);
+                        reject(`error created user from auhUser with uid:${authUser.user.uid}, er: ${err}`);
                     });
                 }
             }).catch(err => {
@@ -220,23 +219,26 @@ class UserAPI {
             // then get from firestore
             // let user = {};
             let user = {};
+            let foundUser = false;
             let docRef = db.collection("users").where("email", "==", email).limit(1);
             docRef.get().then((querySnapshot) => {
                 querySnapshot.forEach(doc => {
+                    foundUser = true;
+                    console.log(doc.data());
                     user = doc.data();
                     user.id = doc.id;
                 });
 
-                if (user) {
-                    console.log(`User with email: ${email} found!`);
-                    return(resolve(user));
+                if (foundUser) {
+                    console.log(`User with email: ${email} found!, displayName: ${user.displayName}`);
+                    resolve(user);
                 } else {
                     user.err = `User with email: ${email} not found in firestore`;
                     console.log(user.err);
-                    return(resolve(user));
+                    resolve(user);
                 }
             }).catch(err => {
-                reject(`Error getting user in UserAPI.getByEmail ${err}`);
+                reject(`Error getting user in UserAPI.getByEmail ${err.message}`);
             });
         });
     }
@@ -311,7 +313,7 @@ class UserAPI {
                     displayName: `${user.firstName} ${user.lastName}`,
                     phoneNumber: user.phoneNumber,
                     uid: _uid,
-                    email: user.email,
+                    email: user.email.toLowerCase(),
                     photoURL: user.photoURL ? user.photoURL : ""    
                 },{ merge: true }).then(() => {
                     console.log("completed");
@@ -348,7 +350,7 @@ class UserAPI {
                 displayName: `${user.firstName} ${user.lastName}`,
                 phoneNumber: user.phoneNumber,
                 uid: _uid,
-                email: user.email,
+                email: user.email.toLowerCase(),
                 photoURL: user.photoURL ? user.photoURL : ""    
             },{ merge: true }).then(() => {
                 console.log("completed");
@@ -386,7 +388,7 @@ class UserAPI {
                             displayName: `${user.firstName} ${user.lastName}`,
                             phoneNumber: user.phoneNumber,
                             uid: _uid,
-                            email: user.email,
+                            email: user.email.toLowerCase(),
                             claims: user.claims ? user.claims : "noauth",
                             isAdmin: user.isAdmin,
                             isCashier: user.isCashier,
@@ -407,7 +409,7 @@ class UserAPI {
                             displayName: `${user.firstName} ${user.lastName}`,
                             phoneNumber: user.phoneNumber,
                             uid: _uid,
-                            email: user.email,
+                            email: user.email.toLowerCase(),
                             claims: user.claims ? user.claims : "noauth",
                             isAdmin: user.isAdmin,
                             isCashier: user.isCashier,
@@ -433,7 +435,7 @@ class UserAPI {
                     displayName: `${user.firstName} ${user.lastName}`,
                     phoneNumber: user.phoneNumber,
                     uid: _uid,
-                    email: user.email,
+                    email: user.email.toLowerCase(),
                     claims: user.claims ? user.claims : "noauth",
                     isAdmin: user.isAdmin,
                     isCashier: user.isCashier,
