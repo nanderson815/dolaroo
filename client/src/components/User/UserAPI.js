@@ -93,6 +93,9 @@ class UserAPI {
                         phoneNumber: authUser.user.phoneNumber,
                         uid: authUser.user.uid,
                         claims: "user",
+                        isAdmin: false,
+                        isCashier: false,
+                        isUser: true,
                         photoURL: "",   
                         email: authUser.user.email
                     }).then((doc) => {
@@ -112,6 +115,9 @@ class UserAPI {
                         uid: authUser.user.uid,
                         email: authUser.user.email,
                         claims: "user",
+                        isAdmin: false,
+                        isCashier: false,
+                        isUser: true,
                         photoURL: user.photoURL ? user.photoURL : ""    
                     }).then((doc) => {
                         console.log(`new user created in fb from admin created user with user.id ${user.id}`);
@@ -272,9 +278,9 @@ class UserAPI {
                 photoURL: user.photoURL,
             })
             .then(() => {
-                console.log("Auth for User successfully updated!");
+                console.log("Auth Profile for User successfully updated!");
                 // update
-                console.log("User updated, user=", user);
+                // Note: DO NOT update claimns since that can only be done by admin
                 db.collection('users').doc(user.id).set({
                     firstName: user.firstName,
                     lastName: user.lastName,
@@ -282,7 +288,6 @@ class UserAPI {
                     phoneNumber: user.phoneNumber,
                     uid: _uid,
                     email: user.email,
-                    claims: user.claims ? user.claims : "",
                     photoURL: user.photoURL ? user.photoURL : ""    
                 },{ merge: true }).then(() => {
                     console.log("completed");
@@ -300,7 +305,7 @@ class UserAPI {
     }
 
     static update =  (user) => {
-        console.log(`trying to update user in fb and auth: ${user}`);
+        console.log(`trying to update user in firestore: ${user}`);
         return new Promise(async (resolve, reject) => {
             const db = Util.getFirestoreDB();
             let _uid = "noauth";
@@ -311,6 +316,8 @@ class UserAPI {
              // MAYBE out how to update this users auth profile - outside of account
 
             // we always want uid = id to keep auth and firestore in sync
+            // Do NOT update isAdmin, isCashier etc.  or claims i- only change claims through auth
+            // (unless using just user or noAuth since those are not *secure*)
             db.collection('users').doc(user.id).set({
                 firstName: user.firstName,
                 lastName: user.lastName,
@@ -318,7 +325,6 @@ class UserAPI {
                 phoneNumber: user.phoneNumber,
                 uid: _uid,
                 email: user.email,
-                claims: user.claims ? user.claims : "",
                 photoURL: user.photoURL ? user.photoURL : ""    
             },{ merge: true }).then(() => {
                 console.log("completed");
@@ -333,7 +339,7 @@ class UserAPI {
     // This update only puts user in FB - NO Auth
     // It is meant to create a user and then they can login/authenticate
     // Later - signup will ensure that user email exsists before allowing them to signup
-    static updateFBOnly =  (user) => {
+    static addUserToFireStore =  (user) => {
         console.log(`trying to update user in fb and auth: ${user}`);
 
         return new Promise(async (resolve, reject) => {

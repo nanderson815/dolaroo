@@ -3,13 +3,21 @@ const admin = require("../middleware/authServerCommon");
 
 // Backend functions for user DB in firestore and auth
 class UserDB {
-    static updateClaims (uid, claims) {
+    static updateClaims (uid, claims, customClaims) {
         return new Promise(async (resolve, reject) => {
-            const db = admin.firestore();;
+            const db = admin.firestore();
+            const isAdmin = customClaims && customClaims.isAdmin ? true : false;
+            const isCashier = customClaims && customClaims.isCashier ? true : false;
+            const isUser = customClaims && customClaims.isUser ? true : false;
+            const isNoAuth = !(isAdmin || isCashier || isUser);
 
             // update claims
             db.collection('users').doc(uid).set({
-                claims: claims
+                claims: claims,
+                isAdmin: isAdmin,
+                isCashier: isCashier,
+                isUser: isUser,
+                isUser: isNoAuth
             }, {
                 merge: true
             }).then(() => {
@@ -36,7 +44,6 @@ class UserDB {
                 phoneNumber: user.phoneNumber,
                 uid: user.uid,
                 email: user.email,
-                claims: user.claims ? user.claims : "",
                 photoURL: user.photoURL ? user.photoURL : ""
             }, {
                 merge: true

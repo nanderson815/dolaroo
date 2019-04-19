@@ -98,7 +98,7 @@ class UserForm extends React.Component {
   addUser = () => {
     console.log(`adding user to db`);
     const user = this.state;
-    UserAPI.updateFBOnly(user).then (id => {
+    UserAPI.addUserToFireStore(user).then (id => {
       // set message to show update
       this.setState({
         message: "New User Added - they must Sign Up to authorize",
