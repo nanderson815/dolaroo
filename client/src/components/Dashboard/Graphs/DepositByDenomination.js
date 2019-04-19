@@ -7,7 +7,7 @@ import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
 class DepositByAll extends React.Component {
     plotDeposits = () => {
-           
+
 
         let ones = this.props.deposits.map(deposit => deposit.ones).reduce((total, currentValue) => total + currentValue, 0);
         let fives = this.props.deposits.map(deposit => deposit.fives).reduce((total, currentValue) => total + currentValue, 0);
@@ -17,7 +17,7 @@ class DepositByAll extends React.Component {
         let hundreds = this.props.deposits.map(deposit => deposit.hundreds).reduce((total, currentValue) => total + currentValue, 0);
 
         // delays props and solves errors
-        if (!ones){
+        if (!ones) {
             return null;
         }
 
@@ -34,6 +34,9 @@ class DepositByAll extends React.Component {
                         name: 'Deposits By Denomination',
                         values: [ones, fives, tens, twenties, fifties, hundreds],
                         labels: ["$1", "$5", "$10", "$20", "$50", "$100"],
+                        "textfont": {
+                            color: 'white'
+                        },
                     },
                 ]}
                 layout={
@@ -45,7 +48,7 @@ class DepositByAll extends React.Component {
                 useResizeHandler={true}
                 style={{ width: "100%", height: "100%" }}
                 config={{ displayModeBar: false }}
-                
+
             />
         );
     }
