@@ -1,6 +1,8 @@
 import React from 'react';
 import './Balance.css'
 import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+
 
 const Balance =(props) => {
     return (
@@ -13,7 +15,7 @@ const Balance =(props) => {
                     </div>
                     <div className="card-action pCard">
                         <div className="center-align ">
-                            <Link to="/dashboard/deposit" className="waves-effect waves-light dash-btn blue darken-4 btn">New Deposit</Link>
+                            <Link disabled={props.disabled} to="/dashboard/deposit" className="waves-effect waves-light dash-btn blue darken-4 btn">New Deposit</Link>
                         </div>
                     </div>
                 </div>

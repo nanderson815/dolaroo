@@ -22,7 +22,6 @@ class DepositByAll extends React.Component {
         }
 
 
-        console.log(ones)
 
         return (
             <Plot
