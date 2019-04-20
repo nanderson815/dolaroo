@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
@@ -191,6 +192,10 @@ class SignInFormBase extends React.Component {
                         </Button>
                         {error && <p>{error.message}</p>}
                     </div>
+                    <p>
+                        <Link to="/pw-forget">Forgot Password?</Link>
+                    </p>
+                
                         {/*<p>Don't have an account? <Link to="/signup">Sign Up</Link></p>*/}
                         {/*<button onClick={this.handleGoogleLogin} className="btn lighten-1 z-depth-0"> SignIn With Google</button>*/}  
                 </div>
