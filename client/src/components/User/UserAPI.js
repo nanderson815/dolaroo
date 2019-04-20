@@ -38,52 +38,45 @@ class UserAPI {
     }
     
 
+    // Adds a user that has been authroized to the firestore collection
     static addAuthUserToFirestore = (authUser) => {
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
 
             let docRef = db.collection("users").doc(authUser.user.uid);
-            docRef.get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        // update
-                        console.log("User updated, authUser=", authUser);
-                        return db.collection('users').doc(authUser.user.uid).update({
-                            email: authUser.user.email.toLowerCase()
-                        });
-                    }
-                    // create if not existing
-                    // parse displayName if exists
-
+            docRef.get().then((doc) => {
+                if (doc.exists) {
+                    // update
+                    console.log("User updated, authUser=", authUser);
+                    db.collection('users').doc(authUser.user.uid).update({
+                        email: authUser.user.email
+                    }).then((doc) => {
+                        console.log("Document updated with ID: ", doc.id);
+                        resolve(doc.id);
+                    }).catch(err => {
+                        console.error(`error creating user from authUser: ${err}`);
+                        reject(`error in set creating user from authUser: ${err}`);    
+                    });
+                } else {
+                    // cretae if not existing
                     console.log("New user created", authUser);
-                    const arrayName = authUser.displayName.split(" ");
-                    let firstName="", lastName="";
-                    if (arrayName.length > 1) {
-                        firstName = arrayName[0];
-                        lastName = arrayName[0];
-                    }
-                    return db.collection('users').doc(authUser.user.uid).set({
+                    db.collection('users').doc(authUser.user.uid).set({
                         displayName: authUser.user.displayName,
                         phoneNumber: authUser.user.phoneNumber,
                         uid: authUser.user.uid,
-                        email: authUser.user.email.toLowerCase(),
-                        photoURL: authUser.photoURL ? authUser.photoURL : "",
-                        firstName: firstName,
-                        lastName: lastName,
-                        claims: "user",
-                        isAdmin: false,
-                        isCashier: false,
-                        isUser: true
+                        email: authUser.user.email
+                    }).then((doc) => {
+                        console.log("Document set with ID: ", doc.id);
+                        resolve(doc.id);
+                    }).catch(err => {
+                        console.error(`error creating user from authUser: ${err}`);
+                        reject(`error in set creating user from authUser: ${err}`);    
                     });
-                })
-                .then(() => {
-                    console.log("completed");
-                    return resolve();
-                })
-                .catch(err => {
-                    console.log("completed");
-                    return reject(err);
-                });
+                }
+            }).catch(err => {
+                console.error(`error creating user from authUser: ${err}`);
+                reject(`error in docRef.get creating user from authUser: ${err}`);
+            });
         });
     }
 
