@@ -87,9 +87,6 @@ class SignInFormBase extends React.Component {
         this.props.firebase
           .doSignInWithEmailAndPassword(email, password)
           .then((authUser) => {
-            return(UserAPI.addAuthUserToFirestore(authUser));
-          })
-          .then(() => {
             // NOTE : DO NOT RESET STATE if component unmounts since we are going to redirect
             // this causes memory leaks - Igot an error explaining all that
             if (this._isMounted) {

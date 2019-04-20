@@ -7,6 +7,7 @@ import NumberFormat from 'react-number-format';
 import localStyles from './User.module.css';
 import Button from '@material-ui/core/Button';
 
+import { withFirebase } from '../Auth/Firebase/FirebaseContext';
 import UserAPI from "./UserAPI";
   
 const styles = theme => ({
@@ -183,7 +184,7 @@ class UserForm extends React.Component {
     if (this.state.id) {
       this.updateUser();
     } else {
-      this.addUser();
+      this.createUser();
     }
   };
 
@@ -318,4 +319,4 @@ class UserForm extends React.Component {
   }
 }
 
-export default withRouter(withStyles(styles)(UserForm));
+export default withFirebase(withRouter(withStyles(styles)(UserForm)));

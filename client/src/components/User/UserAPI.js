@@ -55,7 +55,7 @@ class UserAPI {
                         resolve(doc.id);
                     }).catch(err => {
                         console.error(`error creating user from authUser: ${err}`);
-                        reject(`error in set creating user from authUser: ${err}`);    
+                        reject(`Error in addAuthUserToFirestore.update creating user from authUser: ${err}`);    
                     });
                 } else {
                     // cretae if not existing
@@ -65,17 +65,17 @@ class UserAPI {
                         phoneNumber: authUser.user.phoneNumber,
                         uid: authUser.user.uid,
                         email: authUser.user.email
-                    }).then((doc) => {
-                        console.log("Document set with ID: ", doc.id);
-                        resolve(doc.id);
+                    }).then(() => {
+                        console.log("Document added with ID: ", authUser.user.uid);
+                        resolve(authUser.user.uid);
                     }).catch(err => {
                         console.error(`error creating user from authUser: ${err}`);
-                        reject(`error in set creating user from authUser: ${err}`);    
+                        reject(`error in addAuthUserToFirestore.add creating user from authUser: ${err}`);    
                     });
                 }
             }).catch(err => {
                 console.error(`error creating user from authUser: ${err}`);
-                reject(`error in docRef.get creating user from authUser: ${err}`);
+                reject(`error in addAuthUserToFirestore.docRef.get creating user from authUser: ${err}`);
             });
         });
     }
