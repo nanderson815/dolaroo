@@ -198,7 +198,7 @@ class UserForm extends React.Component {
           <div className="card-content">
             <span className="card-title">User (Role: {claims})</span>
 
-            <form className={classes.container} onClick={this.saveUser} >
+            <form className={classes.container} onSubmit={this.saveUser} >
               <TextField
               disabled={!emailEnabled}
               id="email"
