@@ -81,11 +81,14 @@ class Firebase {
       this.auth.currentUser.getIdTokenResult()
         .then((idTokenResult) => {
           if (idTokenResult.claims.admin) {
-            resolve("admin");
+            const claims = {name: "admin", isAdmin: true, isCashier: false, isUser: false};
+            resolve(claims);
           } else if (idTokenResult.claims.cashier) {
-            resolve("cashier");
+            const claims = {name: "cashier", isAdmin: false, isCashier: true, isUser: false};
+            resolve(claims);
           } else {
-            resolve("user");
+            const claims = {name: "user", isAdmin: false, isCashier: false, isUser: true};
+            resolve(claims);
           }
         })
         .catch((err) => {
@@ -137,7 +140,7 @@ class Firebase {
   // *** Firebase Auth API ***
   doCreateUserWithEmailAndPassword = (email, password) => {
     return new Promise((resolve, reject) => {
-      this.auth.createUserWithEmailAndPassword(email, password).then((authData) => {
+      this.auth.createUserWithEmailAndPassword(email.toLowerCase(), password).then((authData) => {
           console.log("User created successfully with payload-", authData);
           return resolve(authData);
         }).catch((err) => {
@@ -149,7 +152,7 @@ class Firebase {
 
   doSignInWithEmailAndPassword = (email, password) => {
     return new Promise((resolve, reject) => {
-      this.auth.signInWithEmailAndPassword(email, password).then((authData) => {
+      this.auth.signInWithEmailAndPassword(email.toLowerCase(), password).then((authData) => {
           console.log("User logged in successfully with payload-", authData);
           return resolve(authData);
         }).catch((err) => {
@@ -175,7 +178,7 @@ class Firebase {
 
   doPasswordReset = (email) => {
     return new Promise((resolve, reject) => {
-      this.auth.sendPasswordResetEmail(email).then((authData) => {
+      this.auth.sendPasswordResetEmail(email.toLowerCase()).then((authData) => {
           console.log("User email reset sent successfully with payload-", authData);
           return resolve(authData);
         }).catch((err) => {

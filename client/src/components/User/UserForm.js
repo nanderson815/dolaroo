@@ -1,4 +1,6 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
@@ -63,6 +65,9 @@ class UserForm extends React.Component {
     email: "",
     uid: "",
     claims: "noauth",
+    isAdmin: false,
+    isCashier: false,
+    isUser: false,
     message: ""
   };
 
@@ -75,7 +80,10 @@ class UserForm extends React.Component {
         photoURL: user.photoURL || "",
         phoneNumber: user.phoneNumber || "",
         uid: user.uid || "",
-        claims: user.claims || "noauth",
+        claims: user.claims,
+        isAdmin: user.isAdmin,
+        isCashier: user.isCashier,
+        isUser: user.isUser,
         email: user.email
       });
       // Dont need to get custom claims since they are passed in props from context
@@ -98,12 +106,19 @@ class UserForm extends React.Component {
   addUser = () => {
     console.log(`adding user to db`);
     const user = this.state;
-    UserAPI.updateFBOnly(user).then (id => {
+    UserAPI.addUserToFireStore(user).then (id => {
       // set message to show update
-      this.setState({
-        message: "New User Added - they must Sign Up to authorize",
-        id: id
+      // this.setState({
+      //   message: "New User Added - they must Sign Up to authorize",
+      //   id: id
+      // });
+
+      // go to user list page??  Passing message??
+      this.props.history.push({
+        pathname: '/admin',
+        state: {message: "New User Added - they must Sign Up to authorize" }
       });
+      
     }).catch (err => {
       // set message to show update
       this.setState({message: `Error adding user ${err}`});
@@ -117,6 +132,11 @@ class UserForm extends React.Component {
     UserAPI.update(user).then (user => {
       // set message to show update
       this.setState({message: "User Updated"});
+      // should we go to user list page??  Passing message??
+      this.props.history.push({
+        pathname: '/admin',
+        state: {message: "User Updated" }
+      });
     }).catch (err => {
       // set message to show update
       this.setState({message: `Error updating user ${err}`});
@@ -264,4 +284,4 @@ class UserForm extends React.Component {
   }
 }
 
-export default withStyles(styles)(UserForm);
+export default withRouter(withStyles(styles)(UserForm));

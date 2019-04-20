@@ -13,7 +13,8 @@ class Users extends React.Component {
 
         this.state = {
             users: [
-            ]
+            ],
+            message: ""
         };
     }
 
@@ -91,7 +92,7 @@ class Users extends React.Component {
     }
 
     render() {
-        if (this.props.user.authUser && this.props.user.claims === "admin") {
+        if (this.props.user.authUser && this.props.user.isAdmin) {
             return (
                 <div className="row">
                 {this.state.users.map((user) => {
@@ -109,6 +110,9 @@ class Users extends React.Component {
                             email={user.email}
                             photoURL={user.photoURL}
                             claims={user.claims}
+                            isAdmin={user.isAdmin}
+                            isCashier={user.isCashier}
+                            isUser={user.isUser}
                             />
                         </div>
                         );

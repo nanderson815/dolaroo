@@ -57,13 +57,14 @@ class Register extends Component {
 
   fetchUser = (email) => {
     // Get with security
-    UserAPI.getByEmail(email)
+    UserAPI.getByEmail(email.toLowerCase())
     .then(user => {
         // console.log(`Users in refresh page: ${JSON.stringify(users, null, 2)}`);
         if (user.err) {
           // justy log not found but no biggie
           console.error(user.err);
         } else {
+          console.log("found user:", user);
           this.setState({ 
             foundEmail: user.displayName,
             displayName: user.displayName,
@@ -93,7 +94,7 @@ class Register extends Component {
     console.log(this.props);
 
     // First get the email and ensure it is ready to register
-    UserAPI.getByEmail(email)
+    UserAPI.getByEmail(email.toLowerCase())
     .then(user => {
         if (user.err) {
           console.error(user.err);
@@ -123,7 +124,7 @@ class Register extends Component {
     })
     .catch(err => {
         console.error(err); 
-        this.setState({ message: err });
+        this.setState({ message: err.message });
     });        
   };
 

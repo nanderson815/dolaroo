@@ -144,7 +144,7 @@ class AccountForm extends React.Component {
                 <div className="card-content">
                     <span className="card-title">User (Role: {claims})</span>
                     <form className={classes.container}>
-                        <TextField
+                        <TextField disabled={true}
                         id="email"
                         name="email"
                         label="Email"

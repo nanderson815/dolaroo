@@ -29,7 +29,7 @@ module.exports = function (app) {
 
         } catch (err) {
             // catch all error
-            res.status(500).json(`Error caught in route app.post("/api/auth/setAdmin..." ${err}`);
+            res.status(500).json(`Error caught in route app.get("/api/auth/getClaims/:uid"..." ${err}`);
         }
     }); // Route
 
@@ -47,7 +47,7 @@ module.exports = function (app) {
                     admin: true
                 }).then(async () => {
                     // now update firestore
-                    await UserDB.updateClaims(uid, "admin");
+                    await UserDB.updateClaims(uid, "admin", {isAdmin: true});
                     res.json(uid);
                 });
             } else {
@@ -76,14 +76,14 @@ module.exports = function (app) {
             if (req.user && !!req.user.admin) {
                 // check if user is admin and if they are, do change to cashier since admin can do that
                 helperGetUser(uid).then(user => {
-                    if (user.claims && user.claims.admin) {
+                    if (user.claims && user.isAdmin) {
                         // Do NOT change admin to cashier
                         res.status(200).json("User is already admin who also has cashier priveleges");
                     } else {
                         admin.auth().setCustomUserClaims(uid, {
                             cashier: true
                         }).then(async () => {
-                            await UserDB.updateClaims(uid, "cashier");
+                            await UserDB.updateClaims(uid, "cashier", {isCashier: true});
                             res.json(uid);
                         });
                     }

@@ -104,7 +104,7 @@ class Navigation extends React.Component {
     // ANY COMPONENT that needs authUser info uses consumer this way
 
     let navBar, navBarMobile;
-    if (this.props.user.authUser && this.props.user.claims === "admin") {
+    if (this.props.user.authUser && this.props.user.isAdmin) {
       navBar = navigationAdmin;
       navBarMobile = navigationAdminMobile;
     } else if (this.props.user.authUser) {
