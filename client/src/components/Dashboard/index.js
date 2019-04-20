@@ -23,7 +23,7 @@ class Home extends React.Component {
 
 
     componentDidMount() {
-                
+
         DepositDB.get("deposits")
             .then(res => this.setState({ deposits: res }))
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
@@ -42,17 +42,19 @@ class Home extends React.Component {
                     <div className="container">
                         <div className="row">
                             <ProvisionalCredit credit={this.state.credit} />
-                            <Balance balance={this.state.cash} disabled={this.props.user.isAdmin ? false : this.props.user.isCashier ? false : true } />
+                            <Balance balance={this.state.cash} disabled={this.props.user.isAdmin ? false : this.props.user.isCashier ? false : true} />
                         </div>
                         <div className="row">
                             <DepositByDay
                                 title={"Total Deposits By Day"}
                                 deposits={this.state.deposits}
                             />
-                            <DepositByUser
+
+                            {this.props.user.isUser ? null : <DepositByUser
                                 title={"Deposits By User"}
                                 deposits={this.state.deposits}
-                            />
+                            />}
+
                             <DepositByAll
                                 title={"All Deposits"}
                                 deposits={this.state.deposits}
