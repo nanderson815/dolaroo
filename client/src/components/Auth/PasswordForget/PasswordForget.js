@@ -80,7 +80,7 @@ class PasswordForgetFormBase extends Component {
         <div className="container">
             <div className="card">
                 <div className="card-content">
-                    <span className="card-title">Register</span>
+                    <span className="card-title">Reset Password</span>
                     <form className={classes.container}>
                         <TextField
                         id="email"

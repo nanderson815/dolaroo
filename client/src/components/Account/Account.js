@@ -2,6 +2,9 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
 import AccountForm from "./AccountForm";
+import { PasswordForgetForm } from '../Auth/PasswordForget/PasswordForget';
+import PasswordChangeForm from '../Auth/PasswordForget/PasswordChange';
+
   
 class Account extends React.Component {
 
@@ -41,6 +44,8 @@ class Account extends React.Component {
             phoneNumber={phoneNumber}
             claims={claims}
           />
+          <PasswordForgetForm />
+          <PasswordChangeForm />
         </div>
       );
     } else {

@@ -88,7 +88,7 @@ class PasswordChangeForm extends Component {
         <div className="container">
         <div className="card">
           <div className="card-content">
-            <span className="card-title">Register</span>
+            <span className="card-title">Password Change</span>
             <form className={classes.container}>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="passwordOne">Password</InputLabel>
