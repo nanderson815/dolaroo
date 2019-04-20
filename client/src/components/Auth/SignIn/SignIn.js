@@ -146,7 +146,7 @@ class SignInFormBase extends React.Component {
             <div className="card">
                 <div className="card-content">
                     <span className="card-title">Sign In</span>
-                    <form className={classes.container}>
+                    <form className={classes.container} onSubmit={this.signInUser} >
                         <TextField
                             id="email"
                             label="Email"
@@ -179,19 +179,18 @@ class SignInFormBase extends React.Component {
                                 }
                                 />
                         </FormControl>
-                        </form>
-                        <br />
-                        <div className="row">
-                            <Button disabled={isInvalid} onClick={this.signInUser} variant="contained" color="primary" className={classes.button}>
-                                Login
-                            </Button>
-                        </div>
-                        <div className="row">
-                            <Button onClick={this.registerUser} variant="contained" color="primary" className={classes.button}>
-                                Register
-                            </Button>
-                            {error && <p>{error.message}</p>}
-                        </div>
+                    </form>
+                    <div className="row">
+                        <Button disabled={isInvalid} onClick={this.signInUser} variant="contained" color="primary" className={classes.button}>
+                            Login
+                        </Button>
+                    </div>
+                    <div className="row">
+                        <Button onClick={this.registerUser} variant="contained" color="primary" className={classes.button}>
+                            Register
+                        </Button>
+                        {error && <p>{error.message}</p>}
+                    </div>
                         {/*<p>Don't have an account? <Link to="/signup">Sign Up</Link></p>*/}
                         {/*<button onClick={this.handleGoogleLogin} className="btn lighten-1 z-depth-0"> SignIn With Google</button>*/}  
                 </div>
