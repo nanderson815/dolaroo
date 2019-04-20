@@ -103,6 +103,40 @@ class UserForm extends React.Component {
     }
   }
 
+    // Create a new user 
+  // Create the user in firebase AUTH with email and random password
+  // Save that user in firestore
+  // -- The above is like the sign up process
+  // Then, generate change password link for user and send to their email address
+  createUser = () => {  
+    // eslint-disable-next-line no-unused-vars
+    const user = this.state;
+    console.log(this.props);
+
+    // Generate random password
+    let randomPassword = Math.random().toString(36).slice(-8);
+
+    // First, create the auth user in firebase
+    this.props.firebase
+      .doCreateUserWithEmailAndPassword(user.email, randomPassword)
+      .then(authUser => {
+        // Now Create the user in firestore
+        UserAPI.addAuthUserToFirestore(authUser).then( (id) => {
+          // redirect ??
+          // this.props.history.push("/dashboard"); 
+          this.setState({
+            message: "New User Added - they must reset password login",
+            id: id
+          });
+        }).catch(err => {
+            this.setState({ message: `Error adding user ${err}` });
+        });  
+      })
+      .catch(err => {
+        this.setState({ message: `Error adding user ${err}` });
+    });  
+  }
+
   addUser = () => {
     console.log(`adding user to db`);
     const user = this.state;
