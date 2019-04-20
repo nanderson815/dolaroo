@@ -80,13 +80,27 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 
 ## Screenshots
 
-![ss1 animated](client/public/images/ss1.gif)
+![ss1 deposit](./images/s1-deposit.gif)
 
-![ss2](client/public/images/ss2.png)
+![ss1 details](./images/s1-details.gif)
 
-![ss3](client/public/images/ss3.png)
+![ss1 user](./images/s1-user.gif)
 
-![ss4](client/public/images/ss4.png)
+![ss2](./images/ss2.png)
+
+![ss3](./images/ss3.png)
+
+![ss4](./images/ss4.png)
+
+![ss5](./images/ss5.png)
+
+![ss6](./images/s6.png)
+
+![ss7](./images/ss7.png)
+
+![ss8](./images/ss8.png)
+
+![ss9](./images/ss9.png)
 
 ## Details
 
