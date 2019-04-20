@@ -51,6 +51,7 @@ class Deposit extends React.Component {
     state = {
         cash: 0,
         credit: 0,
+        deposits: [],
         amount: 0,
         ones: 0,
         fives: 0,
@@ -61,14 +62,22 @@ class Deposit extends React.Component {
     }
 
     componentDidMount() {
-        DepositDB.get("credit")
-            .then(res => this.setState({ credit: res[0].balance }));
-        DepositDB.get("cash")
-            .then(res => this.setState({ cash: res[0].balance }))
+
+        DepositDB.get("deposits")
+            .then(res => this.setState({ deposits: res }, () => this.calculate()))
+            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+            
+
         let elem = document.querySelector(".modal");
         M.Modal.init(elem);
     }
 
+    calculate = () => {
+        let cash = this.state.deposits.map(deposit => deposit.amount).reduce((total, currentValue) => total + currentValue, 0);
+        let credit = cash * .975;
+
+        this.setState({cash, credit});
+    }
 
     handleChange = name => event => {
         if (event.target.value) {
