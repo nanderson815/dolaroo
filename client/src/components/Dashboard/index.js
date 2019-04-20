@@ -67,7 +67,7 @@ class Home extends React.Component {
             );
         } else {
             return (
-                <Redirect to="/" />
+                <Redirect to="/signin" />
             );
         }
 
