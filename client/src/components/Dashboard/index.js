@@ -1,12 +1,10 @@
 import React from 'react';
 import ProvisionalCredit from './ProvisionalCredit/provisionalCredit';
-// import Deposit from './Deposit/Deposit';
 import Balance from './Balance/Balance';
+import Savings from './Savings/Savings';
 import './dashboard.css';
 import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 import { Redirect } from 'react-router';
-// import { withFirebaseContext } from '../Auth/Firebase/FirebaseContext';
-
 import DepositByUser from "./Graphs/DepositByUser";
 import DepositByDay from "./Graphs/DepositByDay";
 import DepositByAll from "./Graphs/DepositByAll";
@@ -43,6 +41,7 @@ class Home extends React.Component {
                         <div className="row">
                             <ProvisionalCredit credit={this.state.credit} />
                             <Balance balance={this.state.cash} disabled={this.props.user.isAdmin ? false : this.props.user.isCashier ? false : true} />
+                            <Savings cash={this.state.cash} credit={this.state.credit} />
                         </div>
                         <div className="row">
                             <DepositByDay
