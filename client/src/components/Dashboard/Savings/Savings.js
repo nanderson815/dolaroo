@@ -5,7 +5,13 @@ import Plot from 'react-plotly.js';
 const Savings = (props) => {
 
     console.log(props);
-    
+
+    const oldCost = props.cash * .15;
+    const ourCost = props.cash - props.credit;
+    const savings = oldCost - ourCost
+
+    console.log(savings);
+
     return (
         <div>
             <div className="col s12 l6">
@@ -15,27 +21,34 @@ const Savings = (props) => {
                         <Plot
                             data={[
                                 {
-                                    values: [50 / 2, 50 / 2,  50],
+                                    // Sort: False ensures that the chart does not order descending.  
+                                    sort: false,
+                                    values: [50, 25 / 2, 75 / 2],
                                     rotation: 90,
-                                    text: [''],
+                                    text: ['', '', `$${savings.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`],
                                     textinfo: 'text',
                                     textposition: 'inside',
+                                    textfont: {
+                                        size: 18,
+                                        color: 'white'
+                                    },
                                     marker: {
-                                        colors: ['rgba(255, 255, 255, 0)', 'rgba(110, 154, 22, .5)','rgba(255, 255, 255, 0)'],
+                                        colors: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)', 'rgba(110, 154, 22, .5)'],
                                         line: {
-                                            color: ['rgb(220, 220, 220, 0)', 'rgba(220, 220, 220, 1)', 'rgba(255, 255, 255, 0)'],
+                                            color: ['rgba(255, 255, 255, 0)', 'rgb(220, 220, 220, 0)', 'rgba(220, 220, 220, 1)'],
                                             width: 1
                                         },
                                     },
-                                    hoverinfo: 'label',
                                     hole: .5,
                                     type: 'pie',
-                                    showlegend: false
+                                    showlegend: false,
+
                                 }
                             ]}
                             layout={
                                 {
                                     autosize: true,
+                                    hovermode: false,
                                     xaxis: {
                                         zeroline: false, showticklabels: false,
                                         showgrid: false, range: [-1, 1]
