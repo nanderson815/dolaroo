@@ -1,0 +1,15 @@
+
+.wrapper {
+    position: relative;
+    max-height: 350px;
+}
+
+.overlay {
+    width: 100%;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 70%;
+    bottom: 0;
+    margin: auto
+}
