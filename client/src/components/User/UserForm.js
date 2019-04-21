@@ -80,7 +80,7 @@ class UserForm extends React.Component {
         lastName: user.lastName || "",
         photoURL: user.photoURL || "",
         phoneNumber: user.phoneNumber || "",
-        uid: user.uid || "",
+        uid: user.uid,
         claims: user.claims,
         isAdmin: user.isAdmin,
         isCashier: user.isCashier,
@@ -143,7 +143,6 @@ class UserForm extends React.Component {
 
     const user = this.state;
     UserAPI.update(user).then (user => {
-      // set message to show update
       this.setState({message: "User Updated"});
       // should we go to user list page??  Passing message??
       this.props.history.push({
