@@ -10,6 +10,11 @@ const Savings = (props) => {
     const oldCost = props.cash * .15;
     const ourCost = props.cash - props.credit;
     const savings = oldCost - ourCost
+    const averageSavings = 2000;
+
+    // Filling bar graph here
+    const savingsSection = savings / averageSavings;
+    const emptySection = 1 - savingsSection;
 
     console.log(savings);
 
@@ -26,7 +31,7 @@ const Savings = (props) => {
                                         {
                                             // Sort: False ensures that the chart does not order descending.  
                                             sort: false,
-                                            values: [50, 25 / 2, 75 / 2],
+                                            values: [50, (emptySection * 100) / 2, (savingsSection * 100) / 2],
                                             rotation: 90,
                                             text: ['', '', ``],
                                             textinfo: 'text',
