@@ -4,8 +4,8 @@ import Plot from 'react-plotly.js';
 
 const Savings = (props) => {
 
-
-
+    console.log(props);
+    
     return (
         <div>
             <div className="col s12 l6">
