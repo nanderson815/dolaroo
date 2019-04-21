@@ -23,8 +23,8 @@ const Savings = (props) => {
                                     marker: {
                                         colors: ['rgba(255, 255, 255, 0)', 'rgba(110, 154, 22, .5)','rgba(255, 255, 255, 0)'],
                                         line: {
-                                            color: ['rgb(220, 220, 220, 0)', 'rgba(220, 220, 220, 0)', 'rgba(255, 255, 255, 0)'],
-                                            width: 2
+                                            color: ['rgb(220, 220, 220, 0)', 'rgba(220, 220, 220, 1)', 'rgba(255, 255, 255, 0)'],
+                                            width: 1
                                         },
                                     },
                                     hoverinfo: 'label',
