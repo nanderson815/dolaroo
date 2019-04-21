@@ -33,7 +33,7 @@ const Savings = (props) => {
                                         color: 'white'
                                     },
                                     marker: {
-                                        colors: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)', 'rgba(110, 154, 22, .5)'],
+                                        colors: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)', 'green'],
                                         line: {
                                             color: ['rgba(255, 255, 255, 0)', 'rgb(220, 220, 220, 0)', 'rgba(220, 220, 220, 1)'],
                                             width: 1
