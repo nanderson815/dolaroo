@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 
 import { withFirebase } from '../Auth/Firebase/FirebaseContext';
 import UserAPI from "./UserAPI";
-import { auth } from 'firebase';
   
 const styles = theme => ({
   container: {
@@ -137,28 +136,6 @@ class UserForm extends React.Component {
       .catch(err => {
         this.setState({ message: `Error adding user ${err}` });
     });  
-  }
-
-  addUser = () => {
-    console.log(`adding user to db`);
-    const user = this.state;
-    UserAPI.addUserToFireStore(user).then (id => {
-      // set message to show update
-      // this.setState({
-      //   message: "New User Added - they must Sign Up to authorize",
-      //   id: id
-      // });
-
-      // go to user list page??  Passing message??
-      this.props.history.push({
-        pathname: '/admin',
-        state: {message: "New User Added - they must Sign Up to authorize" }
-      });
-      
-    }).catch (err => {
-      // set message to show update
-      this.setState({message: `Error adding user ${err}`});
-    });
   }
 
   updateUser = () => {

@@ -99,15 +99,6 @@ class SignInFormBase extends React.Component {
             }
           });    
       };
-
-    registerUser = (e) => {
-        e.preventDefault();
-    
-        this.props.history.push({
-          pathname: '/registerpage',
-          state: {email: this.state.email }
-        });
-    }
     
     handleGoogleLogin = (e) => {
     e.preventDefault();
@@ -123,6 +114,9 @@ class SignInFormBase extends React.Component {
         })
         .catch(err => {
             console.error("Error logging in with google", err);
+            if (this._isMounted) {
+                this.setState({ error: err });
+            }  
         });
     }
 
@@ -184,9 +178,6 @@ class SignInFormBase extends React.Component {
                         </Button>
                     </div>
                     <div className="row">
-                        <Button onClick={this.registerUser} variant="contained" color="primary" className={classes.button}>
-                            Register
-                        </Button>
                         {error && <p>{error.message}</p>}
                     </div>
                     <p>

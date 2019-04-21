@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
 import AccountForm from "./AccountForm";
-import { PasswordForgetForm } from '../Auth/PasswordForget/PasswordForget';
 import PasswordChangeForm from '../Auth/PasswordForget/PasswordChange';
 
   
