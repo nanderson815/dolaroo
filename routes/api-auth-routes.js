@@ -2,6 +2,7 @@
 const admin = require("../middleware/authServerCommon");
 const requiresLogin = require('../middleware/requiresLogin.js');
 const UserDB = require("./UserDB");
+const AuthUserAPI = require("./AuthUserAPI");
 
 module.exports = function (app) {
 
@@ -43,11 +44,10 @@ module.exports = function (app) {
             if (req.user && !!req.user.admin) {
                 // set the claim for the user who's uid is passed
                 // Note, this is the uid of the user to make admin (NOT the auth users uid)
-                admin.auth().setCustomUserClaims(uid, {
+                AuthUserAPI.setClaims(uid, {
                     admin: true
-                }).then(async () => {
-                    // now update firestore
-                    await UserDB.updateClaims(uid, "admin", {isAdmin: true});
+                }).then(async (newClaims) => {
+                    await UserDB.updateClaims(uid, newClaims.name, {isAdmin: true});
                     res.json(uid);
                 });
             } else {
@@ -64,13 +64,11 @@ module.exports = function (app) {
         try {
             // Authorize the current user
             if (req.user && !!req.user.admin) {
-                // TODO - get current claims so we can merge
-
                 // Now, set custom claims
-                admin.auth().setCustomUserClaims(uid, {
+                AuthUserAPI.setClaims(uid, {
                     cashier: true
-                }).then(async () => {
-                    await UserDB.updateClaims(uid, "cashier", {isCashier: true});
+                }).then(async (newClaims) => {
+                    await UserDB.updateClaims(uid, newClaims.name, {isCashier: true});
                     res.json(uid);
                 });
             } else {
@@ -90,11 +88,10 @@ module.exports = function (app) {
             if (req.user && !!req.user.admin) {
                 // set the claim for the user who's uid is passed
                 // Note, this is the uid of the user to make admin (NOT the auth users uid)
-                admin.auth().setCustomUserClaims(uid, {
+                AuthUserAPI.setClaims(uid, {
                     banker: true
-                }).then(async () => {
-                    // now update firestore
-                    await UserDB.updateClaims(uid, "banker", {isBanker: true});
+                }).then(async (newClaims) => {
+                    await UserDB.updateClaims(uid, newClaims.name, {isBanker: true});
                     res.json(uid);
                 });
             } else {
