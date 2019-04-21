@@ -59,38 +59,20 @@ module.exports = function (app) {
         }
     }); // Route
 
-    const helperGetUser = (uid) => {
-        return new Promise((resolve, reject) => {
-            admin.auth().getUser(uid).then((user) => {
-                return(resolve(user));
-            }).catch(err => {
-                return(reject(err));
-            });
-        });
-    }
-
     app.post("/api/auth/setCashier/:uid", requiresLogin, (req, res) => {
         let uid = req.params.uid;
         try {
             // Authorize the current user
             if (req.user && !!req.user.admin) {
-                // check if user is admin and if they are, do change to cashier since admin can do that
-                helperGetUser(uid).then(user => {
-                    if (user.claims && user.isAdmin) {
-                        // Do NOT change admin to cashier
-                        res.status(200).json("User is already admin who also has cashier priveleges");
-                    } else {
-                        admin.auth().setCustomUserClaims(uid, {
-                            cashier: true
-                        }).then(async () => {
-                            await UserDB.updateClaims(uid, "cashier", {isCashier: true});
-                            res.json(uid);
-                        });
-                    }
-                }).catch(err => {
-                    // ignore since it is OK if couldnt set for most reasons
-                    res.status(200).json("OK");
-                })
+                // TODO - get current claims so we can merge
+
+                // Now, set custom claims
+                admin.auth().setCustomUserClaims(uid, {
+                    cashier: true
+                }).then(async () => {
+                    await UserDB.updateClaims(uid, "cashier", {isCashier: true});
+                    res.json(uid);
+                });
             } else {
                 res.status(401).json(`Must be admin to make someone cashier..."`);
             }
@@ -98,6 +80,55 @@ module.exports = function (app) {
         } catch (err) {
             // catch all error
             res.status(500).json(`Error caught in route app.post("/api/auth/setCashier..." ${err}`);
+        }
+    }); // Route
+
+    app.post("/api/auth/setBanker/:uid", requiresLogin, (req, res) => {
+        let uid = req.params.uid;
+        try {
+            // Authorize the current user
+            if (req.user && !!req.user.admin) {
+                // set the claim for the user who's uid is passed
+                // Note, this is the uid of the user to make admin (NOT the auth users uid)
+                admin.auth().setCustomUserClaims(uid, {
+                    banker: true
+                }).then(async () => {
+                    // now update firestore
+                    await UserDB.updateClaims(uid, "banker", {isBanker: true});
+                    res.json(uid);
+                });
+            } else {
+                res.status(401).json(`Must be admin to make someone banker..."`);
+            }
+        } catch (err) {
+            // catch all error
+            res.status(500).json(`Error caught in route app.post("//api/auth/setBanker/:uid..." ${err}`);
+        }
+    }); // Route
+
+    app.post("/api/auth/setUser/:uid", requiresLogin, (req, res) => {
+        let uid = req.params.uid;
+        try {
+            // Authorize the current user
+            if (req.user && !! req.user.admin) {
+                // set the claim for the user who's uid is passed
+                // Note, this is the uid of the user to update (NOT the auth users uid)
+                admin.auth().setCustomUserClaims(uid, {
+                    admin: false,
+                    cashier: false,
+                    banker: false,
+                    user: true
+                }).then(async () => {
+                    // now update firestore - reset all other roles when makeing someone a user
+                    await UserDB.updateClaims(uid, "user", {isUser: true, isAdmin: false, isCashier: false, isBanker: false});
+                    res.json(uid);
+                });
+            } else {
+                res.status(401).json(`Must be admin to make someone admin..."`);
+            }
+        } catch (err) {
+            // catch all error
+            res.status(500).json(`Error caught in route app.post("/api/auth/setAdmin..." ${err}`);
         }
     }); // Route
 

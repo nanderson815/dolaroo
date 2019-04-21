@@ -313,7 +313,7 @@ class UserAPI {
 
     // Make user a plain ole user - essential disables admin or cashier or other functionality 
     static makeUser = (uid) => {
-        return (Util.apiPost(`/api/auth/setBanker/${uid}`, {
+        return (Util.apiPost(`/api/auth/setUser/${uid}`, {
             id: uid
         }));
     }    

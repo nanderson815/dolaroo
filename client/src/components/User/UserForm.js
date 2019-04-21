@@ -68,6 +68,7 @@ class UserForm extends React.Component {
     claims: "noauth",
     isAdmin: false,
     isCashier: false,
+    isBanker: false,
     isUser: false,
     message: ""
   };
@@ -84,6 +85,7 @@ class UserForm extends React.Component {
         claims: user.claims,
         isAdmin: user.isAdmin,
         isCashier: user.isCashier,
+        isBanker: user.isBanker,
         isUser: user.isUser,
         email: user.email
       });

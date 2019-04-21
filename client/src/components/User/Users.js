@@ -84,6 +84,36 @@ class Users extends React.Component {
             alert(err);
             console.error(err); 
         });
+    }   
+
+    // Make User - essentailly dispables the user
+    userMakeUser = (id) => {
+        console.log(`Trying to make User ${id} User`);
+
+        UserAPI.makeUser( id )
+        .then(res => {
+            console.log(`Made User ${id} User`);
+            this.refreshPage();
+        })
+        .catch(err => {
+            alert(err);
+            console.error(err); 
+        });
+    }       
+
+    // Make Banker
+    userMakeBanker = (id) => {
+        console.log(`Trying to make User ${id} Banker`);
+
+        UserAPI.makeBanker( id )
+        .then(res => {
+            console.log(`Made User ${id} Banker`);
+            this.refreshPage();
+        })
+        .catch(err => {
+            alert(err);
+            console.error(err); 
+        });
     }       
     
     // go back to where you came from
@@ -102,17 +132,9 @@ class Users extends React.Component {
                             userDelete={this.userDelete}
                             userMakeAdmin={this.userMakeAdmin}
                             userMakeCashier={this.userMakeCashier}
-                            id={user.id}
-                            uid={user.uid}
-                            firstName={user.firstName}
-                            lastName={user.lastName}
-                            phoneNumber={user.phoneNumber}
-                            email={user.email}
-                            photoURL={user.photoURL}
-                            claims={user.claims}
-                            isAdmin={user.isAdmin}
-                            isCashier={user.isCashier}
-                            isUser={user.isUser}
+                            userMakeBanker={this.userMakeBanker}
+                            userMakeUser={this.userMakeUser}
+                            userInfo={user}
                             />
                         </div>
                         );

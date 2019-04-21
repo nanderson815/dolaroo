@@ -6,21 +6,19 @@ class UserDB {
     static updateClaims (uid, claims, customClaims) {
         return new Promise(async (resolve, reject) => {
             const db = admin.firestore();
-            const isAdmin = customClaims && customClaims.isAdmin ? true : false;
-            const isCashier = customClaims && customClaims.isCashier ? true : false;
-            const isUser = customClaims && customClaims.isUser ? true : false;
-            const isNoAuth = !(isAdmin || isCashier || isUser);
+            // Init claims for primary since you can be multiple
+            let updateFields = {claims: claims};
+
+            // Only *set* claims passed so users can be more than one
+            if (customClaims && customClaims.isAdmin != null) updateFields.isAdmin = customClaims.isAdmin;
+            if (customClaims && customClaims.isCashier != null) updateFields.isCashier = customClaims.isCashier;
+            if (customClaims && customClaims.isBanker != null) updateFields.isBanker = customClaims.isBanker;
+            if (customClaims && customClaims.isUser != null) updateFields.isUser = customClaims.isUser;
 
             // update claims
-            db.collection('users').doc(uid).set({
-                claims: claims,
-                isAdmin: isAdmin,
-                isCashier: isCashier,
-                isUser: isUser,
-                isUser: isNoAuth
-            }, {
-                merge: true
-            }).then(() => {
+            db.collection('users').doc(uid).set(updateFields,
+                { merge: true }
+            ).then(() => {
                 console.log("completed");
                 resolve();
             }).catch(err => {
@@ -42,7 +40,6 @@ class UserDB {
                 lastName: user.lastName,
                 displayName: `${user.firstName} ${user.lastName}`,
                 phoneNumber: user.phoneNumber,
-                uid: user.uid,
                 email: user.email,
                 photoURL: user.photoURL ? user.photoURL : ""
             }, {
