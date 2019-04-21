@@ -18,7 +18,7 @@ const Savings = (props) => {
             <div className="col s12 l6">
                 <div className="card">
                     <div className="card-content pCard savingsCard">
-                        <span className="card-title">Savings</span>
+                        <span className="card-title">Savings This Month</span>
                         <div className={`${styles.wrapper}`}>
                             <div className="plotly">
                                 <Plot
