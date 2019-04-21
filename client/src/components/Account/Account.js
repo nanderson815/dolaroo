@@ -44,7 +44,6 @@ class Account extends React.Component {
             phoneNumber={phoneNumber}
             claims={claims}
           />
-          <PasswordForgetForm />
           <PasswordChangeForm />
         </div>
       );
