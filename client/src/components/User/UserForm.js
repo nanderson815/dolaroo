@@ -116,6 +116,7 @@ class UserForm extends React.Component {
     const user = this.state;
 
     // First, create the auth user in firebase
+    // must be done on server for security reasons
     UserAPI.createAuthUser(user)
       .then(response => {
         const authUser = {};

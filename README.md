@@ -23,28 +23,18 @@ Almost 30% of all retail transactions are by cash. In the US and Canada, $96b wa
 
 ### The Existing Process
 
-Cash is collected from customers and stored in the drawer
-Managers “Close” the drawer at the end of each shift
-Manually sort and count bills
-Reconcile with sales totals by hand (may require a re-count if discrepancies exist)
-Manually input cash totals to POS software
-Managers “Rebuild” drawer to starting cash amount for new shift
-At the end of the dat, the manager will typically drive/walk the cash to a bank branch prior to the deposit cutoff time
-Cash is held in locked canvas bag along with a deposit slip
-Typically, locations will have a deposit relationship with whatever bank is closest.
-The company’s account department must manually consolidate funds into a company deposit account.
+Cash is collected from customers and stored in the drawer. Managers “Close” the drawer at the end of each shift
+Manually sort and count bills. Reconcile with sales totals by hand (may require a re-count if discrepancies exist)
+Manually input cash totals to POS software. Managers “Rebuild” drawer to starting cash amount for new shift
+At the end of the dat, the manager will typically drive/walk the cash to a bank branch prior to the deposit cutoff time. Cash is held in locked canvas bag along with a deposit slip. Typically, locations will have a deposit relationship with whatever bank is closest. The company’s account department must manually consolidate funds into a company deposit account.
 
 ![Dollaroo](./images/oldProcess.png)
 
 ### Our Solution
 
-A cloud-based web and mobile application that imitates smart safe functionality with minimal upfront cost.
-Instant deposits of provisional credit via Realtime Payment Network.
-Smart bill counter to facilitate register closing.
-Scalable Solution supports multiple locations.
-“Cash Recycle” function to rebuild registers without ordering more bills.
-Store case in existing safe and deposit less frequently through method of choice.
-Cloud Based Analytics portal with a comprehensive deposit information and export functionality
+A cloud-based web and mobile application that imitates smart safe functionality with minimal upfront cost.  Instant deposits of provisional credit via Realtime Payment Network. Smart bill counter to facilitate register closing.
+Scalable Solution supports multiple locations. “Cash Recycle” function to rebuild registers without ordering more bills.
+Store case in existing safe and deposit less frequently through method of choice. Cloud Based Analytics portal with a comprehensive deposit information and export functionality.
 
 ![Dollaroo](./images/newProcess.png)
 
@@ -84,7 +74,9 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 
 ![ss1 details](./images/s1-details.gif)
 
-![ss1 user](./images/s1-user.gif)
+![ss1 user](./images/s1-users.gif)
+
+![ss1 forget](./images/s1-signinforget.gif)
 
 ![ss2](./images/ss2.png)
 
@@ -94,32 +86,26 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 
 ![ss5](./images/ss5.png)
 
-![ss6](./images/s6.png)
-
 ![ss7](./images/ss7.png)
 
 ![ss8](./images/ss8.png)
 
-![ss9](./images/ss9.png)
-
-## Details
-
-  1. Whenever a user visits, the app scrapes stories from a news outlet displays artilces for the user.  If there is an image with teh article, it displays it, otherwise, I provide a generic news image.  
-     * Each scraped article is saved to Mongo only when the user clicks the heart icon (save).  I chose not to save all articles since there is no reason to save articles the user does not care about. The app scrapes and display the following information for each article:
-
-     * Headline - the title of the article
-
-     * Summary - a short summary of the article
-
-     * URL - the url to the original article
-  
-     * ImageUrl - if it exists
-
-  2. Users can leave comments on the articles they saved to revisit them later.
-
-  3. Users can delete saved articles and comments left on articles. All stored comments should be visible to every user.
-
 ## Architecture
+
+### Security
+
+Dollaroo deals with money and hence is very secure.  We are using firebase auth and google admin auth services for authentication and aiuthorization including custom user roles using firebase custom claims.  Custom claims can only be updated on the server side inside an authorized context of the app to keep this process secure - goodle does not allow these to be set in the client since it is not secure.  The app uses these custom claimns for role base security at 4 primary levels.  Currently we have 4 roles with different authorization with the app - admin, banker, cashier and user.
+
+1. User can only see links and other UI objects that they are allowed to see for their role
+
+2. REACT componments are wrapped in higher order components with authentication/aithorization context (using REACT context) and checked to ensure even if someone used inspector to go around the role based UI, it will preveent them from loading that compoent unless authorized.
+
+3. All secure server transaction require auth context using secure token and are also checked based on auth role to prevent access to any server side services that are not allowed.
+
+4. Firestore data is completely locked down using the auth customClaims so even if a hacker was sneaky enough to bypass all the client side security, they would be unable to update the data in any way.
+
+See some of the rules below:
+![ss9](./images/ss9.png)
 
 ### Model View Controller (with lightweight controller routing to business and data logic)
 
@@ -127,7 +113,10 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
   * Materialize JS and CSS
   * REACT Components
 
-* Controllers - `/server.js` - REACT Static Routes and `/api` routes for Mongo and Cheerio
+* Controllers - `/server.js` , `/routes` - REACT Static Routes and `/api` routes for Mongo and Fiebase Auth and Firebase Firestore
+
+* Security - `/middleware`
 
 * Model (Data) - `/model`
-  * Uses Mongo and Mongoose for Data Layer
+  * Uses Firebase Firestore for all secure data and transactions
+  * Uses Mongo and Mongoose for Data Layer for insecure data like getting prospects from landing page
