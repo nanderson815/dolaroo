@@ -37,15 +37,13 @@ class UserAPI {
         });
     }
 
+    // Updates the current user (not do NOT update uid since it is really a primary key)
+    // uid doc field in firestore should only be messed with on create
     static updateCurrent =  (user) => {
         console.log(`trying to update user in fb and auth: ${user}`);
         return new Promise(async (resolve, reject) => {
             const db = Util.getFirestoreDB();
             const authUser = await Util.getCurrentAuthUser();
-            let _uid = "noauth";
-            if (user.uid && user.uid !== undefined) {
-                _uid = user.uid;
-             }
 
             // we always want uid = id to keep auth and firestore in sync
             authUser.updateProfile({
@@ -61,7 +59,6 @@ class UserAPI {
                     lastName: user.lastName,
                     displayName: `${user.firstName} ${user.lastName}`,
                     phoneNumber: user.phoneNumber,
-                    uid: _uid,
                     email: user.email.toLowerCase(),
                     photoURL: user.photoURL ? user.photoURL : ""    
                 },{ merge: true }).then(() => {
@@ -100,7 +97,7 @@ class UserAPI {
                 lastName: userInfo.lastName,
                 phoneNumber: userInfo.phoneNumber,
                 uid: authUser.user.uid,
-                email: userInfo.email,
+                email: userInfo.email.toLowerCase(),
                 photoURL: userInfo.photoURL
             };
         } else {
@@ -110,7 +107,7 @@ class UserAPI {
                 lastName: nameArray.length > 1 ? nameArray[1] : "",
                 phoneNumber: authUser.user.phoneNumber ? authUser.user.phoneNumber : "",
                 uid: authUser.user.uid,
-                email: authUser.user.email,
+                email: authUser.user.email.toLowerCase(),
                 photoURL: authUser.user.photoURL ? authUser.user.photoURL : ""
             };
         }
@@ -189,17 +186,16 @@ class UserAPI {
         });
     }
 
-    // get user from email
+    // get user by email
     static getByEmail = (email) => {
         // its a promise so return
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
 
             // then get from firestore
-            // let user = {};
             let user = {};
             let foundUser = false;
-            let docRef = db.collection("users").where("email", "==", email).limit(1);
+            let docRef = db.collection("users").where("email", "==", email.toLowerCase()).limit(1);
             docRef.get().then((querySnapshot) => {
                 querySnapshot.forEach(doc => {
                     foundUser = true;
