@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 
 import { withFirebase } from '../Auth/Firebase/FirebaseContext';
 import UserAPI from "./UserAPI";
+import { auth } from 'firebase';
   
 const styles = theme => ({
   container: {
@@ -104,7 +105,7 @@ class UserForm extends React.Component {
     }
   }
 
-    // Create a new user 
+  // Create a new user 
   // Create the user in firebase AUTH with email and random password
   // Save that user in firestore
   // -- The above is like the sign up process
@@ -112,15 +113,15 @@ class UserForm extends React.Component {
   createUser = () => {  
     // eslint-disable-next-line no-unused-vars
     const user = this.state;
-    console.log(this.props);
-
-    // Generate random password
-    let randomPassword = Math.random().toString(36).slice(-8);
 
     // First, create the auth user in firebase
-    this.props.firebase
-      .doCreateUserWithEmailAndPassword(user.email, randomPassword)
-      .then(authUser => {
+    UserAPI.createAuthUser(user)
+      .then(response => {
+        const authUser = {};
+        authUser.user = response.data;
+        // Temp override these due to errors in stroing null values.
+        authUser.user.phoneNumber = user.phoneNumber;
+        authUser.user.photoURL = user.photoURL;
         // Now Create the user in firestore
         UserAPI.addAuthUserToFirestore(authUser).then( (id) => {
           // redirect ??

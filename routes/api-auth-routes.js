@@ -130,5 +130,38 @@ module.exports = function (app) {
         }
     }); // Route
 
+    // Route for Creating a new user with email and random password
+    app.post("/api/auth/createUser", requiresLogin, (req, res) => {
+        // Generate random password
+        let randomPassword = Math.random().toString(36).slice(-8);
+        let user = req.body;
+
+        try {
+            // Authorize the current user - only admin can create
+            if (req.user && !!req.user.admin) {
+                // Create user
+                admin.auth().createUser({
+                    email: user.email,
+                    emailVerified: false,
+                    password: randomPassword,
+                    displayName: `${user.firstName} ${user.lastName}`,
+                    disabled: false
+                })
+                .then((authUser) => {
+                        console.log('Successfully added auth user');
+                        res.json(authUser);
+                })
+                .catch((err) => {
+                    console.error('Error creating auth user:', err);
+                    res.status(404).json(`Error caught in app.post("/api/auth/createUser}" ${err}`);
+                });
+            } else {
+                res.status(401).json(`Must be admin to create user`);
+            }
+        } catch (err) {
+            // catch all error
+            res.status(500).json(`Error caught in route app.post("/api/auth/createUser..." ${err.errors[0].message}`);
+        }
+    }); // Route    
 
 };

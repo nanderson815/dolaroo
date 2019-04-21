@@ -37,6 +37,10 @@ class UserAPI {
     });
     }
     
+    // This calls the backend to allow admins to create an auth user securely abd not change login
+    static createAuthUser = (authUser) => {
+        return(Util.apiPost("/api/auth/createUser", authUser));
+    }
 
     // Adds a user that has been authroized to the firestore collection
     static addAuthUserToFirestore = (authUser) => {
