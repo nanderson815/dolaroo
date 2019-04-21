@@ -126,12 +126,14 @@ class UserForm extends React.Component {
         authUser.user.photoURL = user.photoURL;
         // Now Create the user in firestore
         UserAPI.addAuthUserToFirestore(authUser).then( (id) => {
-          // redirect ??
-          // this.props.history.push("/dashboard"); 
-          this.setState({
-            message: "New User Added - they must reset password login",
-            id: id
-          });
+          this.props.firebase.doPasswordReset(user.email).then(() => {
+            this.setState({
+              message: "New User Added.  Password reset Link sent - user must reset password login",
+              id: id
+            });
+          }).catch(err => {
+            this.setState({ message: err.message });
+          });    
         }).catch(err => {
             this.setState({ message: `Error adding user ${err}` });
         });  

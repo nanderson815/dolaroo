@@ -57,11 +57,11 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 ## Technologies Used
 
 * [x] HTML/CSS/Javascript
-* [x] REACT
+* [x] REACT, REACT Context
 * [x] Node.js, Express
 * [x] Firebase Auth with Custom Claims
-* [x] Firebase Firestore for all secured data
-* [x] MongoDB and Mongose (for Schemas, non-secure data)
+* [x] Firebase Firestore for all secure data
+* [x] MongoDB and Mongose (for Schemas, and non-secure data)
 * [x] MongoDB Atlas Clusters
 * [x] Axios (in node server and REACT components)
 * [x] Materialize, MaterialUI
