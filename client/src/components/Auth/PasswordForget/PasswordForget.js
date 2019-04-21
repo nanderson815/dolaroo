@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -11,11 +11,6 @@ const PasswordForgetPage = () => (
     <PasswordForgetForm />
   </div>
 );
-
-const INITIAL_STATE = {
-  email: '',
-  message: null,
-};
 
 const styles = theme => ({
     container: {
@@ -43,6 +38,10 @@ const styles = theme => ({
     },
 });
 
+const INITIAL_STATE = {
+  email: '',
+  message: null,
+};
 class PasswordForgetFormBase extends Component {
   constructor(props) {
     super(props);
@@ -56,10 +55,12 @@ class PasswordForgetFormBase extends Component {
     this.props.firebase
       .doPasswordReset(email)
       .then(() => {
-        this.setState({ ...INITIAL_STATE });
+        this.props.history.push({
+          pathname: '/signin',
+        });  
       })
       .catch(error => {
-        this.setState({ error });
+        this.setState({ message: error.message });
       });
 
     event.preventDefault();
@@ -120,6 +121,6 @@ const PasswordForgetLink = () => (
 
 export default PasswordForgetPage;
 
-const PasswordForgetForm = withStyles(styles)(withFirebase(PasswordForgetFormBase));
+const PasswordForgetForm = withRouter(withStyles(styles)(withFirebase(PasswordForgetFormBase)));
 
 export { PasswordForgetForm, PasswordForgetLink };
