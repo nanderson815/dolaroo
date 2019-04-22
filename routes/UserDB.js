@@ -19,7 +19,6 @@ class UserDB {
             db.collection('users').doc(uid).set(updateFields,
                 { merge: true }
             ).then(() => {
-                console.log("completed");
                 resolve();
             }).catch(err => {
                 console.error(`error updating claims: ${err}`);

@@ -115,7 +115,7 @@ module.exports = function (app) {
                     cashier: false,
                     banker: false,
                     user: true
-                }).then(async () => {
+                }).then(async (newClaims) => {
                     // now update firestore - reset all other roles when makeing someone a user
                     await UserDB.updateClaims(uid, "user", newClaims);
                     res.json(uid);
