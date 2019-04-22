@@ -198,8 +198,8 @@ class UserForm extends React.Component {
         this.fetchUser(id);
     })
     .catch(err => {
-        alert(err);
-        console.error(err); 
+      this.setState({message: `Error: ${err}`});
+      console.error(err); 
     });
   }        
   
@@ -212,8 +212,8 @@ class UserForm extends React.Component {
           this.fetchUser(id);
       })
       .catch(err => {
-          alert(err);
-          console.error(err); 
+        this.setState({message: `Error: ${err}`});
+        console.error(err); 
       });
   }   
 
@@ -226,8 +226,8 @@ class UserForm extends React.Component {
           this.fetchUser(id);
       })
       .catch(err => {
-          alert(err);
-          console.error(err); 
+        this.setState({message: `Error: ${err}`});
+        console.error(err); 
       });
   }       
 
@@ -240,8 +240,8 @@ class UserForm extends React.Component {
           this.fetchUser(id);
       })
       .catch(err => {
-          alert(err);
-          console.error(err); 
+        this.setState({message: `Error: ${err}`});
+        console.error(err); 
       });
   }
 

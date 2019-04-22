@@ -47,8 +47,12 @@ module.exports = function (app) {
                 AuthUserAPI.setClaims(uid, {
                     admin: true
                 }).then(async (newClaims) => {
-                    await UserDB.updateClaims(uid, newClaims.name, newClaims);
-                    res.json(uid);
+                    try {
+                        await UserDB.updateClaims(uid, newClaims.name, newClaims);
+                        res.json(uid);
+                    } catch (err) {
+                        res.status(500).json(`Error caught in "await UserDB.updateClaims" ${err}`);
+                    }
                 });
             } else {
                 res.status(401).json(`Must be admin to make someone admin..."`);
@@ -68,8 +72,12 @@ module.exports = function (app) {
                 AuthUserAPI.setClaims(uid, {
                     cashier: true
                 }).then(async (newClaims) => {
-                    await UserDB.updateClaims(uid, newClaims.name, newClaims);
-                    res.json(uid);
+                    try {
+                        await UserDB.updateClaims(uid, newClaims.name, newClaims);
+                        res.json(uid);
+                    } catch (err) {
+                        res.status(500).json(`Error caught in "await UserDB.updateClaims" ${err}`);
+                    }
                 });
             } else {
                 res.status(401).json(`Must be admin to make someone cashier..."`);
@@ -91,8 +99,12 @@ module.exports = function (app) {
                 AuthUserAPI.setClaims(uid, {
                     banker: true
                 }).then(async (newClaims) => {
-                    await UserDB.updateClaims(uid, newClaims.name, newClaims);
-                    res.json(uid);
+                    try {
+                        await UserDB.updateClaims(uid, newClaims.name, newClaims);
+                        res.json(uid);
+                    } catch (err) {
+                        res.status(500).json(`Error caught in "await UserDB.updateClaims" ${err}`);
+                    }
                 });
             } else {
                 res.status(401).json(`Must be admin to make someone banker..."`);
@@ -116,8 +128,12 @@ module.exports = function (app) {
                     banker: false,
                     user: true
                 }).then(async (newClaims) => {
-                    await UserDB.updateClaims(uid, newClaims.name, newClaims);
-                    res.json(uid);
+                    try {
+                        await UserDB.updateClaims(uid, newClaims.name, newClaims);
+                        res.json(uid);
+                    } catch (err) {
+                        res.status(500).json(`Error caught in "await UserDB.updateClaims" ${err}`);
+                    }
                 });
             } else {
                 res.status(401).json(`Must be admin to make someone admin..."`);

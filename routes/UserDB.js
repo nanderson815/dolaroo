@@ -21,7 +21,7 @@ class UserDB {
             ).then(() => {
                 resolve();
             }).catch(err => {
-                console.error(`error updating claims: ${err}`);
+                console.error(`Error updating claims in UserDB: ${err}`);
                 reject(err);
             });
         });
