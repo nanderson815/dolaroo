@@ -278,7 +278,7 @@ class UserForm extends React.Component {
           <div className="card-content">
             <span className="card-title">User (Role: {claims})</span>
 
-            <form className={classes.container} onSubmit={this.saveUser} >
+            <form onSubmit={this.saveUser} >
               <TextField
               disabled={!emailEnabled}
               id="email"
@@ -346,12 +346,16 @@ class UserForm extends React.Component {
                   inputComponent: NumberFormatPhone,
               }}
               />
+            </form>
 
-              {/* Only display roles if user exists */}
-              {this.state.id ? 
+            {/* Only display roles if user exists */}
+            {this.state.id ? 
+            <form >
+              <br />
+              <hr />
               <FormControl component="fieldset" className={classes.formControl}>
                 <FormLabel component="legend">Current Roles</FormLabel>
-                <FormGroup>
+                <FormGroup row>
                   <FormControlLabel
                     disabled={this.state.isCashier}
                     control={
@@ -381,33 +385,15 @@ class UserForm extends React.Component {
                   />
                 </FormGroup>
               </FormControl>
-              : ""}
-
             </form>
+            : ""}  
+            <hr />
             <br />
             <div className="row">
                 <Button disabled={!isValid} onClick={this.saveUser} variant="contained" color="primary" className={classes.button}>
                   {buttonText}
                 </Button>
             </div>
-            {/* Only display custom claims updates if existing user - cant set until they exist */}
-            {this.state.id ? 
-            <div className="row">
-                <Button onClick={() => this.userMakeCashier(this.state.id)} variant="contained" color="primary" className={classes.button}>
-                  Make Cashier
-                </Button>{" "}
-                <Button onClick={() => this.userMakeAdmin(this.state.id)} variant="contained" color="primary" className={classes.button}>
-                  Make Admin
-                </Button>{" "}
-                <Button onClick={() => this.userMakeBanker(this.state.id)} variant="contained" color="primary" className={classes.button}>
-                  Make Banker
-                </Button>{" "}
-                <Button onClick={() => this.userMakeUser(this.state.id)} variant="contained" color="primary" className={classes.button}>
-                  Make User
-                </Button>
-            </div> 
-            : ""}
-
             <p>{message}</p>
 
           </div>
