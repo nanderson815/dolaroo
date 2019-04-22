@@ -14,7 +14,7 @@ const Balance =(props) => {
                     </div>
                     <div className="card-action pCard">
                         <div className="center-align ">
-                            <Link disabled={props.disabled} to="/dashboard/deposit" className="waves-effect waves-light dash-btn blue darken-4 btn">New Deposit</Link>
+                            <Link disabled={props.disabled} to="/dashboard/deposit" className="waves-effect waves-light dash-btn blue darken-4 btn depositBtn">New Deposit</Link>
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,14 @@ import './provisionalCredit.css';
 
 const ProvisionalCredit = (props) => {
 
+
+    var date = new Date();
+    var time = new Date(date.getTime());
+    time.setMonth(date.getMonth() + 1);
+    time.setDate(0);
+    var days = time.getDate() > date.getDate() ? time.getDate() - date.getDate() : 0;
+
+
     return (
         <div>
             <div className="col s12 l4">
@@ -15,6 +23,8 @@ const ProvisionalCredit = (props) => {
                     <div className="card-action pCard">
                         <div className="center-align">
                             {/* <Link to="dashboard/payment" className="waves-effect waves-light dash-btn blue darken-4 btn">Pay Balance</Link> */}
+                            <p>Days remianing in current cycle: </p>
+                            <h5>{days}</h5>
                         </div>
                     </div>
                 </div>
