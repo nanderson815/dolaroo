@@ -2,10 +2,11 @@ import React from 'react';
 import './Balance.css'
 import { Link } from 'react-router-dom';
 
+
 const Balance =(props) => {
     return (
         <div>
-            <div className="col s12 l6">
+            <div className="col s12 l4">
                 <div className="card">
                     <div className="card-content pCard">
                         <span className="card-title">Cash Balance</span>
@@ -13,7 +14,7 @@ const Balance =(props) => {
                     </div>
                     <div className="card-action pCard">
                         <div className="center-align ">
-                            <Link to="/dashboard/deposit" className="waves-effect waves-light dash-btn blue darken-4 btn">New Deposit</Link>
+                            <Link disabled={props.disabled} to="/dashboard/deposit" className="waves-effect waves-light dash-btn blue darken-4 btn depositBtn">New Deposit</Link>
                         </div>
                     </div>
                 </div>

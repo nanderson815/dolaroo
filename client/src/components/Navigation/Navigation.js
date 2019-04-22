@@ -5,6 +5,7 @@ import SignOutButton from '../Auth/SignOut/SignOut';
 import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 import { withRouter } from 'react-router-dom';
 import AccountMenu from "../Account/AccountMenu";
+import './Navigation.css';
 
 class Navigation extends React.Component {
   state = {
@@ -39,11 +40,13 @@ class Navigation extends React.Component {
   render() {
 
     let navBarClass = '';
+    let name = '';
 
     if (this.state.isTop && this.props.history.location.pathname === "/") {
       navBarClass = 'transparent z-depth-0';
     } else {
       navBarClass = 'z-depth-0 blue darken-4'
+      name = 'Dollaroo'
     }
 
 
@@ -128,7 +131,7 @@ class Navigation extends React.Component {
         <div className='navbar-fixed'>
           <nav className={navBarClass}>
             <div className="container nav-wrapper">
-              <a href="#!" className="brand-logo center">Dollaroo</a>
+              <a href="/" className="brand-logo"><img className="logo" src="./images/logo.png" alt="Dollaroo Logo"/> <span>{name}</span></a>
               <a href="#!" data-target="mobile-menu" className="sidenav-trigger"><i className="material-icons">menu</i></a>
               <ul className="right hide-on-med-and-down">
                 {navBar}

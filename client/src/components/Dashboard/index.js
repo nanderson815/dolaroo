@@ -1,12 +1,10 @@
 import React from 'react';
 import ProvisionalCredit from './ProvisionalCredit/provisionalCredit';
-// import Deposit from './Deposit/Deposit';
 import Balance from './Balance/Balance';
+import Savings from './Savings/Savings';
 import './dashboard.css';
 import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 import { Redirect } from 'react-router';
-// import { withFirebaseContext } from '../Auth/Firebase/FirebaseContext';
-
 import DepositByUser from "./Graphs/DepositByUser";
 import DepositByDay from "./Graphs/DepositByDay";
 import DepositByAll from "./Graphs/DepositByAll";
@@ -18,44 +16,50 @@ class Home extends React.Component {
     state = {
         deposits: [],
         credit: 0,
-        cash: 0
+        cash: 0,
     }
 
+
     componentDidMount() {
+
         DepositDB.get("deposits")
-            .then(res => this.setState({ deposits: res }));
+            .then(res => this.setState({ deposits: res }))
+            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
         DepositDB.get("credit")
-            .then(res => this.setState({ credit: res[0].balance }));
+            .then(res => this.setState({ credit: res[0].balance }))
+            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
         DepositDB.get("cash")
-            .then(res => this.setState({ cash: res[0].balance }));
-        // this.props.firebase.db.get("")
+            .then(res => this.setState({ cash: res[0].balance }))
+            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
     }
 
     render() {
-
         if (this.props.user.authUser) {
             return (
                 <div>
                     <div className="container">
                         <div className="row">
                             <ProvisionalCredit credit={this.state.credit} />
-                            <Balance balance={this.state.cash} />
+                            <Balance balance={this.state.cash} disabled={this.props.user.isAdmin ? false : this.props.user.isCashier ? false : true} />
+                            <Savings cash={this.state.cash} credit={this.state.credit} />
                         </div>
                         <div className="row">
-                            <DepositByDay 
+                            <DepositByDay
                                 title={"Total Deposits By Day"}
                                 deposits={this.state.deposits}
                             />
-                            <DepositByUser 
+
+                            {this.props.user.isUser ? null : <DepositByUser
                                 title={"Deposits By User"}
                                 deposits={this.state.deposits}
-                            />
-                            <DepositByAll 
+                            />}
+
+                            <DepositByAll
                                 title={"All Deposits"}
                                 deposits={this.state.deposits}
                             />
-                            <DepositByDenomination 
-                                title={"Number of Bills By Denomination"}     
+                            <DepositByDenomination
+                                title={"Number of Bills By Denomination"}
                                 deposits={this.state.deposits}
                             />
                         </div>
@@ -64,7 +68,7 @@ class Home extends React.Component {
             );
         } else {
             return (
-                <Redirect to="/" />
+                <Redirect to="/signin" />
             );
         }
 
