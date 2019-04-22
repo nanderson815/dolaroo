@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const Balance =(props) => {
     return (
         <div>
-            <div className="col s12 l6">
+            <div className="col s12 l4">
                 <div className="card">
                     <div className="card-content pCard">
                         <span className="card-title">Cash Balance</span>

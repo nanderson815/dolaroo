@@ -1,8 +1,8 @@
 
 .wrapper {
     position: relative;
-    max-height: 350px;
-    margin-top: -50px;
+    max-height: 250px;
+    /* margin-top: -35%; */
 }
 
 .overlay {
@@ -10,7 +10,7 @@
     position: absolute;
     right: 0;
     left: 0;
-    top: 70%;
+    top: 50%;
     bottom: 0;
     margin: auto
 }
