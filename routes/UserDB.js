@@ -3,17 +3,17 @@ const admin = require("../middleware/authServerCommon");
 
 // Backend functions for user DB in firestore and auth
 class UserDB {
-    static updateClaims (uid, claims, customClaims) {
+    static updateClaims (uid, claims, authClaims) {
         return new Promise(async (resolve, reject) => {
             const db = admin.firestore();
             // Init claims for primary since you can be multiple
             let updateFields = {claims: claims};
 
-            // Only *set* claims passed so users can be more than one
-            if (customClaims && customClaims.isAdmin != null) updateFields.isAdmin = customClaims.isAdmin;
-            if (customClaims && customClaims.isCashier != null) updateFields.isCashier = customClaims.isCashier;
-            if (customClaims && customClaims.isBanker != null) updateFields.isBanker = customClaims.isBanker;
-            if (customClaims && customClaims.isUser != null) updateFields.isUser = customClaims.isUser;
+            // Only *set* claims passed
+            if (authClaims && authClaims.admin != null) updateFields.isAdmin = authClaims.admin;
+            if (authClaims && authClaims.cashier != null) updateFields.isCashier = authClaims.cashier;
+            if (authClaims && authClaims.banker != null) updateFields.isBanker = authClaims.banker;
+            if (authClaims && authClaims.user != null) updateFields.isUser = authClaims.user;
 
             // update claims
             db.collection('users').doc(uid).set(updateFields,

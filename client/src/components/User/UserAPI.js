@@ -281,7 +281,6 @@ class UserAPI {
                 email: user.email.toLowerCase(),
                 photoURL: user.photoURL ? user.photoURL : ""    
             },{ merge: true }).then(() => {
-                console.log("completed");
                 resolve();
             }).catch(err => {
                 console.error(`error updating user: ${err}`);

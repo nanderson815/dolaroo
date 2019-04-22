@@ -47,7 +47,7 @@ module.exports = function (app) {
                 AuthUserAPI.setClaims(uid, {
                     admin: true
                 }).then(async (newClaims) => {
-                    await UserDB.updateClaims(uid, newClaims.name, {isAdmin: true});
+                    await UserDB.updateClaims(uid, newClaims.name, newClaims);
                     res.json(uid);
                 });
             } else {
@@ -68,7 +68,7 @@ module.exports = function (app) {
                 AuthUserAPI.setClaims(uid, {
                     cashier: true
                 }).then(async (newClaims) => {
-                    await UserDB.updateClaims(uid, newClaims.name, {isCashier: true});
+                    await UserDB.updateClaims(uid, newClaims.name, newClaims);
                     res.json(uid);
                 });
             } else {
@@ -91,7 +91,7 @@ module.exports = function (app) {
                 AuthUserAPI.setClaims(uid, {
                     banker: true
                 }).then(async (newClaims) => {
-                    await UserDB.updateClaims(uid, newClaims.name, {isBanker: true});
+                    await UserDB.updateClaims(uid, newClaims.name, newClaims);
                     res.json(uid);
                 });
             } else {
@@ -117,7 +117,7 @@ module.exports = function (app) {
                     user: true
                 }).then(async () => {
                     // now update firestore - reset all other roles when makeing someone a user
-                    await UserDB.updateClaims(uid, "user", {isUser: true, isAdmin: false, isCashier: false, isBanker: false});
+                    await UserDB.updateClaims(uid, "user", newClaims);
                     res.json(uid);
                 });
             } else {

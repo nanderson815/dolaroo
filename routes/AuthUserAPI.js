@@ -34,7 +34,6 @@ class AuthUserAPI {
         return new Promise(async (resolve, reject) => {
             // get current stat of all claims
             let updatedClaims = await this.getClaims(uid);
-            console.log(`updated claims ${updatedClaims}`);
 
             // Only update claims passed keeping existing claims
             if (customClaims && customClaims.admin != null) updatedClaims.admin = customClaims.admin;
@@ -56,7 +55,6 @@ class AuthUserAPI {
             }
 
             admin.auth().setCustomUserClaims(uid, updatedClaims).then( () => {
-                console.log("Updated Claims in AuthUserAPI");
                 resolve(updatedClaims);
             }).catch(err => {
                 console.error("Error updating claims in AuthUserAPI", err);
