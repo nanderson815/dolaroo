@@ -53,6 +53,7 @@ class Navigation extends React.Component {
         <li><NavLink onClick={this.forceCloseSideNav} to="/dashboard">Home</NavLink></li>
         <li><NavLink onClick={this.forceCloseSideNav} to="/account">Account</NavLink></li>
         <li><NavLink onClick={this.forceCloseSideNav} to="/admin">Admin</NavLink></li>
+        {this.props.user.isBanker ? <li><NavLink onClick={this.forceCloseSideNav} to="/banker">Banker</NavLink></li> : ""}
         <li onClick={this.forceCloseSideNav}><SignOutButton /></li>
       </ul>
       ;
@@ -63,6 +64,7 @@ class Navigation extends React.Component {
         <li><NavLink to="/dashboard">Home</NavLink></li>
         <li><AccountMenu /></li>
         <li><NavLink to="/admin">Admin</NavLink></li>
+        {this.props.user.isBanker ? <li><NavLink onClick={this.forceCloseSideNav} to="/banker">Banker</NavLink></li> : ""}
       </ul>
       ;
 
@@ -71,6 +73,7 @@ class Navigation extends React.Component {
       <li><NavLink onClick={this.forceCloseSideNav} to="/">Landing</NavLink></li>
       <li><NavLink onClick={this.forceCloseSideNav} to="/dashboard">Home</NavLink></li>
       <li><NavLink onClick={this.forceCloseSideNav} to="/account">Account</NavLink></li>
+      {this.props.user.isBanker ? <li><NavLink onClick={this.forceCloseSideNav} to="/banker">Banker</NavLink></li> : ""}
       <li onClick={this.forceCloseSideNav}> <SignOutButton /></li>
       </ul>
       ;
@@ -80,7 +83,8 @@ class Navigation extends React.Component {
         <li><Link to="/">Landing</Link></li>
         <li><NavLink to="/dashboard">Home</NavLink></li>
         <li><AccountMenu /></li>
-      </ul>
+        {this.props.user.isBanker ? <li><NavLink onClick={this.forceCloseSideNav} to="/banker">Banker</NavLink></li> : ""}
+        </ul>
       ;
 
     const navigationNonAuthMobile =

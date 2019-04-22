@@ -59,7 +59,7 @@ class Prospects extends React.Component {
             return null;
         }
   
-        if (this.props.user.authUser && this.props.user.isAdmin) {
+        if (this.props.user && this.props.user.isBanker) {
             return (
                 <div className="row">
                 <div>{this.state.message}</div>

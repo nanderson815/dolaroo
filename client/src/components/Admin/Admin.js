@@ -35,7 +35,6 @@ class Admin extends React.Component {
                     <div className="row center-align">
                         <br />
                         <button className="btn center-align blue darken-4" onClick={this.createUser}>Create User</button>{" "}
-                        <button className="btn center-align blue darken-4" onClick={this.listProspects}>Show Prospects</button>
                     </div>
                     <Users />
                     <div>{message}</div>
