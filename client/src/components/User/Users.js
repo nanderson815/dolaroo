@@ -108,7 +108,7 @@ class Users extends React.Component {
             this.refreshPage();
         })
         .catch(err => {
-            alert(err);
+            this.setState({message: `Error ${err}`});
             console.error(err); 
         });
     }       
