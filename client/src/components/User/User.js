@@ -6,8 +6,8 @@ import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 
 const User = (props) => {
     // decontruct props
-    let { id, uid, firstName, lastName, phoneNumber, email, photoURL, claims } =  props;
-    let { userMakeAdmin, userMakeCashier, userDelete } =  props;
+    let { id, uid, firstName, lastName, phoneNumber, email, photoURL, claims } =  props.userInfo;
+    let { userMakeAdmin, userMakeCashier, userMakeUser, userMakeBanker, userDelete } =  props;
 
     if (!photoURL) {
         photoURL = "./images/noUserImage150x150.png";
@@ -21,7 +21,7 @@ const User = (props) => {
     const userEdit = () => {
         props.history.push({
             pathname: '/userpage',
-            state: {id: props.id }
+            state: {id: props.userInfo.id }
         });
     };
 
@@ -38,10 +38,10 @@ const User = (props) => {
                     <span className="card-title">{firstName} {lastName}</span>
                     <p>{email}</p>
                     <p>{phoneNumber}</p>
-                    <p>Role: {claims}</p>
+                    <p>Primary Role: {claims}</p>
                 </div>
                 <div className="card-action">
-                    <div className="center-align">
+                    <div className="left-align">
                         {editIsDisabled ? <p><i>Current User - Cant Edit</i></p> : null}
                         {editIsDisabled ? null : 
                         <div>
@@ -56,7 +56,7 @@ const User = (props) => {
                         <Tooltip title="Delete">
                             <i style={{cursor: 'pointer'}}
                                 disabled={editIsDisabled}
-                                className="userDelete material-icons left indigo-text text-darken-4"
+                                className="material-icons left indigo-text text-darken-4"
                                 onClick={() => userDelete(id)}>delete
                             </i>
                         </Tooltip>
@@ -64,7 +64,7 @@ const User = (props) => {
                         <Tooltip title="Make Cashier">
                             <i style={{cursor: 'pointer'}}
                                 disabled={editIsDisabled}
-                                className="makeCashier material-icons left indigo-text text-darken-4"
+                                className="material-icons left indigo-text text-darken-4"
                                 onClick={() => userMakeCashier(id)}>account_balance
                             </i>
                         </Tooltip>
@@ -72,8 +72,24 @@ const User = (props) => {
                         <Tooltip title="Make Admin">
                             <i style={{cursor: 'pointer'}}
                                 disabled={editIsDisabled}
-                                className="makeAdmin material-icons left indigo-text text-darken-4"
-                                onClick={() => userMakeAdmin(id)}>account_circle
+                                className="material-icons left indigo-text text-darken-4"
+                                onClick={() => userMakeAdmin(id)}>supervisor_account
+                            </i>
+                        </Tooltip>
+
+                        <Tooltip title="Make Banker">
+                            <i style={{cursor: 'pointer'}}
+                                disabled={editIsDisabled}
+                                className="material-icons left indigo-text text-darken-4"
+                                onClick={() => userMakeBanker(id)}>next_week
+                            </i>
+                        </Tooltip>
+
+                        <Tooltip title="Disable (i.e. make user)">
+                            <i style={{cursor: 'pointer'}}
+                                disabled={editIsDisabled}
+                                className="material-icons left indigo-text text-darken-4"
+                                onClick={() => userMakeUser(id)}>lock
                             </i>
                         </Tooltip>
 

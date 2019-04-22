@@ -33,6 +33,12 @@ class Util  {
     return userIsAdmin;
   }
 
+  static isUserBanker = async () => {
+    const firebase = new Firebase();
+    const userIsBanker = await firebase.auth.doIsUserBanker();
+    return userIsBanker;
+  }
+
   static isUserCashier = async () => {
     const firebase = new Firebase();
     const userIsCashier = await firebase.auth.doIsUserCashier();

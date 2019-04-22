@@ -80,14 +80,25 @@ class Firebase {
     return new Promise((resolve, reject) => {
       this.auth.currentUser.getIdTokenResult()
         .then((idTokenResult) => {
+          let claims = {
+            isAdmin: idTokenResult.claims ? idTokenResult.claims.admin : false,
+            isCashier: idTokenResult.claims ? idTokenResult.claims.cashier: false,
+            isBanker: idTokenResult.claims ? idTokenResult.claims.banker : false,
+            isUser: idTokenResult.claims ? idTokenResult.claims.user : false
+          };
+
+          // The name is the *primary* role as someone can be admin and banker for example
           if (idTokenResult.claims.admin) {
-            const claims = {name: "admin", isAdmin: true, isCashier: false, isUser: false};
+            claims.name = "admin";
             resolve(claims);
           } else if (idTokenResult.claims.cashier) {
-            const claims = {name: "cashier", isAdmin: false, isCashier: true, isUser: false};
+            claims.name = "cashier";
+            resolve(claims);
+          } else if (idTokenResult.claims.banker) {
+            claims.name = "banker";
             resolve(claims);
           } else {
-            const claims = {name: "user", isAdmin: false, isCashier: false, isUser: true};
+            claims.name = "user";
             resolve(claims);
           }
         })
@@ -117,6 +128,27 @@ class Firebase {
         });
     });//promise
   }// method
+
+  // get custom claims
+  doIsUserBanker= () => {
+    return new Promise((resolve, reject) => {
+      this.auth.currentUser.getIdTokenResult()
+        .then((idTokenResult) => {
+          // Confirm the user is an Admin.
+          // Note double bangs is used to convert truthy/falsy to true/fale
+          if (!!idTokenResult.claims.banker) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
+    });//promise
+    }// method
+  
 
   doIsUserCashier = () => {
     return new Promise((resolve, reject) => {

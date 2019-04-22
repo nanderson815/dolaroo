@@ -3,28 +3,25 @@ const admin = require("../middleware/authServerCommon");
 
 // Backend functions for user DB in firestore and auth
 class UserDB {
-    static updateClaims (uid, claims, customClaims) {
+    static updateClaims (uid, claims, authClaims) {
         return new Promise(async (resolve, reject) => {
             const db = admin.firestore();
-            const isAdmin = customClaims && customClaims.isAdmin ? true : false;
-            const isCashier = customClaims && customClaims.isCashier ? true : false;
-            const isUser = customClaims && customClaims.isUser ? true : false;
-            const isNoAuth = !(isAdmin || isCashier || isUser);
+            // Init claims for primary since you can be multiple
+            let updateFields = {claims: claims};
+
+            // Only *set* claims passed
+            if (authClaims && authClaims.admin != null) updateFields.isAdmin = authClaims.admin;
+            if (authClaims && authClaims.cashier != null) updateFields.isCashier = authClaims.cashier;
+            if (authClaims && authClaims.banker != null) updateFields.isBanker = authClaims.banker;
+            if (authClaims && authClaims.user != null) updateFields.isUser = authClaims.user;
 
             // update claims
-            db.collection('users').doc(uid).set({
-                claims: claims,
-                isAdmin: isAdmin,
-                isCashier: isCashier,
-                isUser: isUser,
-                isUser: isNoAuth
-            }, {
-                merge: true
-            }).then(() => {
-                console.log("completed");
+            db.collection('users').doc(uid).set(updateFields,
+                { merge: true }
+            ).then(() => {
                 resolve();
             }).catch(err => {
-                console.error(`error updating claims: ${err}`);
+                console.error(`Error updating claims in UserDB: ${err}`);
                 reject(err);
             });
         });
@@ -42,7 +39,6 @@ class UserDB {
                 lastName: user.lastName,
                 displayName: `${user.firstName} ${user.lastName}`,
                 phoneNumber: user.phoneNumber,
-                uid: user.uid,
                 email: user.email,
                 photoURL: user.photoURL ? user.photoURL : ""
             }, {

@@ -7,10 +7,17 @@ import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
 
 class Admin extends React.Component {
   
-    // route to new use create
+    // route to new user ( create )
     createUser = () => {
         this.props.history.push({
             pathname: '/userform'
+        });
+    }
+
+    // route to show all prospect
+    listProspects = () => {
+        this.props.history.push({
+            pathname: '/prospects'
         });
     }
 
@@ -27,7 +34,7 @@ class Admin extends React.Component {
                 <div className="container">
                     <div className="row center-align">
                         <br />
-                        <button className="btn center-align blue darken-4" onClick={this.createUser}>Create User</button>
+                        <button className="btn center-align blue darken-4" onClick={this.createUser}>Create User</button>{" "}
                     </div>
                     <Users />
                     <div>{message}</div>

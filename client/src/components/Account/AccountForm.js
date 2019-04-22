@@ -142,8 +142,8 @@ class AccountForm extends React.Component {
             <div className="container">
             <div className="card">
                 <div className="card-content">
-                    <span className="card-title">User (Role: {claims})</span>
-                    <form className={classes.container}>
+                    <span className="card-title">User Profile (Role: {claims})</span>
+                    <form className={classes.container} onSubmit={this.updateUser} >
                         <TextField disabled={true}
                         id="email"
                         name="email"

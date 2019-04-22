@@ -24,6 +24,7 @@ const provideAuthUserContext = Component => {
                 claims: null,
                 isAdmin: false,
                 isCashier: false,
+                isBanker: false,
                 isUser: false,
             };
         }
@@ -37,6 +38,7 @@ const provideAuthUserContext = Component => {
                     claims: claims.name,
                     isAdmin: claims.isAdmin,
                     isCashier: claims.isCashier,
+                    isBanker: claims.isBanker,
                     isUser: claims.isUser
                  });
             } catch {

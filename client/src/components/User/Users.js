@@ -62,6 +62,7 @@ class Users extends React.Component {
         UserAPI.makeAdmin( id )
         .then(res => {
             console.log(`Made User ${id} Admin`);
+            this.setState({message: `Made User Admin`});
             this.refreshPage();
         })
         .catch(err => {
@@ -72,16 +73,42 @@ class Users extends React.Component {
     
     // Make Cashier
     userMakeCashier = (id) => {
-
-        console.log(`Trying to make User ${id} Cashier`);
-
         UserAPI.makeCashier( id )
         .then(res => {
             console.log(`Made User ${id} Cashier`);
+            this.setState({message: `Made User Cashier`});
             this.refreshPage();
         })
         .catch(err => {
             alert(err);
+            console.error(err); 
+        });
+    }   
+
+    // Make User - essentailly dispables the user
+    userMakeUser = (id) => {
+        UserAPI.makeUser( id )
+        .then(res => {
+            console.log(`Made User ${id} User`);
+            this.setState({message: `Disabled User (i.e. made them a user)`});
+            this.refreshPage();
+        })
+        .catch(err => {
+            alert(err);
+            console.error(err); 
+        });
+    }       
+
+    // Make Banker
+    userMakeBanker = (id) => {
+        UserAPI.makeBanker( id )
+        .then(res => {
+            console.log(`Made User ${id} Banker`);
+            this.setState({message: `Made User Banker`});
+            this.refreshPage();
+        })
+        .catch(err => {
+            this.setState({message: `Error ${err}`});
             console.error(err); 
         });
     }       
@@ -95,6 +122,7 @@ class Users extends React.Component {
         if (this.props.user.authUser && this.props.user.isAdmin) {
             return (
                 <div className="row">
+                <div>{this.state.message}</div>
                 {this.state.users.map((user) => {
                     return(            
                         <div key={user.id} className="col s12 m6 l6">
@@ -102,17 +130,9 @@ class Users extends React.Component {
                             userDelete={this.userDelete}
                             userMakeAdmin={this.userMakeAdmin}
                             userMakeCashier={this.userMakeCashier}
-                            id={user.id}
-                            uid={user.uid}
-                            firstName={user.firstName}
-                            lastName={user.lastName}
-                            phoneNumber={user.phoneNumber}
-                            email={user.email}
-                            photoURL={user.photoURL}
-                            claims={user.claims}
-                            isAdmin={user.isAdmin}
-                            isCashier={user.isCashier}
-                            isUser={user.isUser}
+                            userMakeBanker={this.userMakeBanker}
+                            userMakeUser={this.userMakeUser}
+                            userInfo={user}
                             />
                         </div>
                         );
