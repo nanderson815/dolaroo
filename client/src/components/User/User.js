@@ -38,7 +38,7 @@ const User = (props) => {
                     <span className="card-title">{firstName} {lastName}</span>
                     <p>{email}</p>
                     <p>{phoneNumber}</p>
-                    <p>Role: {claims}</p>
+                    <p>Primary Role: {claims}</p>
                 </div>
                 <div className="card-action">
                     <div className="left-align">
