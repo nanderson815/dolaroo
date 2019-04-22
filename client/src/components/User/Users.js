@@ -90,7 +90,7 @@ class Users extends React.Component {
         UserAPI.makeUser( id )
         .then(res => {
             console.log(`Made User ${id} User`);
-            this.setState({message: `Made User User`});
+            this.setState({message: `Disabled User (i.e. made them a user)`});
             this.refreshPage();
         })
         .catch(err => {

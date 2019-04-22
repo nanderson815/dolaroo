@@ -6,6 +6,11 @@ import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
 import localStyles from './User.module.css';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import { withFirebase } from '../Auth/Firebase/FirebaseContext';
 import UserAPI from "./UserAPI";
@@ -181,6 +186,64 @@ class UserForm extends React.Component {
     this.setState({ [name]: event.target.value });
   };
 
+  // Make Admin
+  userMakeAdmin = (id) => {
+
+    console.log(`Trying to make User ${id} Admin`);
+
+    UserAPI.makeAdmin( id )
+    .then(res => {
+        console.log(`Made User ${id} Admin`);
+        this.setState({message: `Made User Admin`});
+        this.fetchUser(id);
+    })
+    .catch(err => {
+        alert(err);
+        console.error(err); 
+    });
+  }        
+  
+  // Make Cashier
+  userMakeCashier = (id) => {
+      UserAPI.makeCashier( id )
+      .then(res => {
+          console.log(`Made User ${id} Cashier`);
+          this.setState({message: `Made User Cashier`});
+          this.fetchUser(id);
+      })
+      .catch(err => {
+          alert(err);
+          console.error(err); 
+      });
+  }   
+
+  // Make User - essentailly dispables the user
+  userMakeUser = (id) => {
+      UserAPI.makeUser( id )
+      .then(res => {
+          console.log(`Made User ${id} User`);
+          this.setState({message: `Disabled User (i.e. made them a user)`});
+          this.fetchUser(id);
+      })
+      .catch(err => {
+          alert(err);
+          console.error(err); 
+      });
+  }       
+
+  // Make Banker
+  userMakeBanker = (id) => {
+      UserAPI.makeBanker( id )
+      .then(res => {
+          console.log(`Made User ${id} Banker`);
+          this.setState({message: `Made User Banker`});
+          this.fetchUser(id);
+      })
+      .catch(err => {
+          alert(err);
+          console.error(err); 
+      });
+  }
 
   render() {
     const { classes } = this.props;
@@ -283,7 +346,43 @@ class UserForm extends React.Component {
                   inputComponent: NumberFormatPhone,
               }}
               />
-                            
+
+              {/* Only display roles if user exists */}
+              {this.state.id ? 
+              <FormControl component="fieldset" className={classes.formControl}>
+                <FormLabel component="legend">Current Roles</FormLabel>
+                <FormGroup>
+                  <FormControlLabel
+                    disabled={this.state.isCashier}
+                    control={
+                      <Checkbox checked={this.state.isCashier} onClick={() => this.userMakeCashier(this.state.id)}/>
+                    }
+                    label="Cashier"
+                  />
+                  <FormControlLabel
+                    disabled={this.state.isAdmin}
+                    control={
+                      <Checkbox checked={this.state.isAdmin} onClick={() => this.userMakeAdmin(this.state.id)}/>
+                    }
+                    label="Admin"
+                  />
+                  <FormControlLabel
+                    disabled={this.state.isBanker}
+                    control={
+                      <Checkbox checked={this.state.isBanker} onClick={() => this.userMakeBanker(this.state.id)}/>
+                    }
+                    label="Banker"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={this.state.isUser} onClick={() => this.userMakeUser(this.state.id)}/>
+                    }
+                    label="User"
+                  />
+                </FormGroup>
+              </FormControl>
+              : ""}
+
             </form>
             <br />
             <div className="row">
@@ -291,6 +390,23 @@ class UserForm extends React.Component {
                   {buttonText}
                 </Button>
             </div>
+            {/* Only display custom claims updates if existing user - cant set until they exist */}
+            {this.state.id ? 
+            <div className="row">
+                <Button onClick={() => this.userMakeCashier(this.state.id)} variant="contained" color="primary" className={classes.button}>
+                  Make Cashier
+                </Button>{" "}
+                <Button onClick={() => this.userMakeAdmin(this.state.id)} variant="contained" color="primary" className={classes.button}>
+                  Make Admin
+                </Button>{" "}
+                <Button onClick={() => this.userMakeBanker(this.state.id)} variant="contained" color="primary" className={classes.button}>
+                  Make Banker
+                </Button>{" "}
+                <Button onClick={() => this.userMakeUser(this.state.id)} variant="contained" color="primary" className={classes.button}>
+                  Make User
+                </Button>
+            </div> 
+            : ""}
 
             <p>{message}</p>
 

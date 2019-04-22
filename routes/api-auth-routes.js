@@ -110,14 +110,13 @@ module.exports = function (app) {
             if (req.user && !! req.user.admin) {
                 // set the claim for the user who's uid is passed
                 // Note, this is the uid of the user to update (NOT the auth users uid)
-                admin.auth().setCustomUserClaims(uid, {
+                AuthUserAPI.setClaims(uid, {
                     admin: false,
                     cashier: false,
                     banker: false,
                     user: true
                 }).then(async (newClaims) => {
-                    // now update firestore - reset all other roles when makeing someone a user
-                    await UserDB.updateClaims(uid, "user", newClaims);
+                    await UserDB.updateClaims(uid, newClaims.name, newClaims);
                     res.json(uid);
                 });
             } else {
