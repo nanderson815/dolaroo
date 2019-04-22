@@ -62,6 +62,7 @@ class Users extends React.Component {
         UserAPI.makeAdmin( id )
         .then(res => {
             console.log(`Made User ${id} Admin`);
+            this.setState({message: `Made User Admin`});
             this.refreshPage();
         })
         .catch(err => {
@@ -72,12 +73,10 @@ class Users extends React.Component {
     
     // Make Cashier
     userMakeCashier = (id) => {
-
-        console.log(`Trying to make User ${id} Cashier`);
-
         UserAPI.makeCashier( id )
         .then(res => {
             console.log(`Made User ${id} Cashier`);
+            this.setState({message: `Made User Cashier`});
             this.refreshPage();
         })
         .catch(err => {
@@ -88,11 +87,10 @@ class Users extends React.Component {
 
     // Make User - essentailly dispables the user
     userMakeUser = (id) => {
-        console.log(`Trying to make User ${id} User`);
-
         UserAPI.makeUser( id )
         .then(res => {
             console.log(`Made User ${id} User`);
+            this.setState({message: `Made User User`});
             this.refreshPage();
         })
         .catch(err => {
@@ -103,11 +101,10 @@ class Users extends React.Component {
 
     // Make Banker
     userMakeBanker = (id) => {
-        console.log(`Trying to make User ${id} Banker`);
-
         UserAPI.makeBanker( id )
         .then(res => {
             console.log(`Made User ${id} Banker`);
+            this.setState({message: `Made User Banker`});
             this.refreshPage();
         })
         .catch(err => {
@@ -125,6 +122,7 @@ class Users extends React.Component {
         if (this.props.user.authUser && this.props.user.isAdmin) {
             return (
                 <div className="row">
+                <div>{this.state.message}</div>
                 {this.state.users.map((user) => {
                     return(            
                         <div key={user.id} className="col s12 m6 l6">
