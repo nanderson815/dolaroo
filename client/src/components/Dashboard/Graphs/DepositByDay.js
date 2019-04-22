@@ -86,6 +86,8 @@ class DepositByDay extends React.Component {
             return (deposit.total);
         });
 
+        const formattedAmounts = amounts.map(amount => "$" + amount);
+
         // STILL NEED To stack all deposits for that day
 
         return (
@@ -98,8 +100,9 @@ class DepositByDay extends React.Component {
                         x: days,
                         y: amounts,
                         marker: { color: 'rgb(13, 71, 161)' },
-                        "hoverinfo": "x+y",
+                        "hoverinfo": "text",
                         "line": { "width": 0.5 },
+                        text: formattedAmounts,
                     },
                 ]}
                 layout={
