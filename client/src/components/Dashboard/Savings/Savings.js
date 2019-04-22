@@ -10,7 +10,7 @@ const Savings = (props) => {
     const oldCost = props.cash * .15;
     const ourCost = props.cash - props.credit;
     const savings = oldCost - ourCost
-    const averageSavings = 2000;
+    const averageSavings = 1000;
 
     // Filling bar graph dynamically here. 
     const savingsSection = savings > averageSavings ? averageSavings : savings / averageSavings;
