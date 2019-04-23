@@ -284,6 +284,7 @@ class UserForm extends React.Component {
               id="email"
               name="email"
               label="Email"
+              multiline
               placeholder="example@gmail.com"
               className={classes.textField}
               type="email"
@@ -297,6 +298,7 @@ class UserForm extends React.Component {
               id="firstName"
               name="firstName"
               label="First Name"
+              multiline
               value={firstName}
               placeholder="John"
               className={classes.textField}
@@ -309,6 +311,7 @@ class UserForm extends React.Component {
               id="lastName"
               name="lastName"
               label="Last Name"
+              multiline
               value={lastName}
               placeholder="Smith"
               className={classes.textField}
@@ -316,24 +319,13 @@ class UserForm extends React.Component {
               margin="normal"
               onChange={this.onChange}
               />
-
-              <TextField
-              id="photoURL"
-              name="photoURL"
-              value={photoURL ? photoURL : ""}
-              label="Photo URL"
-              placeholder="http://www.image.com/image.png"
-              className={classes.textField}
-              type="text"
-              margin="normal"
-              onChange={this.onChange}
-              />
-
+              
               <TextField
               id="phoneNumber"
               name="phoneNumber"
               value={phoneNumber}
               label="Phone Number"
+              multiline
               className={classes.textField}
               margin="normal"
               onChange={this.handleChange('phoneNumber')}
@@ -341,6 +333,20 @@ class UserForm extends React.Component {
                   inputComponent: NumberFormatPhone,
               }}
               />
+
+              <TextField
+              id="photoURL"
+              name="photoURL"
+              value={photoURL ? photoURL : ""}
+              label="Photo URL"
+              multiline
+              placeholder="http://www.image.com/image.png"
+              className={classes.textField}
+              type="text"
+              margin="normal"
+              onChange={this.onChange}
+              />
+
             </form>
 
             {/* Only display roles if user exists */}

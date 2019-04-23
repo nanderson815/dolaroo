@@ -165,6 +165,7 @@ class AccountForm extends React.Component {
                         id="email"
                         name="email"
                         label="Email"
+                        multiline
                         placeholder="example@gmail.com"
                         className={classes.textField}
                         type="email"
@@ -179,6 +180,7 @@ class AccountForm extends React.Component {
                         name="firstName"
                         label="First Name"
                         value={firstName}
+                        multiline
                         placeholder="John"
                         className={classes.textField}
                         type="text"
@@ -191,6 +193,7 @@ class AccountForm extends React.Component {
                         name="lastName"
                         label="Last Name"
                         value={lastName}
+                        multiline
                         placeholder="Smith"
                         className={classes.textField}
                         type="text"
@@ -199,28 +202,30 @@ class AccountForm extends React.Component {
                         />
 
                         <TextField
-                        id="photoURL"
-                        name="photoURL"
-                        value={photoURL ? photoURL : ""}
-                        label="Photo URL"
-                        placeholder="http://www.image.com/image.png"
-                        className={classes.textField}
-                        margin="normal"
-                        type="text"
-                        onChange={this.onChange}
-                        />
-
-                        <TextField
                         id="phoneNumber"
                         name="phoneNumber"
                         value={phoneNumber}
                         label="Phone Number"
+                        multiline
                         className={classes.textField}
                         margin="normal"
                         onChange={this.handleChange('phoneNumber')}
                         InputProps={{
                             inputComponent: NumberFormatPhone,
                         }}
+                        />
+
+                        <TextField
+                        id="photoURL"
+                        name="photoURL"
+                        value={photoURL ? photoURL : ""}
+                        label="Photo URL"
+                        multiline
+                        placeholder="http://www.image.com/image.png"
+                        className={classes.textField}
+                        margin="normal"
+                        type="text"
+                        onChange={this.onChange}
                         />
                                 
                     </form>
