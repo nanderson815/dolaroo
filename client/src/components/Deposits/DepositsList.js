@@ -73,12 +73,6 @@ class DepositList extends React.Component {
     render() {
         const {classes} = this.props;
 
-        const csvData = [
-        ["firstname", "lastname", "email"],
-        ["Ahmed", "Tomi", "ah@smthing.co.com"],
-        ["Raed", "Labes", "rl@smthing.co.com"],
-        ["Yezzi", "Min l3b", "ymin@cocococo.com"]
-    ];
 
         // Some props take time to get ready so return null when uid not avaialble
         if (this.props.user.uid === null) {
@@ -88,11 +82,14 @@ class DepositList extends React.Component {
         if (this.props.user.authUser) {
             return (
                 <div className="container">
-                <div className='containter'>
-                        <button>
-                            <CSVLink data={csvData}>Download me</CSVLink>
-                        </button>
-                </div>
+                            <CSVLink 
+                            data={this.state.deposits}
+                            filename={'dollaroo-transactions.csv'}
+                            class='btn blue darken-4'
+                            target="_blank"
+                            >
+                            EXPORT TO CSV
+                            </CSVLink>
                     <div className={classes.root}>
                         <div className="row">
                             <h5 className="col s6 m3 offset-m1">Time</h5>
