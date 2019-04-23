@@ -4,6 +4,11 @@ import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
 import localStyles from './Account.module.css';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import UserAPI from "../User/UserAPI";
 
@@ -65,6 +70,10 @@ class AccountForm extends React.Component {
         phoneNumber: "",
         email: "",
         claims: "",
+        isAdmin: false,
+        isCashier: false,
+        isBanker: false,
+        isUser: false,    
         message: ""
     };
 
@@ -79,6 +88,10 @@ class AccountForm extends React.Component {
                     phoneNumber: user.phoneNumber || "",
                     uid: user.uid,
                     claims: user.claims || "user",
+                    isAdmin: user.isAdmin,
+                    isCashier: user.isCashier,
+                    isBanker: user.isBanker,
+                    isUser: user.isUser,                
                     email: user.email
                 });
                 // Dont need to get custom claims since they are passed in props from context
@@ -133,6 +146,10 @@ class AccountForm extends React.Component {
             phoneNumber,
             email,
             claims,
+            isAdmin,
+            isCashier,
+            isBanker,
+            isUser,        
             message
         } = this.state;
 
@@ -212,6 +229,46 @@ class AccountForm extends React.Component {
                         />
                                 
                     </form>
+
+                    <form className="Container">
+                    <br />
+                    <hr />
+                    <FormControl component="fieldset" className={classes.formControl}>
+                        <FormLabel component="legend">Current Roles <i>(can not edit your own roles)</i></FormLabel>
+                        <FormGroup row >
+
+                        <FormControlLabel 
+                            disabled
+                            control={
+                            <Checkbox checked={isCashier}/>
+                            }
+                            label="Cashier"
+                        />
+                        <FormControlLabel
+                            disabled
+                            control={
+                            <Checkbox checked={isAdmin}/>
+                            }
+                            label="Admin"
+                        />
+                        <FormControlLabel
+                            disabled
+                            control={
+                            <Checkbox checked={isBanker}/>
+                            }
+                            label="Banker"
+                        />
+                        <FormControlLabel
+                            disabled
+                            control={
+                            <Checkbox checked={isUser}/>
+                            }
+                            label="User"
+                        />
+                        </FormGroup>
+                    </FormControl>
+                    </form>
+                    <hr />    
                     <br />
                     <div className="row">
                         <Button disabled={!isValid} onClick={this.updateUser} variant="contained" color="primary" className={classes.button}>

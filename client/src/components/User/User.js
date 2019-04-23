@@ -37,7 +37,7 @@ const User = (props) => {
                 <div className="card-content">
                     <span className="card-title">{firstName} {lastName}</span>
                     <p>{email}</p>
-                    <p>{phoneNumber}</p>
+                    <p>{phoneNumber.length > 9 ? phoneNumber.replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, '$1-$2-$3') : phoneNumber}</p>
                     <p>Primary Role: {claims}</p>
                 </div>
                 <div className="card-action">

@@ -3,6 +3,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import { withRouter } from 'react-router-dom';
 import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
+import Util from "../Util/Util";
 
 const Prospect = (props) => {
     // decontruct props
@@ -28,11 +29,11 @@ const Prospect = (props) => {
                 <div className="card-content">
                     <span className="card-title">{firstName} {lastName}</span>
                     <p>{email}</p>
-                    <p>{phone}</p>
                     <p>{company}</p>
-                    <p>{revenue}</p>
-                    <p>{locations}</p>
-                    <p>{cash}</p>
+                    <p>Phone: {phone.length > 9 ? phone.replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, '$1-$2-$3') : phone}</p>
+                    <p>Revenue: ${Util.formatMoney(revenue, 0)}</p>
+                    <p>Locations: {locations}</p>
+                    <p>Cash: {cash}%</p>
                 </div>
                 <div className="card-action">
                     <div className="left-align">
