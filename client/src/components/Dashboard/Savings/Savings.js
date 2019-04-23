@@ -13,7 +13,7 @@ const Savings = (props) => {
     const averageSavings = 1000;
 
     // Filling bar graph dynamically here. 
-    const savingsSection = savings > averageSavings ? averageSavings : savings / averageSavings;
+    const savingsSection = savings > averageSavings ? averageSavings/ averageSavings : savings / averageSavings;
     const emptySection = 1 - savingsSection;
     let color;
 

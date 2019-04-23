@@ -86,7 +86,7 @@ class DepositByDay extends React.Component {
             return (deposit.total);
         });
 
-        const formattedAmounts = amounts.map(amount => "$" + amount);
+        const formattedAmounts = amounts.map(amount => "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 
         // STILL NEED To stack all deposits for that day
 
@@ -114,6 +114,16 @@ class DepositByDay extends React.Component {
                             range: [earliestDate, latestDate],
                             rangeselector: selectorOptions,
                             rangeslider: { earliestDate, latestDate },
+                        },
+                        yaxis: {
+                            tickprefix: "$",
+                            separatethousands: true
+                        },
+                        margin: {
+                            l: 60,
+                            r: 20,
+                            b: 10,
+                            t: 10,
                         }
                     }
                 }
