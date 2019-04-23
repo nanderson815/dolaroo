@@ -8,6 +8,23 @@ import Firebase from "../Auth/Firebase/firebase";
 // without needing to use react context.  This way we can write more generic
 // functions and classes that do not have wrapped in react compnents
 class Util  {
+  // Formats a display money field 
+  static formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
+    try {
+      decimalCount = Math.abs(decimalCount);
+      decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+  
+      const negativeSign = amount < 0 ? "-" : "";
+  
+      let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+      let j = (i.length > 3) ? i.length % 3 : 0;
+  
+      return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  
 
   static getUserToken = async () => {
     const firebase = new Firebase();

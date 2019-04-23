@@ -36,8 +36,7 @@ class Prospects extends React.Component {
     prospectDelete = (_id) => {
         console.error("Delete not implemented yet");
         // dont let code execute yet, so wrap in false
-        if (false) {
-        Util.postApi(`/api/prospectDelete/${_id}`)
+        Util.apiPost(`/api/prospectDelete/${_id}`)
         .then(res => {
             this.setState({message: `Deleted Prospect`});
             console.log("Deleted prospect");
@@ -47,7 +46,6 @@ class Prospects extends React.Component {
             this.setState({message: `Error Deleting Prospect: ${err}`});
             console.error(err); 
         });
-    }
     }
 
     render() {
