@@ -9,6 +9,10 @@ import DepositDB from "../Dashboard/Deposit/DepositDB";
 
 import { withStyles } from '@material-ui/core/styles';
 
+// export csv functionality
+import { CSVLink, CSVDownload } from "react-csv";
+
+
 const styles = theme => ({
     root: {
       width: '100%',
@@ -64,9 +68,17 @@ class DepositList extends React.Component {
         this.getDeposits();
     }
 
+    
 
     render() {
         const {classes} = this.props;
+
+        const csvData = [
+        ["firstname", "lastname", "email"],
+        ["Ahmed", "Tomi", "ah@smthing.co.com"],
+        ["Raed", "Labes", "rl@smthing.co.com"],
+        ["Yezzi", "Min l3b", "ymin@cocococo.com"]
+    ];
 
         // Some props take time to get ready so return null when uid not avaialble
         if (this.props.user.uid === null) {
@@ -76,6 +88,11 @@ class DepositList extends React.Component {
         if (this.props.user.authUser) {
             return (
                 <div className="container">
+                <div className='containter'>
+                        <button>
+                            <CSVLink data={csvData}>Download me</CSVLink>
+                        </button>
+                </div>
                     <div className={classes.root}>
                         <div className="row">
                             <h5 className="col s6 m3 offset-m1">Time</h5>
