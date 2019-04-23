@@ -166,7 +166,6 @@ class AccountForm extends React.Component {
                         name="email"
                         label="Email"
                         placeholder="example@gmail.com"
-                        multiline
                         className={classes.textField}
                         type="email"
                         autoComplete="email"
@@ -181,7 +180,6 @@ class AccountForm extends React.Component {
                         label="First Name"
                         value={firstName}
                         placeholder="John"
-                        multiline
                         className={classes.textField}
                         type="text"
                         margin="normal"
@@ -194,7 +192,6 @@ class AccountForm extends React.Component {
                         label="Last Name"
                         value={lastName}
                         placeholder="Smith"
-                        multiline
                         className={classes.textField}
                         type="text"
                         margin="normal"
@@ -204,13 +201,12 @@ class AccountForm extends React.Component {
                         <TextField
                         id="photoURL"
                         name="photoURL"
-                        value={photoURL}
+                        value={photoURL ? photoURL : ""}
                         label="Photo URL"
                         placeholder="http://www.image.com/image.png"
-                        multiline
                         className={classes.textField}
-                        type="text"
                         margin="normal"
+                        type="text"
                         onChange={this.onChange}
                         />
 
@@ -219,7 +215,6 @@ class AccountForm extends React.Component {
                         name="phoneNumber"
                         value={phoneNumber}
                         label="Phone Number"
-                        multiline
                         className={classes.textField}
                         margin="normal"
                         onChange={this.handleChange('phoneNumber')}
