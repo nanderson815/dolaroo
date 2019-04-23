@@ -41,7 +41,13 @@ class DepositByAll extends React.Component {
                 layout={
                     {
                         autosize: true,
-                        showlegend: false
+                        showlegend: false,
+                        margin: {
+                            l: 50,
+                            r: 50,
+                            b: 50,
+                            t: 50,
+                        }
                     }
                 }
                 useResizeHandler={true}

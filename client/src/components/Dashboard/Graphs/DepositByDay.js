@@ -116,13 +116,14 @@ class DepositByDay extends React.Component {
                             rangeslider: { earliestDate, latestDate },
                         },
                         yaxis: {
-                            tickprefix: "$"
+                            tickprefix: "$",
+                            separatethousands: true
                         },
                         margin: {
-                            l: 40,
-                            r: 40,
-                            b: 0,
-                            t: 0,
+                            l: 60,
+                            r: 20,
+                            b: 10,
+                            t: 10,
                         }
                     }
                 }
