@@ -130,10 +130,10 @@ class User extends React.Component {
                                     </DialogContentText>
                                     </DialogContent>
                                     <DialogActions>
-                                    <Button onClick={this.handleClose} color="primary">
+                                    <Button onClick={this.handleClose} variant="contained" color="primary">
                                         Cancel
                                     </Button>
-                                    <Button onClick={() => this.handleDelete(id)} color="primary" autoFocus>
+                                    <Button onClick={() => this.handleDelete(id)} variant="contained" color="primary" autoFocus>
                                         Yes
                                     </Button>
                                     </DialogActions>

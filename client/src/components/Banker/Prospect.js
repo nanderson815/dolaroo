@@ -89,10 +89,10 @@ class Prospect extends React.Component {
                                     </DialogContentText>
                                     </DialogContent>
                                     <DialogActions>
-                                    <Button onClick={this.handleClose} color="primary">
+                                    <Button onClick={this.handleClose} variant="contained" color="primary">
                                         Cancel
                                     </Button>
-                                    <Button onClick={() => this.handleDelete(_id)} color="primary" autoFocus>
+                                    <Button onClick={() => this.handleDelete(_id)} variant="contained" color="primary" autoFocus>
                                         Yes
                                     </Button>
                                     </DialogActions>
