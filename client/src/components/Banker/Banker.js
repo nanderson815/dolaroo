@@ -4,17 +4,25 @@ import { Redirect } from 'react-router';
 import Prospects from "./Prospects";
 import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
 
-import SettledDepositsDB from "./SettledDepositsDB";
+import DepositsArchiveDB from "./DepositsArchiveDB";
 
 class Banker extends React.Component {
 
-    updateDeposits = () => {
-        // Add the proper boolean to the depoists table for all docs
-        //SettledDepositsDB.setDepositsToCurrent().then(res => {
-        SettledDepositsDB.transactionDepositsToCurrent().then(res => {
+    clearSafeDeposits = () => {
+        // take money out of safe
+        DepositsArchiveDB.clearAwaitingSettlement().then(res => {
             alert(res);
         }).catch(err => {
-            console.error(`error updating ${err}`);
+            console.error(`clearSafeDeposits Error: ${err}`);
+        });
+    }
+
+    reverseSafeDeposits = () => {
+        // take money out of safe
+        DepositsArchiveDB.reverseAwaitingSettlement().then(res => {
+            alert(res);
+        }).catch(err => {
+            console.error(`clearSafeDeposits Error: ${err}`);
         });
     }
   
@@ -24,7 +32,8 @@ class Banker extends React.Component {
                 <div className="container">
                     <div className="row center-align">
                         <br />
-                        <button className="btn center-align blue darken-4" onClick={this.updateDeposits}>Batch Update Deposits</button>{" "}
+                        <button className="btn center-align blue darken-4" onClick={this.clearSafeDeposits}>Send Cash to Bank</button>{" "}
+                        <button className="btn center-align blue darken-4" onClick={this.reverseSafeDeposits}>Undo Cash Transaction</button>{" "}
                     </div>
                     <h5 className="center-align">Prospects</h5>
                     <Prospects />
