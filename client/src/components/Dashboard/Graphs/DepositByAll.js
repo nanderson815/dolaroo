@@ -2,6 +2,8 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
+import _ from "underscore";
+
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
@@ -39,6 +41,39 @@ class DepositByAll extends React.Component {
                 }]
         };
 
+
+        let lines = [];
+
+        let grouped = _.map(_.groupBy(this.props.deposits, 'email'),
+            list => list.map(deposit => deposit));
+
+
+        for (let i in grouped){
+            const sortedByDate = grouped[i].sort((a, b) => {
+                return (a.time > b.time) ? 1 : -1;
+            });
+
+            const times = sortedByDate.map((deposit) => {
+                return (deposit.time.toDate());
+            });
+
+            const amounts = sortedByDate.map((deposit) => {
+                return (deposit.amount);
+            });
+            
+            lines.push({
+                "hoverinfo": "x+y",
+                "line": { "width": 0.5 },
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Deposits By User' + i,
+                x: times,
+                y: amounts,
+            })
+        };
+
+        console.log(lines);
+
         const sortedByDate = this.props.deposits.sort((a, b) => {
             return (a.time > b.time) ? 1 : -1;
         });
@@ -54,20 +89,21 @@ class DepositByAll extends React.Component {
             return (deposit.amount);
         });
 
+        let depositOne = {
+            "hoverinfo": "x+y",
+            "line": { "width": 0.5 },
+            "marker": { "size": 8, color: 'rgb(13, 71, 161)' },
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Deposits By User',
+            x: times,
+            y: amounts,
+        }
+
+
         return (
             <Plot
-                data={[
-                    {
-                        "hoverinfo": "x+y",
-                        "line": { "width": 0.5 },
-                        "marker": { "size": 8, color: 'rgb(13, 71, 161)' },
-                        type: 'scatter',
-                        mode: 'lines+markers',
-                        name: 'Deposits By User',
-                        x: times,
-                        y: amounts,
-                    },
-                ]}
+                data={lines}
                 layout={
                     {
                         autosize: true,
@@ -76,13 +112,14 @@ class DepositByAll extends React.Component {
                             range: [earliestDate, latestDate],
                             rangeselector: selectorOptions,
                             rangeslider: { earliestDate, latestDate },
-                        }
+                        },
+                        showlegend: true
                     }
                 }
                 useResizeHandler={true}
                 style={{ width: "100%", height: "100%" }}
-                config={{displayModeBar: false}}
-                
+                config={{ displayModeBar: false }}
+
             />
         );
     }
@@ -94,7 +131,7 @@ class DepositByAll extends React.Component {
             pathname: '/depositlist'
         });
     }
-    
+
     render() {
         // Some props take time to get ready so return null when uid not avaialble
         if (!this.props.user) {
