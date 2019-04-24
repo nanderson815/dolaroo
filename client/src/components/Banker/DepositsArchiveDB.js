@@ -1,31 +1,83 @@
 import Util from "../Util/Util";
 
 class DepositsArchiveDB {
-    // ------------------------------------------------------------------
-    // Deposits: get awaiting settlement
-    static getDepositsAwaitingSettlement = () => {
+    // ------------------------------------------------------------
+    // DepositsArchive : Get ALL
+    // get all depositsarchive that are awaiting settlement
+    static getAll = () => {
         // its a promise so return
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
 
             // then get from firestore
-            let settledDeposits = [];
+            let depositsArchive = [];
+            let docRef = db.collection("depositsarchive");
+            docRef.get().then((querySnapshot) => {
+                querySnapshot.forEach(doc => {
+                    let deposit = doc.data();
+                    deposit.id = doc.id;
+                    deposit.time = deposit.time.toDate();
+                    depositsArchive.push(deposit);
+                });
+                resolve(depositsArchive);
+            }).catch(err => {
+                reject(`Error getting depositsArchive in getAll ${err.message}`);
+            });
+        });
+    }
+
+    // ------------------------------------------------------------
+    // DepositsArchive : get all awaiting settlement
+    // get all depositsarchive that are awaiting settlement
+    static getAwaitingSettlement = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            // then get from firestore
+            let depositsArchive = [];
+            let docRef = db.collection("depositsarchive").where("awatingSettlement", "==", true);
+            docRef.get().then((querySnapshot) => {
+                querySnapshot.forEach(doc => {
+                    let deposit = doc.data();
+                    deposit.id = doc.id;
+                    deposit.time = deposit.time.toDate();
+                    depositsArchive.push(deposit);
+                });
+                resolve(depositsArchive);
+            }).catch(err => {
+                reject(`Error getting depositsArchive in getAwaitingSettlement ${err.message}`);
+            });
+        });
+    }
+
+    // -----------------------------------------------------------------------------------
+    // Deposits: get awaiting settlement
+    // There really should never be any of these - may use in cleanup type activities
+    static helperDepositsAwaiting = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            // then get from firestore
+            let depositsArchive = [];
             let docRef = db.collection("deposits").where("awatingSettlement", "==", true);
             docRef.get().then((querySnapshot) => {
                 querySnapshot.forEach(doc => {
-                    console.log(doc.data());
-                    let settledDepoit = doc.data();
-                    settledDepoit.id = doc.id;
-                    settledDeposits.push(settledDepoit);
+                    let deposit = doc.data();
+                    deposit.id = doc.id;
+                    deposit.time = deposit.time.toDate();
+                    depositsArchive.push(deposit);
                 });
+                resolve(depositsArchive);
             }).catch(err => {
-                reject(`Error getting deposits in getDepositsAwaitingSettlement ${err.message}`);
+                reject(`Error getting deposits in helperDepositsAwaiting ${err.message}`);
             });
         });
     }
     
     // ------------------------------------------------------------------
-    // Deposits:  Update (using transaction)
+    // Deposits:  Update (using transaction) : : HELPER FUNCTION
     // Puts the awaitingSettlement flag into deposits table on all docs
     // make it false since if awaiting settlemenmt is false, its current
     static setToCurrentTransaction = () => {
@@ -80,38 +132,15 @@ class DepositsArchiveDB {
         });
     }
 
-    // ------------------------------------------------------------
-    // DepositsArchive : awaiting settlement
-    // get all archgived deposits that are awaiting settlement
-    static getArchiveAwaitingSettlement = () => {
-        // its a promise so return
-        return new Promise((resolve, reject) => {
-            const db = Util.getFirestoreDB();
-
-            // then get from firestore
-            let settledDeposits = [];
-            let docRef = db.collection("depositsarchive").where("awatingSettlement", "==", true);
-            docRef.get().then((querySnapshot) => {
-                querySnapshot.forEach(doc => {
-                    console.log(doc.data());
-                    let settledDepoit = doc.data();
-                    settledDepoit.id = doc.id;
-                    settledDeposits.push(settledDepoit);
-                });
-            }).catch(err => {
-                reject(`Error getting SettledDeposits in getArchiveAwaitingSettlement ${err.message}`);
-            });
-        });
-    }
-
-    // ------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------
     // Deposits + DepositsArchive : 
+    // THIS IS ATOMIC transaction so it all works or nothing does which is what we MUST have
     // This is when SAFE is emptied of the cash to take to bank
-    // 1.) Copy all current deposits to archived deposits (chamnging awaiting settlement flag to true)
-    // 2.) Delete all current deposits
-    // Note: Risk, what if someone is makign deposit while this is going on
+    // 1.) Copy all current deposits to depositsarchive
+    // 2.) Update the awaitingSettlement flag to true on the doc in archive
+    // 3.) Delete all current deposits in depoists collection
+    // Note: Risk, what if someone is making deposit while this is going on
     // We may accidentally mark/delete deposit that isnt accounted for
-    // NOTE: Check the process
     static clearAwaitingSettlement = () => {
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
@@ -126,6 +155,7 @@ class DepositsArchiveDB {
                         // Save current doc info changing settlement flag
                         const docCopy = doc.data();
                         docCopy.awatingSettlement = true;
+                        docCopy.settled = false;
 
                         // get a ref to the new copy in archive - shouldnt exist
                         // but if it does, iyt will just overwrite which is OK
@@ -149,8 +179,9 @@ class DepositsArchiveDB {
         }); // promise
     }
 
-    // ------------------------------------------------------------
-    // Deposits + DepositsArchive : 
+    // -------------------------------------------------------------------------------------------------
+    // Deposits + DepositsArchive : HELPER FUNCTION
+    // THIS IS ATOMIC transaction so it all works or nothing does which is what we MUST have
     // This is just a utility function to copy archived deposits BACK to
     // the deposits table during testing phase
     static reverseAwaitingSettlement = () => {
@@ -167,6 +198,7 @@ class DepositsArchiveDB {
                         // Save current doc info changing settlement flag
                         const docCopy = doc.data();
                         docCopy.awatingSettlement = false;
+                        docCopy.settled = false;
 
                         // get a ref to the new copy in archive - shouldnt exist
                         // but if it does, iyt will just overwrite which is OK
