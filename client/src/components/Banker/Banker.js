@@ -10,7 +10,8 @@ class Banker extends React.Component {
 
     updateDeposits = () => {
         // Add the proper boolean to the depoists table for all docs
-        SettledDepositsDB.setDepositsToCurrent().then(res => {
+        //SettledDepositsDB.setDepositsToCurrent().then(res => {
+        SettledDepositsDB.transactionDepositsToCurrent().then(res => {
             alert(res);
         }).catch(err => {
             console.error(`error updating ${err}`);

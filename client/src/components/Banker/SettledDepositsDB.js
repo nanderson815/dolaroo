@@ -23,6 +23,36 @@ class SettledDepositsDB {
     }
     
     // This just puts the awaitingSettlement flag into deposits table on all docs
+    static transactionDepositsToCurrent = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();             
+
+            // Create a reference to all deposits
+            let allDepositsRef = db.collection("deposits");
+            db.runTransaction((transaction) => {
+                return allDepositsRef.get().then((querySnapshot) => {
+                    querySnapshot.forEach(doc => {
+                        transaction.set(doc.ref, {
+                            awatingSettlement: false,
+                        }, { merge: true });
+                    });
+                }).then(() => {
+                    //console.log("Transaction successfully committed!");
+                }).catch((err) =>{
+                    console.error("Transaction failed: ", err);
+                });
+            }).then(() => {
+                console.log("Transaction successfully committed!");
+                resolve("OK");
+            }).catch((err) => {
+                console.error("Transaction failed: ", err);
+                reject(`Error: ${err}`);
+            });
+        });
+    }
+    
+    // This just puts the awaitingSettlement flag into deposits table on all docs
     static setDepositsToCurrent = () => {
         // its a promise so return
         return new Promise((resolve, reject) => {
