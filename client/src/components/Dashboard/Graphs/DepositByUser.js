@@ -155,13 +155,15 @@ class DepositByDay extends React.Component {
             return null;
         }
 
+        const displayName = this.props.user.displayName;
+
         if (this.props.user.authUser) {
             return (
                 <div>
                     <div className="col s12 l6">
                         <div className="card">
                             <div className="card-content pCard">
-                                <span className="card-title">{this.props.title ? this.props.title : 'DepositByDay'}</span>
+                                <span className="card-title">{this.props.title ? this.props.title : 'DepositByUser'} : {displayName}</span>
                                 {this.plotDeposits(this.props.user.authUser.uid)}
                             </div>
                             <div className="card-action pCard">
