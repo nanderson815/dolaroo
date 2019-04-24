@@ -62,11 +62,11 @@ class DepositByAll extends React.Component {
             });
             
             lines.push({
-                "hoverinfo": "x+y",
-                "line": { "width": 0.5 },
+                "hoverinfo": "y",
+                line: { width: 2.5 },
                 type: 'scatter',
                 mode: 'lines+markers',
-                name: 'Deposits By User' + i,
+                name: 'Deposits By User ' + i,
                 x: times,
                 y: amounts,
             })
@@ -84,21 +84,6 @@ class DepositByAll extends React.Component {
 
         const earliestDate = times.length > 0 ? times[0] : new Date();
         const latestDate = times.length > 0 ? times[times.length - 1] : new Date();
-
-        const amounts = sortedByDate.map((deposit) => {
-            return (deposit.amount);
-        });
-
-        let depositOne = {
-            "hoverinfo": "x+y",
-            "line": { "width": 0.5 },
-            "marker": { "size": 8, color: 'rgb(13, 71, 161)' },
-            type: 'scatter',
-            mode: 'lines+markers',
-            name: 'Deposits By User',
-            x: times,
-            y: amounts,
-        }
 
 
         return (
@@ -141,7 +126,7 @@ class DepositByAll extends React.Component {
         if (this.props.user.authUser) {
             return (
                 <div>
-                    <div className="col s12 l6">
+                    <div className="col s12 l12">
                         <div className="card">
                             <div className="card-content pCard">
                                 <span className="card-title">{this.props.title ? this.props.title : 'DepositByAll'}</span>
