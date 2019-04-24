@@ -36,7 +36,7 @@ class DepositsArchiveDB {
 
             // then get from firestore
             let depositsArchive = [];
-            let docRef = db.collection("depositsarchive").where("awatingSettlement", "==", true);
+            let docRef = db.collection("depositsarchive").where("awaitingSettlement", "==", true);
             docRef.get().then((querySnapshot) => {
                 querySnapshot.forEach(doc => {
                     let deposit = doc.data();
@@ -61,7 +61,7 @@ class DepositsArchiveDB {
 
             // then get from firestore
             let depositsArchive = [];
-            let docRef = db.collection("deposits").where("awatingSettlement", "==", true);
+            let docRef = db.collection("deposits").where("awaitingSettlement", "==", true);
             docRef.get().then((querySnapshot) => {
                 querySnapshot.forEach(doc => {
                     let deposit = doc.data();
@@ -91,7 +91,7 @@ class DepositsArchiveDB {
                 return allDepositsRef.get().then((querySnapshot) => {
                     querySnapshot.forEach(doc => {
                         transaction.set(doc.ref, {
-                            awatingSettlement: false,
+                            awaitingSettlement: false,
                         }, { merge: true });
                     });
                 });
@@ -120,7 +120,7 @@ class DepositsArchiveDB {
             allDepositsRef.get().then((querySnapshot) => {
                 querySnapshot.forEach(doc => {
                     batch.set(doc.ref, {
-                        awatingSettlement: false,
+                        awaitingSettlement: false,
                     }, { merge: true });
                 });
                 return batch.commit();
@@ -148,13 +148,13 @@ class DepositsArchiveDB {
             const toCollection = "depositsarchive";
 
             // Create a reference to all deposits
-            let fromRef = db.collection(fromCollection).where("awatingSettlement", "==", false);
+            let fromRef = db.collection(fromCollection).where("awaitingSettlement", "==", false);
             db.runTransaction((transaction) => {
                 return fromRef.get().then((querySnapshot) => {
                     querySnapshot.forEach(doc => {
                         // Save current doc info changing settlement flag
                         const docCopy = doc.data();
-                        docCopy.awatingSettlement = true;
+                        docCopy.awaitingSettlement = true;
                         docCopy.settled = false;
 
                         // get a ref to the new copy in archive - shouldnt exist
@@ -191,13 +191,13 @@ class DepositsArchiveDB {
             const toCollection = "deposits";
 
             // Create a reference to all deposits
-            let fromRef = db.collection(fromCollection).where("awatingSettlement", "==", true);
+            let fromRef = db.collection(fromCollection).where("awaitingSettlement", "==", true);
             db.runTransaction((transaction) => {
                 return fromRef.get().then((querySnapshot) => {
                     querySnapshot.forEach(doc => {
                         // Save current doc info changing settlement flag
                         const docCopy = doc.data();
-                        docCopy.awatingSettlement = false;
+                        docCopy.awaitingSettlement = false;
                         docCopy.settled = false;
 
                         // get a ref to the new copy in archive - shouldnt exist

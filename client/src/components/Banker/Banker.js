@@ -54,6 +54,23 @@ class Banker extends React.Component {
         });
     }
   
+    getAwaiting = () => {
+        // take money out of safe
+        DepositsArchiveDB.getAwaitingSettlement().then(depositsArray => {
+            this.setState({
+                showProspects: false,
+                showDeposits: true,
+                depositsArchive: [...depositsArray]
+            });    
+        }).catch(err => {
+            console.error(`Error getting deposits ${err}`);
+            this.setState({
+                message: `Error getting deposits ${err}`
+            });
+
+        });
+    }
+  
     showProspects = () => {
         // take money out of safe
         this.setState({

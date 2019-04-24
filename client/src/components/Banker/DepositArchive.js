@@ -39,8 +39,8 @@ class DepositArchive extends React.Component {
                         <span className="card-title">Deposit: ${Util.formatMoney(amount, 0)}</span>
                         <p>{time.toString()}</p>
                         <p>{email}</p>
-                        <p>Awaiting Settlement? {awaitingSettlement}</p>
-                        <p>Settled? {settled}</p>
+                        <p>Awaiting Settlement? {awaitingSettlement ? "true" : "false"}</p>
+                        <p>Settled? {settled ? "true" : "false"}</p>
                     </div>
                     <div className="card-action">
                         <div className="left-align">
