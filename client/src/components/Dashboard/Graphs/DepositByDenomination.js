@@ -6,15 +6,20 @@ import { withRouter } from 'react-router-dom';
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
 class DepositByAll extends React.Component {
+
+
+
     plotDeposits = () => {
-
-
-        let ones = this.props.deposits.map(deposit => deposit.ones).reduce((total, currentValue) => total + currentValue, 0);
-        let fives = this.props.deposits.map(deposit => deposit.fives).reduce((total, currentValue) => total + currentValue, 0);
-        let tens = this.props.deposits.map(deposit => deposit.tens).reduce((total, currentValue) => total + currentValue, 0);
-        let twenties = this.props.deposits.map(deposit => deposit.twenties).reduce((total, currentValue) => total + currentValue, 0);
-        let fifties = this.props.deposits.map(deposit => deposit.fifties).reduce((total, currentValue) => total + currentValue, 0);
-        let hundreds = this.props.deposits.map(deposit => deposit.hundreds).reduce((total, currentValue) => total + currentValue, 0);
+        let combinedData = this.props.deposits.concat(this.props.depositsArchive);
+        
+        console.log(combinedData);
+        
+        let ones = combinedData.map(deposit => deposit.ones).reduce((total, currentValue) => total + currentValue, 0);
+        let fives = combinedData.map(deposit => deposit.fives).reduce((total, currentValue) => total + currentValue, 0);
+        let tens = combinedData.map(deposit => deposit.tens).reduce((total, currentValue) => total + currentValue, 0);
+        let twenties = combinedData.map(deposit => deposit.twenties).reduce((total, currentValue) => total + currentValue, 0);
+        let fifties = combinedData.map(deposit => deposit.fifties).reduce((total, currentValue) => total + currentValue, 0);
+        let hundreds = combinedData.map(deposit => deposit.hundreds).reduce((total, currentValue) => total + currentValue, 0);
 
         // delays props and solves errors
         if (!ones) {

@@ -50,8 +50,6 @@ class DepositByAll extends React.Component {
             list => list.map(deposit => deposit));
 
 
-        console.log(grouped);
-
         for (let i in grouped){
             const sortedByDate = grouped[i].sort((a, b) => {
                 return (a.time > b.time) ? 1 : -1;
@@ -78,8 +76,6 @@ class DepositByAll extends React.Component {
                 text: formattedAmounts
             })
         };
-
-        console.log(lines);
 
         const sortedByDate = this.props.deposits.sort((a, b) => {
             return (a.time > b.time) ? 1 : -1;

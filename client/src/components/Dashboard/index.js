@@ -52,7 +52,7 @@ class Home extends React.Component {
                         <div className="row">
                             <ProvisionalCredit credit={this.state.credit} />
                             <Balance balance={this.state.cash} disabled={this.props.user.isAdmin ? false : this.props.user.isCashier ? false : true} />
-                            <Savings cash={this.state.cash} credit={this.state.credit} />
+                            <Savings credit={this.state.credit} />
                         </div>
                         <div className="row">
                             <DepositByDay
