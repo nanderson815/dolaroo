@@ -41,7 +41,9 @@ class DepositByDay extends React.Component {
                 }]
         };
 
-        const sortedByDate = this.props.deposits.sort((a, b) => {
+        let combiedData = this.props.deposits.concat(this.props.depositsArchive);        
+
+        const sortedByDate = combiedData.sort((a, b) => {
             return (a.time > b.time) ? 1 : -1;
         });
 
@@ -96,7 +98,7 @@ class DepositByDay extends React.Component {
                     {
                         type: 'bar',
                         mode: 'stack',
-                        name: 'Deposits by User',
+                        name: 'Deposits by Day',
                         x: days,
                         y: amounts,
                         marker: { color: 'rgb(13, 71, 161)' },
@@ -135,14 +137,14 @@ class DepositByDay extends React.Component {
         );
     }
 
-  
+
     // go to details
     viewDetails = () => {
         this.props.history.push({
             pathname: '/depositlist'
         });
     }
-    
+
     render() {
         // Some props take time to get ready so return null when uid not avaialble
         if (!this.props.user) {

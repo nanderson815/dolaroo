@@ -2,6 +2,8 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
+import _ from "underscore";
+
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
@@ -39,6 +41,42 @@ class DepositByAll extends React.Component {
                 }]
         };
 
+
+        let lines = [];
+
+        let combiedData = this.props.deposits.concat(this.props.depositsArchive);
+
+        let grouped = _.mapObject(_.groupBy(combiedData, 'email'),
+            list => list.map(deposit => deposit));
+
+
+        for (let i in grouped){
+            const sortedByDate = grouped[i].sort((a, b) => {
+                return (a.time > b.time) ? 1 : -1;
+            });
+
+            const times = sortedByDate.map((deposit) => {
+                return (deposit.time.toDate());
+            });
+
+            const amounts = sortedByDate.map((deposit) => {
+                return (deposit.amount);
+            });
+
+            const formattedAmounts = amounts.map(amount => "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+            lines.push({
+                "hoverinfo": "text",
+                line: { width: 2.5 },
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: i,
+                x: times,
+                y: amounts,
+                text: formattedAmounts
+            })
+        };
+
         const sortedByDate = this.props.deposits.sort((a, b) => {
             return (a.time > b.time) ? 1 : -1;
         });
@@ -50,24 +88,10 @@ class DepositByAll extends React.Component {
         const earliestDate = times.length > 0 ? times[0] : new Date();
         const latestDate = times.length > 0 ? times[times.length - 1] : new Date();
 
-        const amounts = sortedByDate.map((deposit) => {
-            return (deposit.amount);
-        });
 
         return (
             <Plot
-                data={[
-                    {
-                        "hoverinfo": "x+y",
-                        "line": { "width": 0.5 },
-                        "marker": { "size": 8, color: 'rgb(13, 71, 161)' },
-                        type: 'scatter',
-                        mode: 'lines+markers',
-                        name: 'Deposits By User',
-                        x: times,
-                        y: amounts,
-                    },
-                ]}
+                data={lines}
                 layout={
                     {
                         autosize: true,
@@ -76,13 +100,24 @@ class DepositByAll extends React.Component {
                             range: [earliestDate, latestDate],
                             rangeselector: selectorOptions,
                             rangeslider: { earliestDate, latestDate },
+                        },
+                        showlegend: true,
+                        margin: {
+                            l: 50,
+                            r: 50,
+                            b: 10,
+                            t: 10,
+                        },
+                        yaxis: {
+                            tickprefix: "$",
+                            separatethousands: true
                         }
                     }
                 }
                 useResizeHandler={true}
                 style={{ width: "100%", height: "100%" }}
-                config={{displayModeBar: false}}
-                
+                config={{ displayModeBar: false }}
+
             />
         );
     }
@@ -94,7 +129,7 @@ class DepositByAll extends React.Component {
             pathname: '/depositlist'
         });
     }
-    
+
     render() {
         // Some props take time to get ready so return null when uid not avaialble
         if (!this.props.user) {
@@ -104,7 +139,7 @@ class DepositByAll extends React.Component {
         if (this.props.user.authUser) {
             return (
                 <div>
-                    <div className="col s12 l6">
+                    <div className="col s12 l12">
                         <div className="card">
                             <div className="card-content pCard">
                                 <span className="card-title">{this.props.title ? this.props.title : 'DepositByAll'}</span>

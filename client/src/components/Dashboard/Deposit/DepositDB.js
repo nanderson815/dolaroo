@@ -59,6 +59,48 @@ class DepositDB {
         });
     }
 
+    // Get cash in safe
+    static getInSafeTotal = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            // then get from firestore
+            let total = 0;
+            let docRef = db.collection("deposits");
+            docRef.get().then((querySnapshot) => {
+                querySnapshot.forEach(doc => {
+                    total += doc.data().amount;
+                });
+                resolve(total);
+            }).catch(err => {
+                reject(`Error getting deposits in getInSafeTotal ${err.message}`);
+            });
+        });
+    }
+
+
+
+    // Gets deposits that are not in safe, but havent been settled. 
+    static getPendingTotal = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            // then get from firestore
+            let total = 0;
+            let docRef = db.collection("depositsarchive").where("awaitingSettlement", "==", false);
+            docRef.get().then((querySnapshot) => {
+                querySnapshot.forEach(doc => {
+                    total += doc.data().amount;
+                });
+                resolve(total);
+            }).catch(err => {
+                reject(`Error getting depositsArchive in getAwaitingTotal ${err.message}`);
+            });
+        });
+    }
+
 }
 
 export default DepositDB;
