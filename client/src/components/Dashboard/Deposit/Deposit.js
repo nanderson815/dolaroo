@@ -104,7 +104,7 @@ class Deposit extends React.Component {
             time: new Date(),
             email: this.props.user.authUser.email,
             uid: this.props.user.authUser.uid,
-            awatingSettlement: false
+            awaitingSettlement: false
         });
 
         db.collection('cash').doc('balance').update({
