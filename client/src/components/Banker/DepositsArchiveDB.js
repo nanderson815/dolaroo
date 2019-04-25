@@ -233,7 +233,7 @@ class DepositsArchiveDB {
     // 3.) Delete all current deposits in depoists collection
     // Note: Risk, what if someone is making deposit while this is going on
     // We may accidentally mark/delete deposit that isnt accounted for
-    static clearAwaitingSettlement = () => {
+    static sendDepositsToBank = () => {
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
             const fromCollection = "deposits";
@@ -264,8 +264,8 @@ class DepositsArchiveDB {
                 console.log("Archive Transaction successfully committed!");
                 resolve("OK");
             }).catch((err) => {
-                console.error("Error in clearAwaitingSettlement : ", err);
-                reject(`Error in clearAwaitingSettlement: ${err}`);
+                console.error("Error in sendDepositsToBank : ", err);
+                reject(`Error in sendDepositsToBank: ${err}`);
             });
 
         }); // promise
@@ -305,8 +305,8 @@ class DepositsArchiveDB {
                 console.log(`Archive Transaction successfully committed!, totalSettled is: ${totalSettled}`);
                 resolve(totalSettled);
             }).catch((err) => {
-                console.error("Error in clearAwaitingSettlement : ", err);
-                reject(`Error in clearAwaitingSettlement: ${err}`);
+                console.error("Error in settleDeposits : ", err);
+                reject(`Error in settleDeposits: ${err}`);
             });
 
         }); // promise
@@ -332,15 +332,15 @@ class DepositsArchiveDB {
                         // dont copy ALL fields since depositsArchivce has more 
                         const docCopy = {};
                         docCopy.amount = doc.data().amount;
-                        docCopy.amount = doc.data().email;
-                        docCopy.amount = doc.data().ones;
-                        docCopy.amount = doc.data().fives;
-                        docCopy.amount = doc.data().tens;
-                        docCopy.amount = doc.data().twenties;
-                        docCopy.amount = doc.data().fifties;
-                        docCopy.amount = doc.data().hundreds;
-                        docCopy.amount = doc.data().time;
-                        docCopy.amount = doc.data().uid;
+                        docCopy.email = doc.data().email;
+                        docCopy.ones = doc.data().ones;
+                        docCopy.fives = doc.data().fives;
+                        docCopy.tens = doc.data().tens;
+                        docCopy.twenties = doc.data().twenties;
+                        docCopy.fifties = doc.data().fifties;
+                        docCopy.hundreds = doc.data().hundreds;
+                        docCopy.time = doc.data().time;
+                        docCopy.uid = doc.data().uid;
                         docCopy.awaitingSettlement = false;
                         docCopy.settled = false;
 
@@ -359,8 +359,68 @@ class DepositsArchiveDB {
                 console.log("Reverse Archive Transaction successfully committed!");
                 resolve("OK");
             }).catch((err) => {
-                console.error("Error in clearAwaitingSettlement : ", err);
-                reject(`Error in clearAwaitingSettlement: ${err}`);
+                console.error("Error in reverseAwaitingSettlement : ", err);
+                reject(`Error in reverseAwaitingSettlement: ${err}`);
+            });
+
+        }); // promise
+    }
+
+    // get random number between 0 and max-1
+    static getRandomInt = (max) => {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
+    
+
+    // -------------------------------------------------------------------------------------------------
+    // Deposits + DepositsArchive : HELPER FUNCTION
+    // THIS IS ATOMIC transaction so it all works or nothing does which is what we MUST have
+    // This is just a utility function to copy archived deposits BACK to
+    // the deposits table during testing phase
+    static fixDepositTable = () => {
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+            const toCollection = "deposits";
+
+            // Create a reference to all deposits
+            let fromRef = db.collection(toCollection);
+            db.runTransaction((transaction) => {
+                return fromRef.get().then((querySnapshot) => {
+                    querySnapshot.forEach(doc => {
+                        const ones = this.getRandomInt(10);
+                        const fives = this.getRandomInt(5);
+                        const tens = this.getRandomInt(4);
+                        const twenties = this.getRandomInt(3);
+                        const fifties = this.getRandomInt(3);
+                        const hundreds = this.getRandomInt(2);
+                        const amount = (ones*1 + fives*5 + tens*10 + twenties*20 + fifties*50 + hundreds*100);
+                        let randomDay = this.getRandomInt(15) + 9;
+                
+                        // Save current doc info changing settlement flag
+                        const docCopy = {};
+                        docCopy.amount = amount;
+                        docCopy.email = "nanderson815@gmail.com";
+                        docCopy.ones = ones;
+                        docCopy.fives = fives;
+                        docCopy.tens = tens;
+                        docCopy.twenties = twenties;
+                        docCopy.fifties = fifties;
+                        docCopy.hundreds = hundreds;
+                        docCopy.time = new Date(`04/${randomDay}/2019`);
+                        docCopy.uid = "lbQlUhPp51eaXatf8SNHaAdzY2Y2";
+                        docCopy.awaitingSettlement = false;
+                        docCopy.settled = false;
+
+                        // "copy" / Create the deposits into archive collection
+                        transaction.set(doc.ref, docCopy);
+                    });
+                });
+            }).then(() => {
+                console.log("Reverse Archive Transaction successfully committed!");
+                resolve("OK");
+            }).catch((err) => {
+                console.error("Error in reverseAwaitingSettlement : ", err);
+                reject(`Error in reverseAwaitingSettlement: ${err}`);
             });
 
         }); // promise

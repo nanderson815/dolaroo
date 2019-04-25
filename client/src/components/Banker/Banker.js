@@ -28,7 +28,7 @@ class Banker extends React.Component {
     // takle money out of the safe and onto truck or walk to bank
     sendDepositsToBank = () => {
         // take money out of safe
-        DepositsArchiveDB.clearAwaitingSettlement().then(res => {
+        DepositsArchiveDB.sendDepositsToBank().then(res => {
             alert(res);
         }).catch(err => {
             console.error(`sendDepositsToBank Error: ${err}`);
@@ -51,6 +51,15 @@ class Banker extends React.Component {
             alert(res);
         }).catch(err => {
             console.error(`sendDepositsToBank Error: ${err}`);
+        });
+    }
+
+    fixDepositTable = () => {
+        // take money out of safe
+        DepositsArchiveDB.fixDepositTable().then(res => {
+            alert(res);
+        }).catch(err => {
+            console.error(`fixDepositTable Error: ${err}`);
         });
     }
 
@@ -188,6 +197,8 @@ class Banker extends React.Component {
                     </div>
 
                     <div className="row center-align">
+                        <br />
+                        <button className="btn center-align blue darken-4" onClick={this.fixDepositTable}>Fix Deposits Table</button>{" "}
                         <br />
                         <button className="btn center-align blue darken-4" onClick={this.showProspects}>Display Prospects</button>{" "}
                     </div>
