@@ -26,14 +26,21 @@ class Home extends React.Component {
         DepositDB.get("deposits")
             .then(res => this.setState({ deposits: res }))
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
-        DepositDB.get("credit")
-            .then(res => this.setState({ credit: res[0].balance }))
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
-        DepositDB.get("cash")
-            .then(res => this.setState({ cash: res[0].balance }))
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+
+        DepositDB.getInSafeTotal()
+            .then(res => this.setState({
+                cash: res,
+                credit: res * .975
+            }));
+
+        DepositDB.getPendingTotal()
+            .then(res => this.setState({
+                // cash: this.state.cash + res,
+                credit: this.state.credit + (res * .975)
+            }));
+
         DepositDB.get("depositsarchive")
-            .then(res => this.setState({depositsArchive: res}))
+            .then(res => this.setState({ depositsArchive: res }))
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
     }
 
@@ -54,12 +61,12 @@ class Home extends React.Component {
                                 depositsArchive={this.state.depositsArchive}
                             />
 
-                            {this.props.user.isUser ? null : 
-                            <DepositByUser
-                                title={"Deposits By User"}
-                                deposits={this.state.deposits}
-                                depositsArchive={this.state.depositsArchive}
-                            />}
+                            {this.props.user.isUser ? null :
+                                <DepositByUser
+                                    title={"Deposits By User"}
+                                    deposits={this.state.deposits}
+                                    depositsArchive={this.state.depositsArchive}
+                                />}
 
                             <DepositByAll
                                 title={"All Deposits"}

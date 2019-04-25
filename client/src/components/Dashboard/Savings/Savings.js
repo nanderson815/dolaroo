@@ -5,10 +5,10 @@ import styles from './Savings.module.css';
 
 const Savings = (props) => {
 
-    console.log(props);
+    const cash = props.credit/.975;
 
-    const oldCost = props.cash * .15;
-    const ourCost = props.cash - props.credit;
+    const oldCost = cash * .15;
+    const ourCost = cash - props.credit;
     const savings = oldCost - ourCost
     const averageSavings = 1000;
 
