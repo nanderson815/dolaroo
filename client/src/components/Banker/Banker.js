@@ -29,7 +29,7 @@ class Banker extends React.Component {
     sendDepositsToBank = () => {
         // take money out of safe
         DepositsArchiveDB.sendDepositsToBank().then(res => {
-            alert(res);
+            this.refreshTotals();
         }).catch(err => {
             console.error(`sendDepositsToBank Error: ${err}`);
         });
@@ -39,7 +39,7 @@ class Banker extends React.Component {
     settleDeposits = () => {
         // take money out of safe
         DepositsArchiveDB.settleDeposits(this.props.user).then(settledAmount => {
-            alert(`Succes.  Total settled: ${settledAmount}`);
+            this.refreshTotals();
         }).catch(err => {
             console.error(`settleDeposits Error: ${err}`);
         });
@@ -48,7 +48,7 @@ class Banker extends React.Component {
     reverseSafeDeposits = () => {
         // take money out of safe
         DepositsArchiveDB.reverseAwaitingSettlement().then(res => {
-            alert(res);
+            this.refreshTotals();
         }).catch(err => {
             console.error(`sendDepositsToBank Error: ${err}`);
         });
@@ -123,7 +123,6 @@ class Banker extends React.Component {
             this.setState({
                 message: `Error in getAwaitingTotal ${err}`
             });
-
         });
     }
   
@@ -167,11 +166,15 @@ class Banker extends React.Component {
         });
     }
 
-    // Get totals
-    componentDidMount() {
+    // refresh when totals change
+    refreshTotals() {
         this.getInSafeTotal();
         this.getAwaitingTotal();
         this.getSettledTotal();
+    }
+    // Get totals
+    componentDidMount() {
+        this.refreshTotals();
     }
     
     render() {
@@ -197,8 +200,10 @@ class Banker extends React.Component {
                     </div>
 
                     <div className="row center-align">
-                        <br />
+                        {/*
+                            <br />
                         <button className="btn center-align blue darken-4" onClick={this.fixDepositTable}>Fix Deposits Table</button>{" "}
+                        */}
                         <br />
                         <button className="btn center-align blue darken-4" onClick={this.showProspects}>Display Prospects</button>{" "}
                     </div>
