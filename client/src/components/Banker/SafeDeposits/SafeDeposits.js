@@ -15,11 +15,9 @@ const SafeDeposits =(props) => {
                             <button onClick={props.sendDepositsToBank}
                                 className="safeDepositBtn waves-effect waves-light dash-btn blue darken-4 btn">Send Cash to Bank
                             </button>{" "}
-                            {/*
                                 <button onClick={props.reverseSafeDeposits}
                                 className="safeDepositBtn waves-effect waves-light dash-btn blue darken-4 btn">Reverse Deposits
                             </button>
-                            */}
                         </div>
                     </div>
                 </div>
