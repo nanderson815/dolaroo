@@ -13,6 +13,7 @@
     "moment": "^2.24.0",
     "plotly.js": "^1.47.2",
     "react": "^16.8.5",
+    "react-csv": "^1.1.1",
     "react-dom": "^16.8.5",
     "react-number-format": "^4.0.7",
     "react-plotly.js": "^2.3.0",
