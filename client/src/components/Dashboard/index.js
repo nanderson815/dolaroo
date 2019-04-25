@@ -17,6 +17,7 @@ class Home extends React.Component {
         deposits: [],
         credit: 0,
         cash: 0,
+        depositsArchive: []
     }
 
 
@@ -30,6 +31,9 @@ class Home extends React.Component {
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
         DepositDB.get("cash")
             .then(res => this.setState({ cash: res[0].balance }))
+            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+        DepositDB.get("depositsarchive")
+            .then(res => this.setState({depositsArchive: res}))
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
     }
 
@@ -47,20 +51,25 @@ class Home extends React.Component {
                             <DepositByDay
                                 title={"Total Deposits By Day"}
                                 deposits={this.state.deposits}
+                                depositsArchive={this.state.depositsArchive}
                             />
 
-                            {this.props.user.isUser ? null : <DepositByUser
+                            {this.props.user.isUser ? null : 
+                            <DepositByUser
                                 title={"Deposits By User"}
                                 deposits={this.state.deposits}
+                                depositsArchive={this.state.depositsArchive}
                             />}
 
                             <DepositByAll
                                 title={"All Deposits"}
                                 deposits={this.state.deposits}
+                                depositsArchive={this.state.depositsArchive}
                             />
                             <DepositByDenomination
                                 title={"Number of Bills By Denomination"}
                                 deposits={this.state.deposits}
+                                depositsArchive={this.state.depositsArchive}
                             />
                         </div>
                     </div>
