@@ -180,6 +180,47 @@ class DepositsArchiveDB {
     }
 
     // -------------------------------------------------------------------------------------------------
+    // DepositsArchive :  settleDeposits
+    // THIS IS ATOMIC transaction so it all works or nothing does which is what we MUST have
+    // This is when the money is deposited into the customers bank account via brinks or similar
+    // 1.) Just loop through ALL depositsarchive and set settled to true and awaiting settlement to false
+    // NOTE:  We should notify someone with badge or something
+    // maybe firebase messaging for this
+    static settleDeposits = (userInfo) => {
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+            const updateCollection = "depositsarchive";
+
+            // Total up the amount settled
+            let totalSettled = 0;
+            // Create a reference to all deposits
+            let updateRef = db.collection(updateCollection).where("awaitingSettlement", "==", true);
+            db.runTransaction((transaction) => {
+                return updateRef.get().then((querySnapshot) => {
+                    querySnapshot.forEach(doc => {
+                        // grab ref to this document
+                        totalSettled += doc.data().amount;
+                        transaction.set(doc.ref, {
+                            awaitingSettlement: false,
+                            settled: true,
+                            settledDateTime: new Date(),
+                            settledUid: userInfo.uid
+                        }, { merge: true });
+                    });
+                    return(totalSettled);
+                });
+            }).then((totalSettled) => {
+                console.log(`Archive Transaction successfully committed!, totalSettled is: ${totalSettled}`);
+                resolve(totalSettled);
+            }).catch((err) => {
+                console.error("Error in clearAwaitingSettlement : ", err);
+                reject(`Error in clearAwaitingSettlement: ${err}`);
+            });
+
+        }); // promise
+    }
+
+    // -------------------------------------------------------------------------------------------------
     // Deposits + DepositsArchive : HELPER FUNCTION
     // THIS IS ATOMIC transaction so it all works or nothing does which is what we MUST have
     // This is just a utility function to copy archived deposits BACK to
@@ -196,7 +237,18 @@ class DepositsArchiveDB {
                 return fromRef.get().then((querySnapshot) => {
                     querySnapshot.forEach(doc => {
                         // Save current doc info changing settlement flag
-                        const docCopy = doc.data();
+                        // dont copy ALL fields since depositsArchivce has more 
+                        const docCopy = {};
+                        docCopy.amount = doc.data().amount;
+                        docCopy.amount = doc.data().email;
+                        docCopy.amount = doc.data().ones;
+                        docCopy.amount = doc.data().fives;
+                        docCopy.amount = doc.data().tens;
+                        docCopy.amount = doc.data().twenties;
+                        docCopy.amount = doc.data().fifties;
+                        docCopy.amount = doc.data().hundreds;
+                        docCopy.amount = doc.data().time;
+                        docCopy.amount = doc.data().uid;
                         docCopy.awaitingSettlement = false;
                         docCopy.settled = false;
 

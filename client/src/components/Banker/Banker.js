@@ -19,12 +19,23 @@ class Banker extends React.Component {
             };
     }
 
+    // takle money out of the safe and onto truck or walk to bank
     clearSafeDeposits = () => {
         // take money out of safe
         DepositsArchiveDB.clearAwaitingSettlement().then(res => {
             alert(res);
         }).catch(err => {
             console.error(`clearSafeDeposits Error: ${err}`);
+        });
+    }
+
+    // settle deposits transported to bank
+    settleDeposits = (user) => {
+        // take money out of safe
+        DepositsArchiveDB.settleDeposits(user).then(settledAmount => {
+            alert(`Succes.  Total settled: ${settledAmount}`);
+        }).catch(err => {
+            console.error(`settleDeposits Error: ${err}`);
         });
     }
 
@@ -89,6 +100,7 @@ class Banker extends React.Component {
                         <br />
                         <button className="btn center-align blue darken-4" onClick={this.clearSafeDeposits}>Send Cash to Bank</button>{" "}
                         <button className="btn center-align blue darken-4" onClick={this.reverseSafeDeposits}>Undo Cash Transaction</button>{" "}
+                        <button className="btn center-align blue darken-4" onClick={() => this.settleDeposits(this.props.user)}>Settle Bank Deposits</button>{" "}
                         <br />
                         <button className="btn center-align blue darken-4" onClick={this.getAll}>Show All</button>{" "}
                         <button className="btn center-align blue darken-4" onClick={this.getAwaiting}>Awaiting Settlement</button>{" "}
