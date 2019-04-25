@@ -41,9 +41,9 @@ class DepositByDay extends React.Component {
                 }]
         };
 
-        console.log(uid);
+        let combiedData = this.props.deposits.concat(this.props.depositsArchive);        
 
-        const filteredByUid = this.props.deposits.filter((deposit) => {
+        const filteredByUid = combiedData.filter((deposit) => {
             return deposit.uid === uid;
         });
 
