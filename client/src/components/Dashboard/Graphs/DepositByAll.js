@@ -44,7 +44,9 @@ class DepositByAll extends React.Component {
 
         let lines = [];
 
-        let grouped = _.mapObject(_.groupBy(this.props.deposits, 'email'),
+        let combiedData = this.props.deposits.concat(this.props.depositsArchive);
+
+        let grouped = _.mapObject(_.groupBy(combiedData, 'email'),
             list => list.map(deposit => deposit));
 
 
