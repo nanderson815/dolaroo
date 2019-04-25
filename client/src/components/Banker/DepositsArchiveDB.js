@@ -51,6 +51,75 @@ class DepositsArchiveDB {
         });
     }
 
+    // ------------------------------------------------------------
+    // DepositsArchive : get total of all deposits awaiting settlement
+    // get total all depositsarchive that are awaiting settlement
+    static getAwaitingTotal = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            // then get from firestore
+            let total = 0;
+            let docRef = db.collection("depositsarchive").where("awaitingSettlement", "==", true);
+            docRef.get().then((querySnapshot) => {
+                querySnapshot.forEach(doc => {
+                    total += doc.data().amount;
+                });
+                resolve(total);
+            }).catch(err => {
+                reject(`Error getting depositsArchive in getAwaitingTotal ${err.message}`);
+            });
+        });
+    }
+
+    // ------------------------------------------------------------
+    // DepositsArchive : get all settled deposits
+    // get all depositsarchive that are settled
+    static getSettledDeposits = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            // then get from firestore
+            let depositsArchive = [];
+            let docRef = db.collection("depositsarchive").where("settled", "==", true);
+            docRef.get().then((querySnapshot) => {
+                querySnapshot.forEach(doc => {
+                    let deposit = doc.data();
+                    deposit.id = doc.id;
+                    deposit.time = deposit.time.toDate();
+                    depositsArchive.push(deposit);
+                });
+                resolve(depositsArchive);
+            }).catch(err => {
+                reject(`Error getting depositsArchive in getSettledDeposits ${err.message}`);
+            });
+        });
+    }
+
+    // ------------------------------------------------------------
+    // DepositsArchive : get the total of all settled deposits
+    // get all depositsarchive that are settled
+    static getSettledTotal = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            // then get from firestore
+            let total = 0;
+            let docRef = db.collection("depositsarchive").where("settled", "==", true);
+            docRef.get().then((querySnapshot) => {
+                querySnapshot.forEach(doc => {
+                    total += doc.data().amount;
+                });
+                resolve(total);
+            }).catch(err => {
+                reject(`Error getting depositsArchive in getSettledTotal ${err.message}`);
+            });
+        });
+    }
+
     // -----------------------------------------------------------------------------------
     // Deposits: get awaiting settlement
     // There really should never be any of these - may use in cleanup type activities
@@ -76,6 +145,29 @@ class DepositsArchiveDB {
         });
     }
     
+    // ------------------------------------------------------------
+    // Deposits : get the total of all in the safe
+    // get total of deposits in the safe
+    static getInSafeTotal = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            // then get from firestore
+            let total = 0;
+            let docRef = db.collection("deposits");
+            docRef.get().then((querySnapshot) => {
+                querySnapshot.forEach(doc => {
+                    total += doc.data().amount;
+                });
+                resolve(total);
+            }).catch(err => {
+                reject(`Error getting deposits in getInSafeTotal ${err.message}`);
+            });
+        });
+    }
+
+
     // ------------------------------------------------------------------
     // Deposits:  Update (using transaction) : : HELPER FUNCTION
     // Puts the awaitingSettlement flag into deposits table on all docs
