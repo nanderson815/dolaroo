@@ -105,14 +105,8 @@ class Deposit extends React.Component {
             email: this.props.user.authUser.email,
             uid: this.props.user.authUser.uid,
             awaitingSettlement: false
-        });
-
-        db.collection('cash').doc('balance').update({
-            balance: this.state.cash + amount
-        });
-
-        db.collection('credit').doc('balance').update({
-            balance: this.state.credit + (.975 * amount)
+        }).catch(function (error) {
+            alert("Deposit Failed: ", error);
         });
     }
 

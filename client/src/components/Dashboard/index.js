@@ -9,6 +9,7 @@ import DepositByUser from "./Graphs/DepositByUser";
 import DepositByDay from "./Graphs/DepositByDay";
 import DepositByAll from "./Graphs/DepositByAll";
 import DepositByDenomination from "./Graphs/DepositByDenomination";
+import Util from "../Util/Util";
 
 import DepositDB from './Deposit/DepositDB';
 
@@ -42,6 +43,18 @@ class Home extends React.Component {
         DepositDB.get("depositsarchive")
             .then(res => this.setState({ depositsArchive: res }))
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+    }
+
+    componentWillUnmount() {
+        const db = Util.getFirestoreDB();
+
+        db.collection('cash').doc('balance').update({
+            balance: this.state.cash
+        });
+
+        db.collection('credit').doc('balance').update({
+            balance: this.state.credit
+        });
     }
 
     render() {
