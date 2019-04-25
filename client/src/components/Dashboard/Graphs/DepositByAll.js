@@ -162,5 +162,4 @@ class DepositByAll extends React.Component {
     }
 }
 
-
 export default withRouter(withAuthUserContext(DepositByAll));
