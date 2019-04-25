@@ -12,8 +12,6 @@ class DepositByAll extends React.Component {
     plotDeposits = () => {
         let combinedData = this.props.deposits.concat(this.props.depositsArchive);
         
-        console.log(combinedData);
-        
         let ones = combinedData.map(deposit => deposit.ones).reduce((total, currentValue) => total + currentValue, 0);
         let fives = combinedData.map(deposit => deposit.fives).reduce((total, currentValue) => total + currentValue, 0);
         let tens = combinedData.map(deposit => deposit.tens).reduce((total, currentValue) => total + currentValue, 0);
