@@ -15,13 +15,13 @@ import { CSVLink, CSVDownload } from "react-csv";
 
 const styles = theme => ({
     root: {
-      width: '100%',
+        width: '100%',
     },
     heading: {
-      fontSize: theme.typography.pxToRem(15),
-      fontWeight: theme.typography.fontWeightRegular,
+        fontSize: theme.typography.pxToRem(15),
+        fontWeight: theme.typography.fontWeightRegular,
     },
-});  
+});
 
 class DepositList extends React.Component {
     constructor(props) {
@@ -35,32 +35,43 @@ class DepositList extends React.Component {
 
     getDeposits = () => {
         // Get with security
+
+
+        DepositDB.get("depositsarchive")
+            .then(deposits => {
+                let archive = this.state.deposits.concat(deposits);
+                this.setState({deposits: archive})
+            });
+
         DepositDB.get("deposits")
-        .then(deposits => {
-            // const uid = deposits.uid;
-            // UserAPI.get(uid).then (user => {
-            //     if (user.displayName) {
-            //         deposit.displayName = docUser.data().displayName;
-            //     }
-            // }).catch (err => {
-            //     // push even if uid not found
-            //     deposits.push(deposit); 
-            // });
+            .then(deposits => {
+                // const uid = deposits.uid;
+                // UserAPI.get(uid).then (user => {
+                //     if (user.displayName) {
+                //         deposit.displayName = docUser.data().displayName;
+                //     }
+                // }).catch (err => {
+                //     // push even if uid not found
+                //     deposits.push(deposit); 
+                // });
 
-            let sortedByDate = deposits.sort((a, b) => {
-                return  (a.time < b.time) ? 1 : -1;
-            });
+                let allDeposits = this.state.deposits.concat(deposits);
+                
 
-            sortedByDate = sortedByDate.map(deposit => {
-                deposit.time = deposit.time.toDate();
-                return(deposit);
+                let sortedByDate = allDeposits.sort((a, b) => {
+                    return (a.time < b.time) ? 1 : -1;
+                });
+
+                sortedByDate = sortedByDate.map(deposit => {
+                    deposit.time = deposit.time.toDate();
+                    return (deposit);
+                });
+
+                this.setState({ deposits: sortedByDate });
+            })
+            .catch(err => {
+                console.error(err);
             });
-    
-            this.setState({ deposits: sortedByDate });
-        })
-        .catch(err => {
-            console.error(err); 
-        });        
     };
 
     // get all on mount
@@ -68,27 +79,28 @@ class DepositList extends React.Component {
         this.getDeposits();
     }
 
-    
+
 
     render() {
-        const {classes} = this.props;
+        const { classes } = this.props;
 
 
         // Some props take time to get ready so return null when uid not avaialble
         if (this.props.user.uid === null) {
             return null;
         }
-        
+
         if (this.props.user.authUser) {
             return (
                 <div className="container">
-                            <CSVLink 
-                            data={this.state.deposits}
-                            filename={'dollaroo-transactions.csv'}
-                            className='btn blue darken-4'
-                            target="_blank"
-                            >
-                            EXPORT TO CSV
+                <br></br>
+                    <CSVLink
+                        data={this.state.deposits}
+                        filename={'dollaroo-transactions.csv'}
+                        className='btn blue darken-4'
+                        target="_blank"
+                    >
+                        EXPORT TO CSV
                             </CSVLink>
                     <div className={classes.root}>
                         <div className="row">
@@ -97,23 +109,23 @@ class DepositList extends React.Component {
                             <h5 className="col s12 m2 offset-m3">Amount</h5>
                         </div>
                         {this.state.deposits.map((deposit) => {
-                        return(            
-                            <div key={deposit.id}>
-                                <DepositItem deposit={deposit}
-                                />
-                            </div>
-                        );
+                            return (
+                                <div key={deposit.id}>
+                                    <DepositItem deposit={deposit}
+                                    />
+                                </div>
+                            );
                         })}
                     </div>
                 </div>
             );
-        } else  {                
+        } else {
             return (
                 <Redirect to="/signin" />
-            );      
+            );
         }
     }
 }
 
-  
+
 export default withRouter(withAuthUserContext(withStyles(styles)(DepositList)));

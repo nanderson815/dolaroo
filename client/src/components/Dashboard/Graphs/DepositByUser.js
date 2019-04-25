@@ -41,11 +41,15 @@ class DepositByDay extends React.Component {
                 }]
         };
 
-        let combiedData = this.props.deposits.concat(this.props.depositsArchive);        
+        let combiedData = this.props.deposits.concat(this.props.depositsArchive);   
+        
+        console.log(combiedData);
 
         const filteredByUid = combiedData.filter((deposit) => {
             return deposit.uid === uid;
         });
+
+        console.log(filteredByUid);
 
         const sortedByDate = filteredByUid.sort((a, b) => {
             return (a.time > b.time) ? 1 : -1;
