@@ -44,9 +44,11 @@ class DepositByAll extends React.Component {
 
         let lines = [];
 
-        let grouped = _.map(_.groupBy(this.props.deposits, 'email'),
+        let grouped = _.mapObject(_.groupBy(this.props.deposits, 'email'),
             list => list.map(deposit => deposit));
 
+
+        console.log(grouped);
 
         for (let i in grouped){
             const sortedByDate = grouped[i].sort((a, b) => {
@@ -66,7 +68,7 @@ class DepositByAll extends React.Component {
                 line: { width: 2.5 },
                 type: 'scatter',
                 mode: 'lines+markers',
-                name: 'Deposits By User ' + i,
+                name: i,
                 x: times,
                 y: amounts,
             })
