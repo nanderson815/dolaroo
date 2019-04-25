@@ -62,15 +62,18 @@ class DepositByAll extends React.Component {
             const amounts = sortedByDate.map((deposit) => {
                 return (deposit.amount);
             });
-            
+
+            const formattedAmounts = amounts.map(amount => "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
             lines.push({
-                "hoverinfo": "y",
+                "hoverinfo": "text",
                 line: { width: 2.5 },
                 type: 'scatter',
                 mode: 'lines+markers',
                 name: i,
                 x: times,
                 y: amounts,
+                text: formattedAmounts
             })
         };
 
@@ -100,7 +103,17 @@ class DepositByAll extends React.Component {
                             rangeselector: selectorOptions,
                             rangeslider: { earliestDate, latestDate },
                         },
-                        showlegend: true
+                        showlegend: true,
+                        margin: {
+                            l: 50,
+                            r: 50,
+                            b: 10,
+                            t: 10,
+                        },
+                        yaxis: {
+                            tickprefix: "$",
+                            separatethousands: true
+                        }
                     }
                 }
                 useResizeHandler={true}
