@@ -61,28 +61,8 @@ class DepositByAll extends React.Component {
         let onlyUnique = (value, index, self) => {
             return self.indexOf(value) === index;
         }
-        groups = groups.filter(onlyUnique);
-
-
-        // let grouped = _.mapObject(_.groupBy(combiedData, 'email'),
-        //     list => list.map(deposit => deposit));
-
-
-        // for (let i in grouped) {
-        //     const sortedByDate = grouped[i].sort((a, b) => {
-        //         return (a.time > b.time) ? 1 : -1;
-        //     });
-
-        //     yData = sortedByDate.map((deposit) => {
-        //         return (deposit.time.toDate());
-        //     });
-
-        //     size = sortedByDate.map((deposit) => {
-        //         return (deposit.amount);
-        //     });
-
-        //     hover = size.map(amount => "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-        // };
+        let Ugroups = groups.filter(onlyUnique);
+        console.log(Ugroups);
 
 
 
@@ -100,17 +80,17 @@ class DepositByAll extends React.Component {
                             sizemode: "area",
                             sizeref: 1
                         },
-                        transforms: {
+                        transforms: [{
                             type: 'groupby',
                             groups: groups,
                             // styles: [
-                            //     { target: 'Asia', value: { marker: { color: 'red' } } },
-                            //     { target: 'Europe', value: { marker: { color: 'blue' } } },
-                            //     { target: 'Americas', value: { marker: { color: 'orange' } } },
-                            //     { target: 'Africa', value: { marker: { color: 'green' } } },
-                            //     { target: 'Oceania', value: { marker: { color: 'purple' } } }
+                            //     { target: "jj.harry2@gmail.com", value: { marker: { color: 'red' } } },
+                            //     { target: "paul.linck@gmail.com", value: { marker: { color: 'blue' } } },
+                            //     { target: "nanderson815@gmail.com", value: { marker: { color: 'orange' } } },
+                            //     { target: "georgiaonmydime@gmail.com", value: { marker: { color: 'green' } } },
+                            //     { target: "paul@linck.net", value: { marker: { color: 'purple' } } }
                             // ]
-                        }
+                        }]
                     }]}
                 layout={
                     {
@@ -123,7 +103,7 @@ class DepositByAll extends React.Component {
                         margin: {
                             l: 50,
                             r: 50,
-                            b: 10,
+                            b: 30,
                             t: 10,
                         },
                         // yaxis: {
