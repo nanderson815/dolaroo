@@ -14,8 +14,8 @@ class DepositByAll extends React.Component {
                 {
                     step: 'day',
                     stepmode: 'backward',
-                    count: 1,
-                    label: '1d'
+                    count: 7,
+                    label: '1w'
                 }, {
                     step: 'month',
                     stepmode: 'backward',
