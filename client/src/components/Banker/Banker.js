@@ -54,6 +54,15 @@ class Banker extends React.Component {
         });
     }
 
+    generateDepositTestData = () => {
+        // take money out of safe
+        DepositsArchiveDB.generateDepositsTestData().then(res => {
+            this.refreshTotals();
+        }).catch(err => {
+            console.error(`generateDepositTestData Error: ${err}`);
+        });
+    }
+
     fixDepositTable = () => {
         // take money out of safe
         DepositsArchiveDB.fixDepositTable().then(res => {
@@ -187,6 +196,7 @@ class Banker extends React.Component {
                             balance={this.state.balanceInSafe}
                             sendDepositsToBank={this.sendDepositsToBank}
                             reverseSafeDeposits={this.reverseSafeDeposits}
+                            generateDepositTestData={this.generateDepositTestData}
                          />
                         <AwaitingSettlement disabled={this.props.user.isBanker ? false : true}
                             balance={this.state.balanceAwaitingSettlement}

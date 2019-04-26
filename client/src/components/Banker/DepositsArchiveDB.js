@@ -426,5 +426,67 @@ class DepositsArchiveDB {
         }); // promise
     }
 
+    // -------------------------------------------------------------------------------------------------
+    // Deposits : generateDepositsTestData - this is used to generate test data for deposits
+    // THIS IS ATOMIC transaction so it all works or nothing does which is what we MUST have
+    static generateDepositsTestData = () => {
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+            const toCollection = "deposits";
+
+            // Create a reference to all deposits
+            let userRef = db.collection("users");
+
+            db.runTransaction((transaction) => {
+                return userRef.get().then((querySnapshot) => {
+                    querySnapshot.forEach(doc => {
+                        // Save 10 deposits per user current doc info changing settlement flag
+                        // only gen if user is banker, casier or admin
+                        if (doc.data().isAdmin)
+                        {
+                            for (let i = 0; i < 4; i++) {
+                                const ones = this.getRandomInt(10);
+                                const fives = this.getRandomInt(5);
+                                const tens = this.getRandomInt(4);
+                                const twenties = this.getRandomInt(3);
+                                const fifties = this.getRandomInt(3);
+                                const hundreds = this.getRandomInt(2);
+                                const amount = (ones*1 + fives*5 + tens*10 + twenties*20 + fifties*50 + hundreds*100);
+                                let randomDay = this.getRandomInt(10);
+                                let randomDate = new Date() - randomDay;
+                    
+                                const docCopy = {};
+                                docCopy.amount = amount;
+                                docCopy.email = doc.data().email;
+                                docCopy.ones = ones;
+                                docCopy.fives = fives;
+                                docCopy.tens = tens;
+                                docCopy.twenties = twenties;
+                                docCopy.fifties = fifties;
+                                docCopy.hundreds = hundreds;
+                                docCopy.time = new Date(randomDate);
+                                docCopy.uid = doc.id;
+                                docCopy.awaitingSettlement = false;
+                                docCopy.settled = false;
+
+                                // Add the deposit to collection
+                                let toRef = db.collection(toCollection).doc();
+                                transaction.set(toRef, docCopy);
+                            }
+                        }
+                    });
+                });
+            }).then(() => {
+                console.log("TestData Transaction successfully committed!");
+                resolve("OK");
+            }).catch((err) => {
+                console.error("Error in generateDepositsTestData : ", err);
+                reject(`Error in generateDepositsTestData: ${err}`);
+            });
+
+        }); // promise
+    }
+
+
 }
 export default DepositsArchiveDB;
