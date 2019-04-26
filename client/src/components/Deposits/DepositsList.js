@@ -6,6 +6,7 @@ import { Redirect } from 'react-router';
 import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
 import DepositItem from './DepositItem';
 import DepositDB from "../Dashboard/Deposit/DepositDB";
+import DepositsArchiveDB from "../Banker/DepositsArchiveDB";
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -37,37 +38,21 @@ class DepositList extends React.Component {
         // Get with security
 
 
-        DepositDB.get("depositsarchive")
+        DepositsArchiveDB.getWithUser()
             .then(deposits => {
-                let archive = this.state.deposits.concat(deposits);
-                this.setState({deposits: archive})
-            });
-
-        DepositDB.get("deposits")
-            .then(deposits => {
-                // const uid = deposits.uid;
-                // UserAPI.get(uid).then (user => {
-                //     if (user.displayName) {
-                //         deposit.displayName = docUser.data().displayName;
-                //     }
-                // }).catch (err => {
-                //     // push even if uid not found
-                //     deposits.push(deposit); 
-                // });
-
-                let allDeposits = this.state.deposits.concat(deposits);
-                
-
-                let sortedByDate = allDeposits.sort((a, b) => {
-                    return (a.time < b.time) ? 1 : -1;
+                return(deposits);
+            })
+            .then (archive => {
+                DepositDB.getWithUser()
+                .then(deposits => {
+                    let allDeposits = archive.concat(deposits);
+                    
+                    let sortedByDate = allDeposits.sort((a, b) => {
+                        return (a.time < b.time) ? 1 : -1;
+                    });
+        
+                    this.setState({ deposits: sortedByDate });
                 });
-
-                sortedByDate = sortedByDate.map(deposit => {
-                    deposit.time = deposit.time.toDate();
-                    return (deposit);
-                });
-
-                this.setState({ deposits: sortedByDate });
             })
             .catch(err => {
                 console.error(err);

@@ -4,6 +4,8 @@ import {withAuthUserContext} from '../Auth/Session/AuthUserContext';
 
 import moment from "moment";
 
+import Tooltip from '@material-ui/core/Tooltip';
+
 // New explansion panels
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -22,19 +24,39 @@ const SimpleExpansionPanel = (props) => {
         fifties,
         hundreds,
         time,
-        email
+        email,
+        firstName,
+        lastName,
+        awaitingSettlement,
+        settled
     } = props.deposit;
     let jsDate = new Date(time);
     const dateTime = moment(jsDate).format("YYYY-MM-DD HH:mm:ss");
+
+    let depositState = "";
+    let depositIcon = "";
+    if (!!settled) {
+        depositState = "Settled";
+        depositIcon = "done_all";
+    } else if (awaitingSettlement) {
+        depositState = "Awaiting Settledment";
+        depositIcon = "mail_outline";
+    } else {
+        depositState = "In Safe";
+        depositIcon = "lock";
+    }
     
     return (
         <ExpansionPanel>
             <ExpansionPanelSummary className="row" expandIcon={< ExpandMoreIcon />}>
-                <i className="material-icons green-text col s1 m1">attach_money</i>
+                <Tooltip title={depositState}>
+                    <i className="material-icons green-text col s1 m1">{depositIcon}</i>
+                </Tooltip>
+
                 <Typography className="col s5 m3">{dateTime}</Typography>
-                <Typography className="col s6 m3">{email}</Typography>
+                <Typography className="col s6 m4">{`${firstName} ${lastName} (${email})`}</Typography>
                 <Typography 
-                    className="col s12 m2 offset-m3">
+                    className="col s12 m2 offset-m2">
                     ${amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 </Typography>
             </ExpansionPanelSummary>

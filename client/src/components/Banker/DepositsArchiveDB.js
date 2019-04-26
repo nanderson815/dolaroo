@@ -50,6 +50,41 @@ class DepositsArchiveDB {
             });
         });
     }
+    // ------------------------------------------------------------
+    // DepositsArchive : get all deposits awaiting settlment  with user info
+    // get all depositsarchive that are awaiting settlment
+    // This isnt SUPER effecient since it gets all users even if they havent made deposit
+    static getAwaitingSettlementWithUser = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+            let users = {} ;
+            let depositArray = [];
+            db.collection('users').get().then((results) => {
+                results.forEach((doc) => {
+                    users[doc.id] = doc.data();
+                });
+                const depRef = db.collection('depositsarchive').where("awaitingSettlement", "==", true);
+                depRef.get().then((docSnaps) => {
+                    docSnaps.forEach((doc) => {
+                        const deposit = doc.data();
+                        deposit.id = doc.id;
+                        deposit.time = deposit.time.toDate();
+                        deposit.firstName = users[doc.data().uid].firstName;
+                        deposit.lastName = users[doc.data().uid].lastName;
+                        depositArray.push(deposit);
+                    });
+                    resolve(depositArray);
+                }).catch((err) => {
+                    console.error("Error in getSettledDepositsWithUser deposits: ", err);
+                    reject(`Error in getSettledDepositsWithUser deposits: ${err}`);
+                });
+            }).catch((err) => {
+                console.error("Error in getSettledDepositsWithUser user : ", err);
+                reject(`Error in getSettledDepositsWithUser user: ${err}`);
+            });
+        }); // promise
+    }// method
 
     // ------------------------------------------------------------
     // DepositsArchive : get total of all deposits awaiting settlement
@@ -97,6 +132,43 @@ class DepositsArchiveDB {
             });
         });
     }
+
+    // ------------------------------------------------------------
+    // DepositsArchive : get all settled deposits with user info
+    // get all depositsarchive that are settled
+    // This isnt SUPER effecient since it gets all users even if they havent made deposit
+    static getSettledDepositsWithUser = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+            let users = {} ;
+            let depositArray = [];
+            db.collection('users').get().then((results) => {
+                results.forEach((doc) => {
+                    users[doc.id] = doc.data();
+                });
+                const depRef = db.collection('depositsarchive').where("settled", "==", true);
+                depRef.get().then((docSnaps) => {
+                    docSnaps.forEach((doc) => {
+                        const deposit = doc.data();
+                        deposit.id = doc.id;
+                        deposit.time = deposit.time.toDate();
+                        deposit.settledDateTime = deposit.settledDateTime.toDate();
+                        deposit.firstName = users[doc.data().uid].firstName;
+                        deposit.lastName = users[doc.data().uid].lastName;
+                        depositArray.push(deposit);
+                    });
+                    resolve(depositArray);
+                }).catch((err) => {
+                    console.error("Error in getSettledDepositsWithUser deposits: ", err);
+                    reject(`Error in getSettledDepositsWithUser deposits: ${err}`);
+                });
+            }).catch((err) => {
+                console.error("Error in getSettledDepositsWithUser user : ", err);
+                reject(`Error in getSettledDepositsWithUser user: ${err}`);
+            });
+        }); // promise
+    }// method
 
     // ------------------------------------------------------------
     // DepositsArchive : get the total of all settled deposits
@@ -487,6 +559,9 @@ class DepositsArchiveDB {
         }); // promise
     }
 
+    // -------------------------------------------------------------------------------------------------
+    // DepositsArchive : getWithUser - get all depoists with their firstName lastName
+    // This isnt SUPER effecient since it gets all users even if they havent made deposit
     static getWithUser = () => {
         // its a promise so return
         return new Promise((resolve, reject) => {
@@ -497,8 +572,8 @@ class DepositsArchiveDB {
                 results.forEach((doc) => {
                     users[doc.id] = doc.data();
                 });
-                const deposits = db.collection('deposits').orderBy('time', 'desc');
-                deposits.get().then((docSnaps) => {
+                const depRef = db.collection('depositsarchive').orderBy('time', 'desc');
+                depRef.get().then((docSnaps) => {
                     docSnaps.forEach((doc) => {
                         const deposit = doc.data();
                         deposit.id = doc.id;
@@ -518,7 +593,6 @@ class DepositsArchiveDB {
             });
         }); // promise
     }// method
-
 
 }
 export default DepositsArchiveDB;

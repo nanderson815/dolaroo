@@ -106,7 +106,7 @@ class Banker extends React.Component {
   
     getAwaitingSettlement = () => {
         // take money out of safe
-        DepositsArchiveDB.getAwaitingSettlement().then(depositsArray => {
+        DepositsArchiveDB.getAwaitingSettlementWithUser().then(depositsArray => {
             this.setState({
                 showProspects: false,
                 showDeposits: true,
@@ -137,7 +137,7 @@ class Banker extends React.Component {
   
     getSettledDeposits = () => {
         // take money out of safe
-        DepositsArchiveDB.getSettledDeposits().then(depositsArray => {
+        DepositsArchiveDB.getSettledDepositsWithUser().then(depositsArray => {
             this.setState({
                 showProspects: false,
                 showDeposits: true,
