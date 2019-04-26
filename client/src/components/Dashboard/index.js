@@ -8,6 +8,7 @@ import { Redirect } from 'react-router';
 import DepositByUser from "./Graphs/DepositByUser";
 import DepositByDay from "./Graphs/DepositByDay";
 import DepositByAll from "./Graphs/DepositByAll";
+import DepositBubble from "./Graphs/DepositBubble";
 import DepositByDenomination from "./Graphs/DepositByDenomination";
 import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 
@@ -81,6 +82,12 @@ class Home extends React.Component {
                                 />}
 
                             <DepositByAll
+                                title={"All Deposits"}
+                                deposits={this.state.deposits}
+                                depositsArchive={this.state.depositsArchive}
+                            />
+
+                            <DepositBubble
                                 title={"All Deposits"}
                                 deposits={this.state.deposits}
                                 depositsArchive={this.state.depositsArchive}

@@ -2,11 +2,12 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
+import _ from "underscore";
 
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
-class ProvisionalCreditOverTime extends React.Component {
+class DepositByAll extends React.Component {
     plotDeposits = () => {
         const selectorOptions = {
             buttons: [
@@ -41,66 +42,94 @@ class ProvisionalCreditOverTime extends React.Component {
         };
 
 
-        let lines = [];
 
-        // console.log(archivedData);
+        let combiedData = this.props.deposits.concat(this.props.depositsArchive);
 
-        let combiedData = this.props.balance.filter(data => data.time);
+        let xData = combiedData.map(deposit => deposit.time.toDate());
 
-        
-        const sortedByDate = combiedData.sort((a, b) => {
-            return (a.time > b.time) ? 1 : -1;
+        let yData = combiedData.map(deposit => {
+            let bills = 0;
+            bills = deposit.ones + deposit.fives + deposit.tens + deposit.twenties + deposit.fifties + deposit.hundreds;
+            return bills;
         });
 
-        const times = sortedByDate.map((deposit) => {
-            return (deposit.time.toDate());
-        });
+        let size = combiedData.map(deposit => deposit.amount);
 
-        const balances = sortedByDate.map((deposit) => {
-            return (deposit.balance);
-        });
+        let hover = size.map(amount => "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 
-
-        const formattedAmounts = balances.map(balance => "$" + balance.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-
-        lines.push({
-            "hoverinfo": "text",
-            line: { width: 2.5 },
-            type: 'scatter',
-            mode: 'lines',
-            name: "Provisional Credit Over Time",
-            x: times,
-            y: balances,
-            text: formattedAmounts
-        });
+        let groups = combiedData.map(deposit => deposit.email);
+        let onlyUnique = (value, index, self) => {
+            return self.indexOf(value) === index;
+        }
+        groups = groups.filter(onlyUnique);
 
 
-        const earliestDate = times.length > 0 ? times[0] : new Date();
-        const latestDate = times.length > 0 ? times[times.length - 1] : new Date();
+        // let grouped = _.mapObject(_.groupBy(combiedData, 'email'),
+        //     list => list.map(deposit => deposit));
+
+
+        // for (let i in grouped) {
+        //     const sortedByDate = grouped[i].sort((a, b) => {
+        //         return (a.time > b.time) ? 1 : -1;
+        //     });
+
+        //     yData = sortedByDate.map((deposit) => {
+        //         return (deposit.time.toDate());
+        //     });
+
+        //     size = sortedByDate.map((deposit) => {
+        //         return (deposit.amount);
+        //     });
+
+        //     hover = size.map(amount => "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        // };
+
 
 
         return (
             <Plot
-                data={lines}
+                data={[
+                    {
+                        type: 'scatter',
+                        mode: 'markers',
+                        x: xData,
+                        y: yData,
+                        text: hover,
+                        marker: {
+                            size: size,
+                            sizemode: "area",
+                            sizeref: 1
+                        },
+                        transforms: {
+                            type: 'groupby',
+                            groups: groups,
+                            // styles: [
+                            //     { target: 'Asia', value: { marker: { color: 'red' } } },
+                            //     { target: 'Europe', value: { marker: { color: 'blue' } } },
+                            //     { target: 'Americas', value: { marker: { color: 'orange' } } },
+                            //     { target: 'Africa', value: { marker: { color: 'green' } } },
+                            //     { target: 'Oceania', value: { marker: { color: 'purple' } } }
+                            // ]
+                        }
+                    }]}
                 layout={
                     {
                         autosize: true,
                         xaxis: {
                             autorange: true,
-                            range: [earliestDate, latestDate],
                             rangeselector: selectorOptions,
-                            rangeslider: { earliestDate, latestDate },
                         },
+                        showlegend: true,
                         margin: {
                             l: 50,
                             r: 50,
                             b: 10,
                             t: 10,
                         },
-                        yaxis: {
-                            tickprefix: "$",
-                            separatethousands: true
-                        }
+                        // yaxis: {
+                        //     tickprefix: "$",
+                        //     separatethousands: true
+                        // }
                     }
                 }
                 useResizeHandler={true}
@@ -128,7 +157,7 @@ class ProvisionalCreditOverTime extends React.Component {
         if (this.props.user.authUser) {
             return (
                 <div>
-                    <div className="col s12 l6">
+                    <div className="col s12 l12">
                         <div className="card">
                             <div className="card-content pCard">
                                 <span className="card-title">{this.props.title ? this.props.title : 'DepositByAll'}</span>
@@ -151,4 +180,4 @@ class ProvisionalCreditOverTime extends React.Component {
     }
 }
 
-export default withRouter(withAuthUserContext(ProvisionalCreditOverTime));
+export default withRouter(withAuthUserContext(DepositByAll));
