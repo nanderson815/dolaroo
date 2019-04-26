@@ -89,7 +89,7 @@ class DepositDB {
 
             // then get from firestore
             let total = 0;
-            let docRef = db.collection("depositsarchive").where("awaitingSettlement", "==", false);
+            let docRef = db.collection("depositsarchive").where("awaitingSettlement", "==", true);
             docRef.get().then((querySnapshot) => {
                 querySnapshot.forEach(doc => {
                     total += doc.data().amount;
