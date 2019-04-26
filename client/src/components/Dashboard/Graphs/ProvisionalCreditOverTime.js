@@ -2,7 +2,6 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import _ from "underscore";
 
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
@@ -43,8 +42,6 @@ class ProvisionalCreditOverTime extends React.Component {
 
 
         let lines = [];
-
-        let archivedData = this.props.depositsArchive.filter(deposit => deposit.settled === false);
 
         // console.log(archivedData);
 
