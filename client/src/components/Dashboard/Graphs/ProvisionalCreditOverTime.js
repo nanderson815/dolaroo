@@ -13,8 +13,8 @@ class ProvisionalCreditOverTime extends React.Component {
                 {
                     step: 'day',
                     stepmode: 'backward',
-                    count: 1,
-                    label: '1d'
+                    count: 7,
+                    label: '1w'
                 }, {
                     step: 'month',
                     stepmode: 'backward',
@@ -45,7 +45,7 @@ class ProvisionalCreditOverTime extends React.Component {
 
         // console.log(archivedData);
 
-        let combiedData = this.props.deposits.concat(this.props.depositsArchive);
+        let combiedData = this.props.balance.filter(data => data.time);
 
         
         const sortedByDate = combiedData.sort((a, b) => {
@@ -56,12 +56,12 @@ class ProvisionalCreditOverTime extends React.Component {
             return (deposit.time.toDate());
         });
 
-        const amounts = sortedByDate.map((deposit) => {
-            return (deposit.amount);
+        const balances = sortedByDate.map((deposit) => {
+            return (deposit.balance);
         });
 
 
-        const formattedAmounts = amounts.map(amount => "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        const formattedAmounts = balances.map(balance => "$" + balance.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 
         lines.push({
             "hoverinfo": "text",
@@ -70,7 +70,7 @@ class ProvisionalCreditOverTime extends React.Component {
             mode: 'lines+markers',
             name: "Provisional Credit Over Time",
             x: times,
-            y: amounts,
+            y: balances,
             text: formattedAmounts
         });
 

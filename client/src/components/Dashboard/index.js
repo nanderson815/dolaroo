@@ -19,8 +19,8 @@ class Home extends React.Component {
         credit: 0,
         cash: 0,
         depositsArchive: [],
-        oldCash: 0,
-        oldCredit: 0
+        cashHistory: [],
+        creditHistory: []
     }
 
 
@@ -28,6 +28,14 @@ class Home extends React.Component {
 
         DepositDB.get("deposits")
             .then(res => this.setState({ deposits: res }))
+            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+
+        DepositDB.get("cash")
+            .then(res => this.setState({ cashHistory: res }))
+            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+
+        DepositDB.get("credit")
+            .then(res => this.setState({ creditHistory: res }))
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
 
         DepositDB.getInSafeTotal()
@@ -86,8 +94,7 @@ class Home extends React.Component {
 
                             <ProvisionalCreditOverTime
                                 title={"Provisional Credit Over Time"}
-                                deposits={this.state.deposits}
-                                depositsArchive={this.state.depositsArchive}
+                                balance={this.state.creditHistory}
                             />
 
 
