@@ -25,7 +25,7 @@ class DepositArchive extends React.Component {
     
     render() {
         // decontruct props
-        let { id, amount, time, email, awaitingSettlement, settled} =  this.props.depositInfo;
+        let { id, amount, time, email, awaitingSettlement, settled, firstName, lastName} =  this.props.depositInfo;
         //let {  } =  this.props;
 
         if (id === null ) {
@@ -38,6 +38,7 @@ class DepositArchive extends React.Component {
                     <div className="card-content">
                         <span className="card-title">Deposit: ${Util.formatMoney(amount, 0)}</span>
                         <p>{time.toString()}</p>
+                        {firstName ? <p>{firstName} {lastName ? lastName : null}</p> : null}
                         <p>{email}</p>
                         <p>Awaiting Settlement? {awaitingSettlement ? "true" : "false"}</p>
                         <p>Settled? {settled ? "true" : "false"}</p>

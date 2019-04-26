@@ -187,20 +187,23 @@ class Banker extends React.Component {
         this.refreshTotals();
     }
 
+    // test method to get all deposits with their user name (first and last)
     getWithUser = () => {
         // take money out of safe
         DepositsArchiveDB.getWithUser().then(deposits => {
-            console.log(deposits);
+            this.setState({
+                showProspects: false,
+                showDeposits: true,
+                depositsArchive: [...deposits]
+            });    
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
             this.setState({
                 message: `Error getting deposits ${err}`
             });
-
         });
     }
-
-    
+  
     render() {
         if (this.props.user && this.props.user.isBanker) {
             return ( 

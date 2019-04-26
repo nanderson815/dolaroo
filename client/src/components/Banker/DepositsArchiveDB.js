@@ -492,7 +492,6 @@ class DepositsArchiveDB {
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
             let users = {} ;
-            let loadedDeposits = {};
             let depositArray = [];
             db.collection('users').get().then((results) => {
                 results.forEach((doc) => {
@@ -501,17 +500,14 @@ class DepositsArchiveDB {
                 const deposits = db.collection('deposits').orderBy('time', 'desc');
                 deposits.get().then((docSnaps) => {
                     docSnaps.forEach((doc) => {
-                        loadedDeposits[doc.id] = doc.data();
-                        loadedDeposits[doc.id].firstName = users[doc.data().uid].firstName;
-                        loadedDeposits[doc.id].lastName = users[doc.data().uid].lastName;
-                    });
-                    // convert to array
-                    for (let key in loadedDeposits) {
-                        const deposit = loadedDeposits[key];
+                        const deposit = doc.data();
+                        deposit.id = doc.id;
+                        deposit.time = deposit.time.toDate();
+                        deposit.firstName = users[doc.data().uid].firstName;
+                        deposit.lastName = users[doc.data().uid].lastName;
                         depositArray.push(deposit);
-                    };
+                    });
                     resolve(depositArray);
-                    //resolve(loadedDeposits);
                 }).catch((err) => {
                     console.error("Error in getWithUser deposits: ", err);
                     reject(`Error in getWithUser deposits: ${err}`);
