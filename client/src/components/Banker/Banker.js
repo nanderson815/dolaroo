@@ -181,10 +181,25 @@ class Banker extends React.Component {
         this.getAwaitingTotal();
         this.getSettledTotal();
     }
+
     // Get totals
     componentDidMount() {
         this.refreshTotals();
     }
+
+    getWithUser = () => {
+        // take money out of safe
+        DepositsArchiveDB.getWithUser().then(deposits => {
+            console.log(deposits);
+        }).catch(err => {
+            console.error(`Error getting deposits ${err}`);
+            this.setState({
+                message: `Error getting deposits ${err}`
+            });
+
+        });
+    }
+
     
     render() {
         if (this.props.user && this.props.user.isBanker) {
@@ -215,6 +230,7 @@ class Banker extends React.Component {
                         <button className="btn center-align blue darken-4" onClick={this.fixDepositTable}>Fix Deposits Table</button>{" "}
                         */}
                         <br />
+                        <button className="btn center-align blue darken-4" onClick={this.getWithUser}>Get With User</button>{" "}
                         <button className="btn center-align blue darken-4" onClick={this.showProspects}>Display Prospects</button>{" "}
                     </div>
                     {this.state.showProspects ? <h5 className="center-align">Prospects</h5> : null}
