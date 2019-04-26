@@ -22,6 +22,42 @@ class DepositDB {
         });
     }
 
+    // -------------------------------------------------------------------------------------------------
+    // Deposits : getWithUser - get all depoists with their firstName lastName
+    // This isnt SUPER effecient since it gets all users even if they havent made deposit
+    static getWithUser = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+            let users = {} ;
+            let depositArray = [];
+            db.collection('users').get().then((results) => {
+                results.forEach((doc) => {
+                    users[doc.id] = doc.data();
+                });
+                const depRef = db.collection('deposits').orderBy('time', 'desc');
+                depRef.get().then((docSnaps) => {
+                    docSnaps.forEach((doc) => {
+                        const deposit = doc.data();
+                        deposit.id = doc.id;
+                        deposit.time = deposit.time.toDate();
+                        deposit.firstName = users[doc.data().uid].firstName;
+                        deposit.lastName = users[doc.data().uid].lastName;
+                        depositArray.push(deposit);
+                    });
+                    resolve(depositArray);
+                }).catch((err) => {
+                    console.error("Error in DepositDB.getWithUser deposits: ", err);
+                    reject(`Error in DepositDBgetWithUser deposits: ${err}`);
+                });
+            }).catch((err) => {
+                console.error("Error in DepositDB.getWithUser user : ", err);
+                reject(`Error in DepositDB.getWithUser user: ${err}`);
+            });
+        }); // promise
+    }// method
+
+
     // Get all deposits from firestore BY DATE
     // Join user
     static getByDate =  (collection) => {

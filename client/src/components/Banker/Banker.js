@@ -106,7 +106,7 @@ class Banker extends React.Component {
   
     getAwaitingSettlement = () => {
         // take money out of safe
-        DepositsArchiveDB.getAwaitingSettlement().then(depositsArray => {
+        DepositsArchiveDB.getAwaitingSettlementWithUser().then(depositsArray => {
             this.setState({
                 showProspects: false,
                 showDeposits: true,
@@ -137,7 +137,7 @@ class Banker extends React.Component {
   
     getSettledDeposits = () => {
         // take money out of safe
-        DepositsArchiveDB.getSettledDeposits().then(depositsArray => {
+        DepositsArchiveDB.getSettledDepositsWithUser().then(depositsArray => {
             this.setState({
                 showProspects: false,
                 showDeposits: true,
@@ -181,11 +181,29 @@ class Banker extends React.Component {
         this.getAwaitingTotal();
         this.getSettledTotal();
     }
+
     // Get totals
     componentDidMount() {
         this.refreshTotals();
     }
-    
+
+    // test method to get all deposits with their user name (first and last)
+    getWithUser = () => {
+        // take money out of safe
+        DepositsArchiveDB.getWithUser().then(deposits => {
+            this.setState({
+                showProspects: false,
+                showDeposits: true,
+                depositsArchive: [...deposits]
+            });    
+        }).catch(err => {
+            console.error(`Error getting deposits ${err}`);
+            this.setState({
+                message: `Error getting deposits ${err}`
+            });
+        });
+    }
+  
     render() {
         if (this.props.user && this.props.user.isBanker) {
             return ( 
@@ -215,6 +233,7 @@ class Banker extends React.Component {
                         <button className="btn center-align blue darken-4" onClick={this.fixDepositTable}>Fix Deposits Table</button>{" "}
                         */}
                         <br />
+                        <button className="btn center-align blue darken-4" onClick={this.getWithUser}>Get With User</button>{" "}
                         <button className="btn center-align blue darken-4" onClick={this.showProspects}>Display Prospects</button>{" "}
                     </div>
                     {this.state.showProspects ? <h5 className="center-align">Prospects</h5> : null}
