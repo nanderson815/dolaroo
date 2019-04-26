@@ -9,6 +9,7 @@ import DepositByUser from "./Graphs/DepositByUser";
 import DepositByDay from "./Graphs/DepositByDay";
 import DepositByAll from "./Graphs/DepositByAll";
 import DepositByDenomination from "./Graphs/DepositByDenomination";
+import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import Util from "../Util/Util";
 
 import DepositDB from './Deposit/DepositDB';
@@ -18,7 +19,9 @@ class Home extends React.Component {
         deposits: [],
         credit: 0,
         cash: 0,
-        depositsArchive: []
+        depositsArchive: [],
+        oldCash: 0,
+        oldCredit: 0
     }
 
 
@@ -45,17 +48,6 @@ class Home extends React.Component {
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
     }
 
-    componentWillUnmount() {
-        const db = Util.getFirestoreDB();
-
-        db.collection('cash').doc('balance').update({
-            balance: this.state.cash
-        });
-
-        db.collection('credit').doc('balance').update({
-            balance: this.state.credit
-        });
-    }
 
     render() {
         if (this.props.user.authUser) {
@@ -86,11 +78,20 @@ class Home extends React.Component {
                                 deposits={this.state.deposits}
                                 depositsArchive={this.state.depositsArchive}
                             />
+
                             <DepositByDenomination
                                 title={"Number of Bills By Denomination"}
                                 deposits={this.state.deposits}
                                 depositsArchive={this.state.depositsArchive}
                             />
+
+                            <ProvisionalCreditOverTime
+                                title={"Provisional Credit Over Time"}
+                                deposits={this.state.deposits}
+                                depositsArchive={this.state.depositsArchive}
+                            />
+
+
                         </div>
                     </div>
                 </div>

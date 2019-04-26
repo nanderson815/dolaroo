@@ -8,7 +8,6 @@ import { Redirect } from 'react-router';
 import NumberFormat from 'react-number-format';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
-// import { Timestamp } from '@google-cloud/firestore';
 
 
 const styles = theme => ({
@@ -66,17 +65,24 @@ class Deposit extends React.Component {
         DepositDB.get("deposits")
             .then(res => this.setState({ deposits: res }, () => this.calculate()))
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
-            
+
 
         let elem = document.querySelector(".modal");
         M.Modal.init(elem);
     }
 
     calculate = () => {
-        let cash = this.state.deposits.map(deposit => deposit.amount).reduce((total, currentValue) => total + currentValue, 0);
-        let credit = cash * .975;
+        DepositDB.getInSafeTotal()
+            .then(res => this.setState({
+                cash: res,
+                credit: res * .975
+            }));
 
-        this.setState({cash, credit});
+        DepositDB.getPendingTotal()
+            .then(res => this.setState({
+                // cash: this.state.cash + res,
+                credit: this.state.credit + (res * .975)
+            }));
     }
 
     handleChange = name => event => {
@@ -91,7 +97,7 @@ class Deposit extends React.Component {
     updateDatabase = () => {
         const db = Util.getFirestoreDB();
 
-        let amount =this.state.amount
+        let amount = this.state.amount
 
         db.collection('deposits').add({
             amount: amount,
@@ -108,6 +114,26 @@ class Deposit extends React.Component {
         }).catch(function (error) {
             alert("Deposit Failed: ", error);
         });
+
+        db.collection('credit').add({
+            balance: this.state.credit + amount * .975,
+            time: new Date(),
+            uid: this.props.user.authUser.uid
+        });
+
+        db.collection('credit').doc('balance').update({
+            balance: this.state.credit + amount * .975
+        });
+
+        db.collection('cash').add({
+            balance: this.state.cash + amount,
+            time: new Date(),
+            uid: this.props.user.authUser.uid
+        });
+
+        db.collection('cash').doc('balance').update({
+            balance: this.state.cash + amount
+        });
     }
 
 
@@ -117,8 +143,8 @@ class Deposit extends React.Component {
 
         const total = (this.state.ones) + (this.state.fives * 5) + (this.state.tens * 10) + (this.state.twenties * 20) + (this.state.fifties * 50) + (this.state.hundreds * 100);
 
-        this.setState({amount: total}, this.updateDatabase);
-        
+        this.setState({ amount: total }, this.updateDatabase);
+
     }
 
 
