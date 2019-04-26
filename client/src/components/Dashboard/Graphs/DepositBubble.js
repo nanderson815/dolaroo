@@ -75,6 +75,7 @@ class DepositByAll extends React.Component {
                         x: xData,
                         y: yData,
                         text: hover,
+                        "hoverinfo": "text",
                         marker: {
                             size: size,
                             sizemode: "area",
@@ -83,13 +84,6 @@ class DepositByAll extends React.Component {
                         transforms: [{
                             type: 'groupby',
                             groups: groups,
-                            // styles: [
-                            //     { target: "jj.harry2@gmail.com", value: { marker: { color: 'red' } } },
-                            //     { target: "paul.linck@gmail.com", value: { marker: { color: 'blue' } } },
-                            //     { target: "nanderson815@gmail.com", value: { marker: { color: 'orange' } } },
-                            //     { target: "georgiaonmydime@gmail.com", value: { marker: { color: 'green' } } },
-                            //     { target: "paul@linck.net", value: { marker: { color: 'purple' } } }
-                            // ]
                         }]
                     }]}
                 layout={

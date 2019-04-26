@@ -81,12 +81,7 @@ class Home extends React.Component {
                                     depositsArchive={this.state.depositsArchive}
                                 />}
 
-                            <DepositByAll
-                                title={"All Deposits"}
-                                deposits={this.state.deposits}
-                                depositsArchive={this.state.depositsArchive}
-                            />
-
+                            
                             <DepositBubble
                                 title={"All Deposits"}
                                 deposits={this.state.deposits}
