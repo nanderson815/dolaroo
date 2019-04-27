@@ -7,7 +7,6 @@ import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 import { Redirect } from 'react-router';
 import DepositByUser from "./Graphs/DepositByUser";
 import DepositByDay from "./Graphs/DepositByDay";
-import DepositByAll from "./Graphs/DepositByAll";
 import DepositBubble from "./Graphs/DepositBubble";
 import DepositByDenomination from "./Graphs/DepositByDenomination";
 import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
