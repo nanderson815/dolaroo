@@ -8,15 +8,11 @@ import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
 class DepositByAll extends React.Component {
 
-    alertData = (data) => {
-        // var pts = '';
-        // for (var i = 0; i & lt; data.points.length; i++) {
-        //     pts = 'x = ' + data.points[i].x + '\ny = ' +
-        //         data.points[i].y.toPrecision(4) + '\n\n';
-        // }
-        // alert('Closest point clicked:\n\n' + pts);
-        console.log(data);
+    state = {
+        clickedAmount: 0,
+        clickedDate: 0
     }
+
 
     plotDeposits = () => {
         const selectorOptions = {
@@ -68,13 +64,6 @@ class DepositByAll extends React.Component {
         let hover = size.map(amount => "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 
         let groups = combiedData.map(deposit => deposit.email);
-        let onlyUnique = (value, index, self) => {
-            return self.indexOf(value) === index;
-        }
-        let Ugroups = groups.filter(onlyUnique);
-        console.log(Ugroups);
-
-
 
         return (
             <Plot
@@ -119,10 +108,10 @@ class DepositByAll extends React.Component {
                 useResizeHandler={true}
                 style={{ width: "100%", height: "100%" }}
                 config={{ displayModeBar: false }}
-                onClick={('plotly_click', function (data) {
-                    console.log(data);
-                    var pts = 'Amount: ' + data.points[0].text + '\nDate: ' + data.points[0].x
-                    alert('Closest point clicked:\n\n' + pts);
+                onClick={('plotly_click', (data) => {
+
+                    this.setState({ clickedAmount: data.points[0].text, clickedDate: data.points[0].x });
+
                 })}
             />
         );
