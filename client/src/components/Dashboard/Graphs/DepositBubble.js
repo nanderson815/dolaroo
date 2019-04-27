@@ -2,6 +2,7 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
+import DepositModal from './DepositModal';
 
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
@@ -10,7 +11,8 @@ class DepositByAll extends React.Component {
 
     state = {
         clickedAmount: 0,
-        clickedDate: 0
+        clickedDate: 0,
+        open: false
     }
 
 
@@ -66,54 +68,61 @@ class DepositByAll extends React.Component {
         let groups = combiedData.map(deposit => deposit.email);
 
         return (
-            <Plot
-                data={[
-                    {
-                        type: 'scatter',
-                        mode: 'markers',
-                        x: xData,
-                        y: yData,
-                        text: hover,
-                        "hoverinfo": "text",
-                        marker: {
-                            size: size,
-                            sizemode: "area",
-                            sizeref: .7
-                        },
-                        transforms: [{
-                            type: 'groupby',
-                            groups: groups,
-                        }]
-                    }]}
-                layout={
-                    {
-                        autosize: true,
-                        xaxis: {
-                            autorange: true,
-                            rangeselector: selectorOptions,
-                        },
-                        showlegend: true,
-                        margin: {
-                            l: 50,
-                            r: 50,
-                            b: 30,
-                            t: 10,
-                        },
-                        // yaxis: {
-                        //     tickprefix: "$",
-                        //     separatethousands: true
-                        // }
+            <div>
+                <DepositModal open={this.state.open} />
+                <Plot
+                    data={[
+                        {
+                            type: 'scatter',
+                            mode: 'markers',
+                            x: xData,
+                            y: yData,
+                            text: hover,
+                            "hoverinfo": "text",
+                            marker: {
+                                size: size,
+                                sizemode: "area",
+                                sizeref: .7
+                            },
+                            transforms: [{
+                                type: 'groupby',
+                                groups: groups,
+                            }]
+                        }]}
+                    layout={
+                        {
+                            autosize: true,
+                            xaxis: {
+                                autorange: true,
+                                rangeselector: selectorOptions,
+                            },
+                            showlegend: true,
+                            margin: {
+                                l: 50,
+                                r: 50,
+                                b: 30,
+                                t: 10,
+                            },
+                            // yaxis: {
+                            //     tickprefix: "$",
+                            //     separatethousands: true
+                            // }
+                        }
                     }
-                }
-                useResizeHandler={true}
-                style={{ width: "100%", height: "100%" }}
-                config={{ displayModeBar: false }}
-                onClick={('plotly_click', (data) => {
+                    useResizeHandler={true}
+                    style={{ width: "100%", height: "100%" }}
+                    config={{ displayModeBar: false }}
+                    onClick={('plotly_click', (data) => {
 
-                    this.setState({ clickedAmount: data.points[0].text, clickedDate: data.points[0].x });
+                        this.setState({
+                            clickedAmount: data.points[0].text,
+                            clickedDate: data.points[0].x,
+                            open: true
+                        });
 
-                })}
-            />
+                    })}
+                />
+            </div>
         );
     }
 
