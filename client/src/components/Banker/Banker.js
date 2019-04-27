@@ -136,8 +136,7 @@ class Banker extends React.Component {
     }
   
     getSettledDeposits = () => {
-        // take money out of safe
-        DepositsArchiveDB.getSettledDepositsWithUser().then(depositsArray => {
+        DepositsArchiveDB.getSettledDeposits().then(depositsArray => {
             this.setState({
                 showProspects: false,
                 showDeposits: true,
@@ -233,7 +232,9 @@ class Banker extends React.Component {
                         <button className="btn center-align blue darken-4" onClick={this.fixDepositTable}>Fix Deposits Table</button>{" "}
                         */}
                         <br />
+                        {/*}
                         <button className="btn center-align blue darken-4" onClick={this.getWithUser}>Get With User</button>{" "}
+                        */}
                         <button className="btn center-align blue darken-4" onClick={this.showProspects}>Display Prospects</button>{" "}
                     </div>
                     {this.state.showProspects ? <h5 className="center-align">Prospects</h5> : null}

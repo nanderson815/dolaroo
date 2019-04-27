@@ -57,6 +57,51 @@ class DepositDB {
         }); // promise
     }// method
 
+    // -------------------------------------------------------------------------------------------------
+    // Deposits : getWithUser - get all depoists with their firstName lastName
+    // This is alternate method that uses promise.all
+    static getWithUserAlt = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            // then get from firestore
+            let depositsArchive = [];
+            let docRef = db.collection("deposits").orderBy('time', 'desc');
+            docRef.get().then((querySnapshot) => {
+                const userQueries = [];
+                querySnapshot.forEach(doc => {
+                    let deposit = doc.data();
+                    deposit.id = doc.id;
+                    deposit.time = deposit.time.toDate();
+                    // get the user ndoc.data().uid;
+                    const userRef = db.collection("users").doc(deposit.uid);
+                    const userQuery = userRef.get()
+                    .then ( user => {
+                        if (user.exists) {
+                            console.log(`Got user: ${user.data().firstName}`);
+                            deposit.firstName = user.data().firstName;
+                            deposit.lastName = user.data().lastName;
+                            deposit.email = user.data().email;
+                        }
+                    })
+                    .catch(err => console.error(`Error getWithUserAlt.userQuery: ${err}`))
+                    .finally(() => {
+                        depositsArchive.push(deposit);
+                    });
+                    userQueries.push(userQuery);
+                });
+                // This waits until ALL promises in the userQueries array are resolved
+                Promise.all(userQueries).then(() => {
+                    console.log('All userQueries Resolved');
+                    resolve(depositsArchive);
+                });
+            }).catch(err => {
+                reject(`Error depositsDB.getWithUserAlt ${err.message}`);
+            });
+        });
+    }
+
 
     // Get all deposits from firestore BY DATE
     // Join user

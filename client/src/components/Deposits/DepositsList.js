@@ -43,26 +43,26 @@ class DepositList extends React.Component {
         // Get with security
         this.setState({loadingFlag: true});
 
-        DepositsArchiveDB.getWithUser()
+        DepositsArchiveDB.getWithUserAlt()
             .then(deposits => {
                 return(deposits);
             })
             .then (archive => {
-                DepositDB.getWithUser()
+                DepositDB.getWithUserAlt()
                 .then(deposits => {
                     let allDeposits = archive.concat(deposits);
                     
                     let sortedByDate = allDeposits.sort((a, b) => {
                         return (a.time < b.time) ? 1 : -1;
                     });
-        
                     this.setState({ loadingFlag: false, deposits: sortedByDate });
                 });
             })
             .catch(err => {
-                this.setState({loadingFlag: false});
                 console.error(err);
+                this.setState({loadingFlag: false});
             });
+;
     };
 
     // get all on mount
@@ -99,7 +99,7 @@ class DepositList extends React.Component {
                             <h5 className="col s6 m3">User</h5>
                             <h5 className="col s12 m2 offset-m3">Amount</h5>
                         </div>
-                        {this.state.loadingFlag ? <CircularProgress className={classes.progress} /> : null }
+                        {this.state.loadingFlag ? <div> <CircularProgress className={classes.progress} /> <p>Loading ...</p> </div>: null }
                         {this.state.deposits.map((deposit) => {
                             return (
                                 <div key={deposit.id}>
