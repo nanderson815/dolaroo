@@ -2,7 +2,6 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import _ from "underscore";
 
 
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
@@ -79,7 +78,7 @@ class DepositByAll extends React.Component {
                         marker: {
                             size: size,
                             sizemode: "area",
-                            sizeref: 1
+                            sizeref: .7
                         },
                         transforms: [{
                             type: 'groupby',
