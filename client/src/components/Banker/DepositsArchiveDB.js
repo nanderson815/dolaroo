@@ -120,15 +120,33 @@ class DepositsArchiveDB {
             let depositsArchive = [];
             let docRef = db.collection("depositsarchive").where("settled", "==", true);
             docRef.get().then((querySnapshot) => {
+                const userQueries = [];
                 querySnapshot.forEach(doc => {
                     let deposit = doc.data();
                     deposit.id = doc.id;
                     deposit.time = deposit.time.toDate();
-                    depositsArchive.push(deposit);
+                    // get the user ndoc.data().uid;
+                    const userRef = db.collection("users").doc(deposit.uid);
+                    const userQuery = userRef.get()
+                    .then ( user => {
+                        if (user.exists) {
+                            deposit.firstName = user.data().firstName;
+                            deposit.lastName = user.data().lastName;
+                            deposit.email = user.data().email;
+                        }
+                    })
+                    .catch(err => console.error(`Error userQuery: ${err}`))
+                    .finally(() => {
+                        depositsArchive.push(deposit);
+                    });
+                    userQueries.push(userQuery);
                 });
-                resolve(depositsArchive);
+                // This waits until ALL promises in the userQueries array are resolved
+                Promise.all(userQueries).then(() => {
+                    resolve(depositsArchive);
+                });
             }).catch(err => {
-                reject(`Error getting depositsArchive in getSettledDeposits ${err.message}`);
+                reject(`Error depositsArchiveDB.getSettledDeposits ${err.message}`);
             });
         });
     }
@@ -593,6 +611,51 @@ class DepositsArchiveDB {
             });
         }); // promise
     }// method
+
+    // -------------------------------------------------------------------------------------------------
+    // DepositsArchive : getWithUser - get all depoists with their firstName lastName
+    // This isnt SUPER effecient since it gets all users even if they havent made deposit
+    // This is alternate method that uses promise.all
+    static getWithUserAlt = () => {
+        // its a promise so return
+        return new Promise((resolve, reject) => {
+            const db = Util.getFirestoreDB();
+
+            // then get from firestore
+            let depositsArchive = [];
+            let docRef = db.collection("depositsarchive").orderBy('time', 'desc');
+            docRef.get().then((querySnapshot) => {
+                const userQueries = [];
+                querySnapshot.forEach(doc => {
+                    let deposit = doc.data();
+                    deposit.id = doc.id;
+                    deposit.time = deposit.time.toDate();
+                    // get the user ndoc.data().uid;
+                    const userRef = db.collection("users").doc(deposit.uid);
+                    const userQuery = userRef.get()
+                    .then ( user => {
+                        if (user.exists) {
+                            deposit.firstName = user.data().firstName;
+                            deposit.lastName = user.data().lastName;
+                            deposit.email = user.data().email;
+                        }
+                    })
+                    .catch(err => console.error(`Error getWithUserAlt.userQuery: ${err}`))
+                    .finally(() => {
+                        depositsArchive.push(deposit);
+                    });
+                    userQueries.push(userQuery);
+                });
+                // This waits until ALL promises in the userQueries array are resolved
+                Promise.all(userQueries).then(() => {
+                    resolve(depositsArchive);
+                });
+            }).catch(err => {
+                reject(`Error depositsArchiveDB.getWithUserAlt ${err.message}`);
+            });
+        });
+    }
+
 
 }
 export default DepositsArchiveDB;

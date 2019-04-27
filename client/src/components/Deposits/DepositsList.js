@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Redirect } from 'react-router';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
@@ -22,6 +23,9 @@ const styles = theme => ({
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
     },
+    progress: {
+        margin: theme.spacing.unit * 2,
+    },    
 });
 
 class DepositList extends React.Component {
@@ -29,6 +33,7 @@ class DepositList extends React.Component {
         super(props);
 
         this.state = {
+            loadingFlag: false,
             deposits: [
             ]
         };
@@ -36,27 +41,28 @@ class DepositList extends React.Component {
 
     getDeposits = () => {
         // Get with security
+        this.setState({loadingFlag: true});
 
-
-        DepositsArchiveDB.getWithUser()
+        DepositsArchiveDB.getWithUserAlt()
             .then(deposits => {
                 return(deposits);
             })
             .then (archive => {
-                DepositDB.getWithUser()
+                DepositDB.getWithUserAlt()
                 .then(deposits => {
                     let allDeposits = archive.concat(deposits);
                     
                     let sortedByDate = allDeposits.sort((a, b) => {
                         return (a.time < b.time) ? 1 : -1;
                     });
-        
-                    this.setState({ deposits: sortedByDate });
+                    this.setState({ loadingFlag: false, deposits: sortedByDate });
                 });
             })
             .catch(err => {
                 console.error(err);
+                this.setState({loadingFlag: false});
             });
+;
     };
 
     // get all on mount
@@ -93,6 +99,7 @@ class DepositList extends React.Component {
                             <h5 className="col s6 m3">User</h5>
                             <h5 className="col s12 m2 offset-m3">Amount</h5>
                         </div>
+                        {this.state.loadingFlag ? <div> <CircularProgress className={classes.progress} /> <p>Loading ...</p> </div>: null }
                         {this.state.deposits.map((deposit) => {
                             return (
                                 <div key={deposit.id}>
