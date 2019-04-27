@@ -7,6 +7,17 @@ import { withRouter } from 'react-router-dom';
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
 class DepositByAll extends React.Component {
+
+    alertData = (data) => {
+        // var pts = '';
+        // for (var i = 0; i & lt; data.points.length; i++) {
+        //     pts = 'x = ' + data.points[i].x + '\ny = ' +
+        //         data.points[i].y.toPrecision(4) + '\n\n';
+        // }
+        // alert('Closest point clicked:\n\n' + pts);
+        console.log(data);
+    }
+
     plotDeposits = () => {
         const selectorOptions = {
             buttons: [
@@ -108,7 +119,11 @@ class DepositByAll extends React.Component {
                 useResizeHandler={true}
                 style={{ width: "100%", height: "100%" }}
                 config={{ displayModeBar: false }}
-
+                onClick={('plotly_click', function (data) {
+                    console.log(data);
+                    var pts = 'Amount: ' + data.points[0].text + '\nDate: ' + data.points[0].x
+                    alert('Closest point clicked:\n\n' + pts);
+                })}
             />
         );
     }
