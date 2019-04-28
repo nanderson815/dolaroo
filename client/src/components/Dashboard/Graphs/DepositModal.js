@@ -45,7 +45,7 @@ class DepositModal extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color="primary" autoFocus>
+                        <Button onClick={this.handleClose} className="waves-effect waves-light dash-btn blue darken-4 btn white-text" autoFocus>
                             Close
             </Button>
                     </DialogActions>
