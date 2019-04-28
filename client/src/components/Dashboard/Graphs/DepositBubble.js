@@ -69,7 +69,7 @@ class DepositByAll extends React.Component {
 
         return (
             <div>
-                <DepositModal open={this.state.open} />
+                <DepositModal open={this.state.open} amount={this.state.clickedAmount} date={this.state.clickedDate}/>
                 <Plot
                     data={[
                         {
