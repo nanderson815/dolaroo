@@ -1,4 +1,5 @@
 import React from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { withRouter } from 'react-router-dom';
 import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
@@ -31,17 +32,34 @@ class DepositArchive extends React.Component {
         if (id === null ) {
             return(null);
         }
+
+        let depositState = "";
+        let depositIcon = "";
+        if (!!settled) {
+            depositState = "Settled";
+            depositIcon = "done_all";
+        } else if (awaitingSettlement) {
+            depositState = "Awaiting Settlement";
+            depositIcon = "mail_outline";
+        } else {
+            depositState = "In Safe";
+            depositIcon = "lock";
+        }    
                 
         return ( 
             <div className="card horizontal">
                 <div className="card-stacked">
                     <div className="card-content">
-                        <span className="card-title">Deposit: ${Util.formatMoney(amount, 0)}</span>
+                        <span className="card-title">
+                            <Tooltip title={depositState}>
+                                <i className="material-icons green-text col s1 m1">{depositIcon}</i>
+                            </Tooltip>
+                            Deposit: ${Util.formatMoney(amount, 0)}
+                        </span>
                         <p>{time.toString()}</p>
                         {firstName ? <p>{firstName} {lastName ? lastName : null}</p> : null}
                         <p>{email}</p>
-                        <p>Awaiting Settlement? {awaitingSettlement ? "true" : "false"}</p>
-                        <p>Settled? {settled ? "true" : "false"}</p>
+                        <p>{depositState}</p>
                     </div>
                     <div className="card-action">
                         <div className="left-align">

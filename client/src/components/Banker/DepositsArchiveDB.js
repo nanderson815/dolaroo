@@ -2,31 +2,6 @@ import Util from "../Util/Util";
 
 class DepositsArchiveDB {
     // ------------------------------------------------------------
-    // DepositsArchive : Get ALL
-    // get all depositsarchive that are awaiting settlement
-    static getAll = () => {
-        // its a promise so return
-        return new Promise((resolve, reject) => {
-            const db = Util.getFirestoreDB();
-
-            // then get from firestore
-            let depositsArchive = [];
-            let docRef = db.collection("depositsarchive");
-            docRef.get().then((querySnapshot) => {
-                querySnapshot.forEach(doc => {
-                    let deposit = doc.data();
-                    deposit.id = doc.id;
-                    deposit.time = deposit.time.toDate();
-                    depositsArchive.push(deposit);
-                });
-                resolve(depositsArchive);
-            }).catch(err => {
-                reject(`Error getting depositsArchive in getAll ${err.message}`);
-            });
-        });
-    }
-
-    // ------------------------------------------------------------
     // DepositsArchive : get all awaiting settlement
     // get all depositsarchive that are awaiting settlement
     static getAwaitingSettlement = () => {
@@ -76,12 +51,12 @@ class DepositsArchiveDB {
                     });
                     resolve(depositArray);
                 }).catch((err) => {
-                    console.error("Error in getSettledDepositsWithUser deposits: ", err);
-                    reject(`Error in getSettledDepositsWithUser deposits: ${err}`);
+                    console.error("Error in getAwaitingSettlementWithUser deposits: ", err);
+                    reject(`Error in getAwaitingSettlementWithUser deposits: ${err}`);
                 });
             }).catch((err) => {
-                console.error("Error in getSettledDepositsWithUser user : ", err);
-                reject(`Error in getSettledDepositsWithUser user: ${err}`);
+                console.error("Error in getAwaitingSettlementWithUser user : ", err);
+                reject(`Error in getAwaitingSettlementWithUser user: ${err}`);
             });
         }); // promise
     }// method
@@ -90,11 +65,8 @@ class DepositsArchiveDB {
     // DepositsArchive : get total of all deposits awaiting settlement
     // get total all depositsarchive that are awaiting settlement
     static getAwaitingTotal = () => {
-        // its a promise so return
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
-
-            // then get from firestore
             let total = 0;
             let docRef = db.collection("depositsarchive").where("awaitingSettlement", "==", true);
             docRef.get().then((querySnapshot) => {
@@ -152,43 +124,6 @@ class DepositsArchiveDB {
     }
 
     // ------------------------------------------------------------
-    // DepositsArchive : get all settled deposits with user info
-    // get all depositsarchive that are settled
-    // This isnt SUPER effecient since it gets all users even if they havent made deposit
-    static getSettledDepositsWithUser = () => {
-        // its a promise so return
-        return new Promise((resolve, reject) => {
-            const db = Util.getFirestoreDB();
-            let users = {} ;
-            let depositArray = [];
-            db.collection('users').get().then((results) => {
-                results.forEach((doc) => {
-                    users[doc.id] = doc.data();
-                });
-                const depRef = db.collection('depositsarchive').where("settled", "==", true);
-                depRef.get().then((docSnaps) => {
-                    docSnaps.forEach((doc) => {
-                        const deposit = doc.data();
-                        deposit.id = doc.id;
-                        deposit.time = deposit.time.toDate();
-                        deposit.settledDateTime = deposit.settledDateTime.toDate();
-                        deposit.firstName = users[doc.data().uid].firstName;
-                        deposit.lastName = users[doc.data().uid].lastName;
-                        depositArray.push(deposit);
-                    });
-                    resolve(depositArray);
-                }).catch((err) => {
-                    console.error("Error in getSettledDepositsWithUser deposits: ", err);
-                    reject(`Error in getSettledDepositsWithUser deposits: ${err}`);
-                });
-            }).catch((err) => {
-                console.error("Error in getSettledDepositsWithUser user : ", err);
-                reject(`Error in getSettledDepositsWithUser user: ${err}`);
-            });
-        }); // promise
-    }// method
-
-    // ------------------------------------------------------------
     // DepositsArchive : get the total of all settled deposits
     // get all depositsarchive that are settled
     static getSettledTotal = () => {
@@ -210,27 +145,45 @@ class DepositsArchiveDB {
         });
     }
 
-    // -----------------------------------------------------------------------------------
-    // Deposits: get awaiting settlement
-    // There really should never be any of these - may use in cleanup type activities
-    static helperDepositsAwaiting = () => {
+    // ------------------------------------------------------------
+    // Deposits : get all deposits in the safe
+    // Join with user
+    static getInSafeDeposits = () => {
         // its a promise so return
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
 
             // then get from firestore
             let depositsArchive = [];
-            let docRef = db.collection("deposits").where("awaitingSettlement", "==", true);
+            let docRef = db.collection("deposits");
             docRef.get().then((querySnapshot) => {
+                const userQueries = [];
                 querySnapshot.forEach(doc => {
                     let deposit = doc.data();
                     deposit.id = doc.id;
                     deposit.time = deposit.time.toDate();
-                    depositsArchive.push(deposit);
+                    // get the user ndoc.data().uid;
+                    const userRef = db.collection("users").doc(deposit.uid);
+                    const userQuery = userRef.get()
+                    .then ( user => {
+                        if (user.exists) {
+                            deposit.firstName = user.data().firstName;
+                            deposit.lastName = user.data().lastName;
+                            deposit.email = user.data().email;
+                        }
+                    })
+                    .catch(err => console.error(`Error userQuery: ${err}`))
+                    .finally(() => {
+                        depositsArchive.push(deposit);
+                    });
+                    userQueries.push(userQuery);
                 });
-                resolve(depositsArchive);
+                // This waits until ALL promises in the userQueries array are resolved
+                Promise.all(userQueries).then(() => {
+                    resolve(depositsArchive);
+                });
             }).catch(err => {
-                reject(`Error getting deposits in helperDepositsAwaiting ${err.message}`);
+                reject(`Error depositsArchiveDB.getInSafeDeposits ${err.message}`);
             });
         });
     }
@@ -256,7 +209,6 @@ class DepositsArchiveDB {
             });
         });
     }
-
 
     // ------------------------------------------------------------------
     // Deposits:  Update (using transaction) : : HELPER FUNCTION
