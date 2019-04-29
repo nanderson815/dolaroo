@@ -51,7 +51,7 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 * [Live Google Cloud Platform Site](https://project3-noahpauljj-fintech2.appspot.com)
 * [GitHub for this](https://github.com/nanderson815/Project3/)
 * [Paul Portfolio](https://paullinck.com/)
-* [Noah Portfolio]
+* [Noah Portfolio](https://noahanderson.dev)
 * [JJ Portfolio]
 
 ## Technologies Used
