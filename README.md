@@ -8,8 +8,8 @@ Dollaroo is a cloud-based web and mobile application that imitates smart safe fu
 
 ## Team
 
-* [x] Noah Anderson
-* [x] Paul Linck
+* [x] Noah Anderson [Noah Portfolio](https://noahanderson.dev)
+* [x] Paul Linck [Paul Portfolio](https://paullinck.com/)
 * [x] JJ Harry
 
 ### The Problem
