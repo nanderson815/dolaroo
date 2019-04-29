@@ -16,7 +16,6 @@ class DepositModal extends React.Component {
         if (nextProps.open === true) {
             this.setState({ open: true });
         }
-        console.log(nextProps);
     }
 
     handleClickOpen = () => {
