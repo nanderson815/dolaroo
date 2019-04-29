@@ -70,13 +70,15 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 
 ## Screenshots
 
-![ss1 deposit](./images/s1-deposit.gif)
+![ss1 deposit](./images/s1-dashDepositAni.gif)
 
-![ss1 details](./images/s1-details.gif)
+![ss1 details](./images/s1-deposits.gif)
 
-![ss1 user](./images/s1-users.gif)
+![ss1 signin](./images/s1-signInResetPWAni.gif)
 
-![ss1 forget](./images/s1-signinforget.gif)
+![ss1 account](./images/s1-userAccountAni.gif)
+
+![ss2](./images/ss1.png)
 
 ![ss2](./images/ss2.png)
 
@@ -85,6 +87,8 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 ![ss4](./images/ss4.png)
 
 ![ss5](./images/ss5.png)
+
+![ss5](./images/ss6.png)
 
 ![ss7](./images/ss7.png)
 
