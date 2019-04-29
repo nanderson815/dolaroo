@@ -52,7 +52,7 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 * [GitHub for this](https://github.com/nanderson815/Project3/)
 * [Paul Portfolio](https://paullinck.com/)
 * [Noah Portfolio]
-* [JJ Portfolio]
+* [JJ Portfolio](https://jjisharry.github.io/portfolio/)
 
 ## Technologies Used
 
