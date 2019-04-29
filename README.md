@@ -10,7 +10,7 @@ Dollaroo is a cloud-based web and mobile application that imitates smart safe fu
 
 * [x] Noah Anderson [Noah Portfolio](https://noahanderson.dev)
 * [x] Paul Linck [Paul Portfolio](https://paullinck.com/)
-* [x] JJ Harry
+* [x] JJ Harry [JJ Portfolio](https://jjisharry.github.io/portfolio/)
 
 ### The Problem
 
@@ -52,7 +52,7 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 * [GitHub for this](https://github.com/nanderson815/Project3/)
 * [Paul Portfolio](https://paullinck.com/)
 * [Noah Portfolio](https://noahanderson.dev)
-* [JJ Portfolio]
+* [JJ Portfolio](https://jjisharry.github.io/portfolio/)
 
 ## Technologies Used
 
