@@ -228,7 +228,7 @@ class Banker extends React.Component {
                     </div>
                     {this.state.showProspects ? <h5 className="center-align">Prospects</h5> : null}
                     {this.state.showProspects ? <Prospects /> : null}
-                    {this.state.showDeposits ? <h5 className="center-align">Deposits Archive</h5> : null}
+                    {this.state.showDeposits ? <h5 className="center-align">Deposits</h5> : null}
                     {this.state.showDeposits ? <DepositsArchive depositsArchive={this.state.depositsArchive}/> : null}
                 </div>
             );
