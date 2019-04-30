@@ -85,9 +85,9 @@ class Banker extends React.Component {
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
             if (this._isMounted) {
-                this.setState({
-                    message: `Error getting deposits ${err}`
-                });
+                // this.setState({
+                //     message: `Error getting deposits ${err}`
+                // });
             }
         });
     }
@@ -102,9 +102,9 @@ class Banker extends React.Component {
         }).catch(err => {
             console.error(`Error getInSafeTotal ${err}`);
             if (this._isMounted) {
-                this.setState({
-                    message: `Error in getInSafeTotal ${err}`
-                });
+                // this.setState({
+                //     message: `Error in getInSafeTotal ${err}`
+                // });
             }
         });
     }
@@ -121,9 +121,9 @@ class Banker extends React.Component {
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
             if (this._isMounted) {
-                this.setState({
-                    message: `Error getting deposits ${err}`
-                });
+                // this.setState({
+                //     message: `Error getting deposits ${err}`
+                // });
             }
         });
     }
@@ -138,9 +138,9 @@ class Banker extends React.Component {
         }).catch(err => {
             console.error(`Error getAwaitingTotal ${err}`);
             if (this._isMounted) {
-                this.setState({
-                    message: `Error in getAwaitingTotal ${err}`
-                });
+                // this.setState({
+                //     message: `Error in getAwaitingTotal ${err}`
+                // });
             }
         });
     }
@@ -157,9 +157,9 @@ class Banker extends React.Component {
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
             if (this._isMounted) {
-                this.setState({
-                    message: `Error getting deposits ${err}`
-                });
+                // this.setState({
+                //     message: `Error getting deposits ${err}`
+                // });
             }
         });
     }
@@ -174,9 +174,9 @@ class Banker extends React.Component {
         }).catch(err => {
             console.error(`Error getAwaitingTotal ${err}`);
             if (this._isMounted) {
-                this.setState({
-                    message: `Error in getAwaitingTotal ${err}`
-                });
+                // this.setState({
+                //     message: `Error in getAwaitingTotal ${err}`
+                // });
             }
         });
     }
@@ -210,9 +210,9 @@ class Banker extends React.Component {
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
             if (this._isMounted) {
-                this.setState({
-                    message: `Error getting deposits ${err}`
-                });
+                // this.setState({
+                //     message: `Error getting deposits ${err}`
+                // });
             }
         });
     }
@@ -270,11 +270,13 @@ class Banker extends React.Component {
                     {this.state.showDeposits ? <DepositsArchive depositsArchive={this.state.depositsArchive}/> : null}
                 </div>
             );
-        } else if (this.props.user.authUser) {                
+        } 
+        else if (this.props.user.authUser) {                
             return (
                 <Redirect to="/dashboard" />
             );  
-        } else  {                
+        } 
+        else  {                
             return (
                 <Redirect to="/signin" />
             );      

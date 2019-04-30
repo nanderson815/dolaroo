@@ -9,6 +9,7 @@ import Util from '../Util/Util';
 class Prospects extends React.Component {
     constructor(props) {
         super(props);
+        this._isMounted = false;
 
         this.state = {
             prospects: [
@@ -21,7 +22,9 @@ class Prospects extends React.Component {
         // Get with security
         Util.apiGet("/api/prospect").then(results => {
             // console.log(`Prospects in refresh page: ${JSON.stringify(prospects, null, 2)}`);
-            this.setState({ prospects: results.data });
+            if (this._isMounted) {
+                this.setState({ prospects: results.data });
+            }
         }).catch(err => {
             console.error(err); 
         });        
@@ -29,8 +32,14 @@ class Prospects extends React.Component {
 
     // Scrape all the prospects on mount
     componentDidMount() {
+        this._isMounted = true;
         this.fetchProspects();
     }
+        // Cancel to avoid the react memory leak errir
+    componentWillUnmountMount() {
+        this._isMounted = false;
+    }
+    
 
     // Delete this prospect from MongoDB
     prospectDelete = (_id) => {
@@ -38,12 +47,15 @@ class Prospects extends React.Component {
         // dont let code execute yet, so wrap in false
         Util.apiPost(`/api/prospectDelete/${_id}`)
         .then(res => {
-            this.setState({message: `Deleted Prospect`});
-            console.log("Deleted prospect");
+            if (this._isMounted) {
+                this.setState({message: `Deleted Prospect`});
+            }
             this.fetchProspects();
         })
         .catch(err => {
-            this.setState({message: `Error Deleting Prospect: ${err}`});
+            if (this._isMounted) {
+                // this.setState({message: `Error Deleting Prospect: ${err}`});
+            }
             console.error(err); 
         });
     }

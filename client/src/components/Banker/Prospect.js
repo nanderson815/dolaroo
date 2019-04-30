@@ -12,23 +12,42 @@ import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 import Util from "../Util/Util";
 
 class Prospect extends React.Component {
+    constructor(props) {
+        super(props);
+        this._isMounted = false;
+    }
+
     // State used for Dialog box to confirm delete
     state = {
         openConfirmDelete: false,
     };
     
     handleClickOpen = () => {
-        this.setState({ openConfirmDelete: true });
+        if (this._isMounted) {
+            this.setState({ openConfirmDelete: true });
+        }
     };
 
     handleClose = () => {
-        this.setState({ openConfirmDelete: false });
+        if (this._isMounted) {
+            this.setState({ openConfirmDelete: false });
+        }
     };
 
     handleDelete= (_id) => {
-        this.setState({ openConfirmDelete: false });
         this.props.prospectDelete(_id);
+        if (this._isMounted) {
+            this.setState({ openConfirmDelete: false });
+        }
     };
+    
+    componentDidMount() {
+        this._isMounted = true;
+    }
+        // Cancel to avoid the react memory leak errir
+    componentWillUnmountMount() {
+        this._isMounted = false;
+    }
     
     render() {
         // decontruct props
