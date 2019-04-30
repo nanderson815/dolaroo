@@ -25,7 +25,7 @@ class Banker extends React.Component {
             };
     }
 
-    // takle money out of the safe and onto truck or walk to bank
+    // take money out of the safe and onto truck or walk to bank
     sendDepositsToBank = () => {
         // take money out of safe
         DepositsArchiveDB.sendDepositsToBank().then(res => {
@@ -35,9 +35,9 @@ class Banker extends React.Component {
         });
     }
 
-    // settle deposits transported to bank
+    // settle deposits transported to bank - i.e. put in customers
+    // account and clear all balanaces awaiting settlement
     settleDeposits = () => {
-        // take money out of safe
         DepositsArchiveDB.settleDeposits(this.props.user).then(settledAmount => {
             this.refreshTotals();
         }).catch(err => {
@@ -45,8 +45,8 @@ class Banker extends React.Component {
         });
     }
 
+    // used for testing to undo and start over
     reverseSafeDeposits = () => {
-        // take money out of safe
         DepositsArchiveDB.reverseAwaitingSettlement().then(res => {
             this.refreshTotals();
         }).catch(err => {
@@ -54,8 +54,8 @@ class Banker extends React.Component {
         });
     }
 
+    // generate depoists for testing
     generateDepositTestData = () => {
-        // take money out of safe
         DepositsArchiveDB.generateDepositsTestData().then(res => {
             this.refreshTotals();
         }).catch(err => {
@@ -63,8 +63,8 @@ class Banker extends React.Component {
         });
     }
 
+    // Repair database in testing
     fixDepositTable = () => {
-        // take money out of safe
         DepositsArchiveDB.fixDepositTable().then(res => {
             alert(res);
         }).catch(err => {
@@ -72,24 +72,8 @@ class Banker extends React.Component {
         });
     }
 
-    getInSafeTotal = () => {
-        // take money out of safe
-        DepositsArchiveDB.getInSafeTotal().then(total => {
-            this.setState({
-                balanceInSafe: total,
-            });    
-        }).catch(err => {
-            console.error(`Error getInSafeTotal ${err}`);
-            this.setState({
-                message: `Error in getInSafeTotal ${err}`
-            });
-
-        });
-    }
-
-    getAll = () => {
-        // take money out of safe
-        DepositsArchiveDB.getAll().then(depositsArray => {
+    getInSafeDeposits = () => {
+        DepositsArchiveDB.getInSafeDeposits().then(depositsArray => {
             this.setState({
                 showProspects: false,
                 showDeposits: true,
@@ -97,15 +81,26 @@ class Banker extends React.Component {
             });    
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
-            this.setState({
-                message: `Error getting deposits ${err}`
-            });
+            // this.setState({
+            //     message: `Error getting deposits ${err}`
+            // });
+        });
+    }
 
+    getInSafeTotal = () => {
+        DepositsArchiveDB.getInSafeTotal().then(total => {
+            this.setState({
+                balanceInSafe: total,
+            });    
+        }).catch(err => {
+            console.error(`Error getInSafeTotal ${err}`);
+            // this.setState({
+            //     message: `Error in getInSafeTotal ${err}`
+            // });
         });
     }
   
     getAwaitingSettlement = () => {
-        // take money out of safe
         DepositsArchiveDB.getAwaitingSettlementWithUser().then(depositsArray => {
             this.setState({
                 showProspects: false,
@@ -114,24 +109,22 @@ class Banker extends React.Component {
             });    
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
-            this.setState({
-                message: `Error getting deposits ${err}`
-            });
-
+            // this.setState({
+            //     message: `Error getting deposits ${err}`
+            // });
         });
     }
 
     getAwaitingTotal = () => {
-        // take money out of safe
         DepositsArchiveDB.getAwaitingTotal().then(total => {
             this.setState({
                 balanceAwaitingSettlement: total,
             });    
         }).catch(err => {
             console.error(`Error getAwaitingTotal ${err}`);
-            this.setState({
-                message: `Error in getAwaitingTotal ${err}`
-            });
+            // this.setState({
+            //     message: `Error in getAwaitingTotal ${err}`
+            // });
         });
     }
   
@@ -144,30 +137,26 @@ class Banker extends React.Component {
             });    
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
-            this.setState({
-                message: `Error getting deposits ${err}`
-            });
-
+            // this.setState({
+            //     message: `Error getting deposits ${err}`
+            // });
         });
     }
 
     getSettledTotal = () => {
-        // take money out of safe
         DepositsArchiveDB.getSettledTotal().then(total => {
             this.setState({
                 balanceSettledDeposits: total,
             });    
         }).catch(err => {
             console.error(`Error getAwaitingTotal ${err}`);
-            this.setState({
-                message: `Error in getAwaitingTotal ${err}`
-            });
-
+            // this.setState({
+            //     message: `Error in getAwaitingTotal ${err}`
+            // });
         });
     }
   
     showProspects = () => {
-        // take money out of safe
         this.setState({
             showProspects: true,
             showDeposits: false
@@ -181,14 +170,8 @@ class Banker extends React.Component {
         this.getSettledTotal();
     }
 
-    // Get totals
-    componentDidMount() {
-        this.refreshTotals();
-    }
-
     // test method to get all deposits with their user name (first and last)
     getWithUser = () => {
-        // take money out of safe
         DepositsArchiveDB.getWithUser().then(deposits => {
             this.setState({
                 showProspects: false,
@@ -203,6 +186,11 @@ class Banker extends React.Component {
         });
     }
   
+    // Get totals
+    componentDidMount() {
+        this.refreshTotals();
+    }
+
     render() {
         if (this.props.user && this.props.user.isBanker) {
             return ( 
@@ -212,6 +200,7 @@ class Banker extends React.Component {
                         <SafeDeposits disabled={this.props.user.isBanker ? false : true}
                             balance={this.state.balanceInSafe}
                             sendDepositsToBank={this.sendDepositsToBank}
+                            getInSafeDeposits={this.getInSafeDeposits}
                             reverseSafeDeposits={this.reverseSafeDeposits}
                             generateDepositTestData={this.generateDepositTestData}
                          />
@@ -239,7 +228,7 @@ class Banker extends React.Component {
                     </div>
                     {this.state.showProspects ? <h5 className="center-align">Prospects</h5> : null}
                     {this.state.showProspects ? <Prospects /> : null}
-                    {this.state.showDeposits ? <h5 className="center-align">Deposits Archive</h5> : null}
+                    {this.state.showDeposits ? <h5 className="center-align">Deposits</h5> : null}
                     {this.state.showDeposits ? <DepositsArchive depositsArchive={this.state.depositsArchive}/> : null}
                 </div>
             );

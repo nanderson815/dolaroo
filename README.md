@@ -8,9 +8,9 @@ Dollaroo is a cloud-based web and mobile application that imitates smart safe fu
 
 ## Team
 
-* [x] Noah Anderson
-* [x] Paul Linck
-* [x] JJ Harry
+* [x] Noah Anderson [Noah Portfolio](https://noahanderson.dev)
+* [x] Paul Linck [Paul Portfolio](https://paullinck.com/)
+* [x] JJ Harry [JJ Portfolio](https://jjisharry.github.io/portfolio/)
 
 ### The Problem
 
@@ -46,12 +46,15 @@ Store case in existing safe and deposit less frequently through method of choice
 
 This is deployed to **Google Cloud Platform**.  GCP provides several huge advantages especially as it relates to security and hiding keys and credentials.  When app is running in test mode, sensitive data is stored in hidden files on developers local machine. When depoloyed to google cloud platform, the services keys, credentials etc are automatically protected and accessed inside the google cloud platform App engine.
 
+NOTE: We also deployed to Herkou since GCP was charging fees given the services we are using.
+
 ## Links
 
 * [Live Google Cloud Platform Site](https://project3-noahpauljj-fintech2.appspot.com)
+* [Live HEROKU Link](https://project3-noahpauljj-fintech2.herokuapp.com)
 * [GitHub for this](https://github.com/nanderson815/Project3/)
 * [Paul Portfolio](https://paullinck.com/)
-* [Noah Portfolio]
+* [Noah Portfolio](https://noahanderson.dev)
 * [JJ Portfolio](https://jjisharry.github.io/portfolio/)
 
 ## Technologies Used
@@ -70,13 +73,15 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 
 ## Screenshots
 
-![ss1 deposit](./images/s1-deposit.gif)
+![ss1 deposit](./images/s1-dashDepositAni.gif)
 
-![ss1 details](./images/s1-details.gif)
+![ss1 details](./images/s1-deposits.gif)
 
-![ss1 user](./images/s1-users.gif)
+![ss1 signin](./images/s1-signInResetPWAni.gif)
 
-![ss1 forget](./images/s1-signinforget.gif)
+![ss1 account](./images/s1-userAccountAni.gif)
+
+![ss2](./images/ss1.png)
 
 ![ss2](./images/ss2.png)
 
@@ -85,6 +90,8 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 ![ss4](./images/ss4.png)
 
 ![ss5](./images/ss5.png)
+
+![ss5](./images/ss6.png)
 
 ![ss7](./images/ss7.png)
 

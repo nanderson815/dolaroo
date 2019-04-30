@@ -15,6 +15,9 @@ const SafeDeposits =(props) => {
                             <button onClick={props.sendDepositsToBank}
                                 className="safeDepositBtn waves-effect waves-light dash-btn blue darken-4 btn">Send Cash to Bank
                             </button>{" "}
+                            <button onClick={props.getInSafeDeposits}
+                                className="safeDepositBtn waves-effect waves-light dash-btn blue darken-4 btn">Details
+                            </button>{" "}
                             <button onClick={props.generateDepositTestData}
                                 className="safeDepositBtn waves-effect waves-light dash-btn blue darken-4 btn">Create Test Deposits
                             </button>{" "}
