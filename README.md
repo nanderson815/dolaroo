@@ -46,9 +46,12 @@ Store case in existing safe and deposit less frequently through method of choice
 
 This is deployed to **Google Cloud Platform**.  GCP provides several huge advantages especially as it relates to security and hiding keys and credentials.  When app is running in test mode, sensitive data is stored in hidden files on developers local machine. When depoloyed to google cloud platform, the services keys, credentials etc are automatically protected and accessed inside the google cloud platform App engine.
 
+NOTE: We also deployed to Herkou since GCP was charging fees given the services we are using.
+
 ## Links
 
 * [Live Google Cloud Platform Site](https://project3-noahpauljj-fintech2.appspot.com)
+* [Live HEROKU Link](https://project3-noahpauljj-fintech2.herokuapp.com)
 * [GitHub for this](https://github.com/nanderson815/Project3/)
 * [Paul Portfolio](https://paullinck.com/)
 * [Noah Portfolio](https://noahanderson.dev)
