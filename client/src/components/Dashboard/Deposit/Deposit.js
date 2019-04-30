@@ -60,10 +60,19 @@ class Deposit extends React.Component {
         hundreds: 0,
     }
 
+    componentWillUnmount() {
+        this._mounted = false;
+    }
+
     componentDidMount() {
+        this._mounted = true;
 
         DepositDB.get("deposits")
-            .then(res => this.setState({ deposits: res }, () => this.calculate()))
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({ deposits: res }, () => this.calculate())
+                }
+            })
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
 
 
@@ -73,16 +82,24 @@ class Deposit extends React.Component {
 
     calculate = () => {
         DepositDB.getInSafeTotal()
-            .then(res => this.setState({
-                cash: res,
-                credit: res * .975
-            }));
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({
+                        cash: res,
+                        credit: res * .975
+                    })
+                }
+            });
 
         DepositDB.getPendingTotal()
-            .then(res => this.setState({
-                // cash: this.state.cash + res,
-                credit: this.state.credit + (res * .975)
-            }));
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({
+                        // cash: this.state.cash + res,
+                        credit: this.state.credit + (res * .975)
+                    })
+                }
+            });
     }
 
     handleChange = name => event => {
