@@ -13,6 +13,7 @@ import DepositsArchiveDB from "./DepositsArchiveDB";
 class Banker extends React.Component {
     constructor(props) {
         super(props);
+        this._isMounted = false;
 
         this.state = {
             showProspects: true,
@@ -74,93 +75,119 @@ class Banker extends React.Component {
 
     getInSafeDeposits = () => {
         DepositsArchiveDB.getInSafeDeposits().then(depositsArray => {
-            this.setState({
-                showProspects: false,
-                showDeposits: true,
-                depositsArchive: [...depositsArray]
-            });    
+            if (this._isMounted) {
+                this.setState({
+                    showProspects: false,
+                    showDeposits: true,
+                    depositsArchive: [...depositsArray]
+                });    
+            }
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
-            // this.setState({
-            //     message: `Error getting deposits ${err}`
-            // });
+            if (this._isMounted) {
+                this.setState({
+                    message: `Error getting deposits ${err}`
+                });
+            }
         });
     }
 
     getInSafeTotal = () => {
         DepositsArchiveDB.getInSafeTotal().then(total => {
-            this.setState({
-                balanceInSafe: total,
-            });    
+            if (this._isMounted) {
+                this.setState({
+                    balanceInSafe: total,
+                }); 
+            }   
         }).catch(err => {
             console.error(`Error getInSafeTotal ${err}`);
-            // this.setState({
-            //     message: `Error in getInSafeTotal ${err}`
-            // });
+            if (this._isMounted) {
+                this.setState({
+                    message: `Error in getInSafeTotal ${err}`
+                });
+            }
         });
     }
   
     getAwaitingSettlement = () => {
         DepositsArchiveDB.getAwaitingSettlementWithUser().then(depositsArray => {
-            this.setState({
-                showProspects: false,
-                showDeposits: true,
-                depositsArchive: [...depositsArray]
-            });    
+            if (this._isMounted) {
+                this.setState({
+                    showProspects: false,
+                    showDeposits: true,
+                    depositsArchive: [...depositsArray]
+                });    
+            }
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
-            // this.setState({
-            //     message: `Error getting deposits ${err}`
-            // });
+            if (this._isMounted) {
+                this.setState({
+                    message: `Error getting deposits ${err}`
+                });
+            }
         });
     }
 
     getAwaitingTotal = () => {
         DepositsArchiveDB.getAwaitingTotal().then(total => {
-            this.setState({
-                balanceAwaitingSettlement: total,
-            });    
+            if (this._isMounted) {
+                this.setState({
+                    balanceAwaitingSettlement: total,
+                });    
+            }
         }).catch(err => {
             console.error(`Error getAwaitingTotal ${err}`);
-            // this.setState({
-            //     message: `Error in getAwaitingTotal ${err}`
-            // });
+            if (this._isMounted) {
+                this.setState({
+                    message: `Error in getAwaitingTotal ${err}`
+                });
+            }
         });
     }
   
     getSettledDeposits = () => {
         DepositsArchiveDB.getSettledDeposits().then(depositsArray => {
-            this.setState({
-                showProspects: false,
-                showDeposits: true,
-                depositsArchive: [...depositsArray]
-            });    
+            if (this._isMounted) {
+                this.setState({
+                    showProspects: false,
+                    showDeposits: true,
+                    depositsArchive: [...depositsArray]
+                }); 
+            }   
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
-            // this.setState({
-            //     message: `Error getting deposits ${err}`
-            // });
+            if (this._isMounted) {
+                this.setState({
+                    message: `Error getting deposits ${err}`
+                });
+            }
         });
     }
 
     getSettledTotal = () => {
         DepositsArchiveDB.getSettledTotal().then(total => {
-            this.setState({
-                balanceSettledDeposits: total,
-            });    
+            if (this._isMounted) {
+                this.setState({
+                    balanceSettledDeposits: total,
+                }); 
+            }   
         }).catch(err => {
             console.error(`Error getAwaitingTotal ${err}`);
-            // this.setState({
-            //     message: `Error in getAwaitingTotal ${err}`
-            // });
+            if (this._isMounted) {
+                this.setState({
+                    message: `Error in getAwaitingTotal ${err}`
+                });
+            }
         });
     }
   
     showProspects = () => {
-        this.setState({
-            showProspects: true,
-            showDeposits: false
-        });
+        if (this._isMounted) {
+            this.setState({
+                showProspects: true,
+                showDeposits: false
+            });
+        }
     }
 
     // refresh when totals change
@@ -173,22 +200,33 @@ class Banker extends React.Component {
     // test method to get all deposits with their user name (first and last)
     getWithUser = () => {
         DepositsArchiveDB.getWithUser().then(deposits => {
-            this.setState({
-                showProspects: false,
-                showDeposits: true,
-                depositsArchive: [...deposits]
-            });    
+            if (this._isMounted) {
+                this.setState({
+                    showProspects: false,
+                    showDeposits: true,
+                    depositsArchive: [...deposits]
+                });  
+            } 
         }).catch(err => {
             console.error(`Error getting deposits ${err}`);
-            this.setState({
-                message: `Error getting deposits ${err}`
-            });
+            if (this._isMounted) {
+                this.setState({
+                    message: `Error getting deposits ${err}`
+                });
+            }
         });
     }
   
     // Get totals
     componentDidMount() {
+        this._isMounted = true;
+
         this.refreshTotals();
+    }
+
+    // Cancel to avoid the react memory leak errir
+    componentWillUnmountMount() {
+        this._isMounted = false;
     }
 
     render() {
