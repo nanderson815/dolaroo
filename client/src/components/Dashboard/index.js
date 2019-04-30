@@ -25,34 +25,66 @@ class Home extends React.Component {
 
 
     componentDidMount() {
+        this._mounted = true;
 
         DepositDB.get("deposits")
-            .then(res => this.setState({ deposits: res }))
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({ deposits: res });
+                }
+            })
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
 
         DepositDB.get("cash")
-            .then(res => this.setState({ cashHistory: res }))
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({ cashHistory: res })
+                }
+            })
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
 
         DepositDB.get("credit")
-            .then(res => this.setState({ creditHistory: res }))
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({ creditHistory: res })
+                }
+            })
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
 
         DepositDB.getInSafeTotal()
-            .then(res => this.setState({
-                cash: res,
-                credit: res * .975
-            }));
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({
+                        cash: res,
+                        credit: res * .975
+                    })
+                }
+            })
+            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+
 
         DepositDB.getPendingTotal()
-            .then(res => this.setState({
-                // cash: this.state.cash + res,
-                credit: this.state.credit + (res * .975)
-            }));
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({
+                        credit: this.state.credit + (res * .975)
+                    })
+                }
+            })
+            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+
 
         DepositDB.get("depositsarchive")
-            .then(res => this.setState({ depositsArchive: res }))
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({ depositsArchive: res });
+                }
+            })
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+    }
+
+    componentWillUnmount() {
+        this._mounted = false;
     }
 
 
@@ -80,7 +112,7 @@ class Home extends React.Component {
                                     depositsArchive={this.state.depositsArchive}
                                 />}
 
-                            
+
                             <DepositBubble
                                 title={"All Deposits"}
                                 deposits={this.state.deposits}
