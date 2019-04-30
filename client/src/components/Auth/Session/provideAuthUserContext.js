@@ -79,6 +79,7 @@ const provideAuthUserContext = Component => {
         // This deletes listener to clean things up and prevent mem leaks
         componentWillUnmount() {
             this.listener();
+            console.log("unmounting");
         }
 
         // Remember - this provideAuthUserContext pattern automatically wraps a compoennt
