@@ -1,1 +1,1 @@
-git push project3-noahpauljj-fintech2 master
+git push -f project3-noahpauljj-fintech2 master:master
