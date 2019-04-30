@@ -1,6 +1,6 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
-import {withAuthUserContext} from '../Auth/Session/AuthUserContext';
+import { withRouter } from 'react-router-dom';
+import { withAuthUserContext } from '../Auth/Session/AuthUserContext';
 
 import moment from "moment";
 
@@ -45,7 +45,7 @@ const SimpleExpansionPanel = (props) => {
         depositState = "In Safe";
         depositIcon = "lock";
     }
-    
+
     return (
         <ExpansionPanel>
             <ExpansionPanelSummary className="row" expandIcon={< ExpandMoreIcon />}>
@@ -55,16 +55,14 @@ const SimpleExpansionPanel = (props) => {
 
                 <Typography className="col s5 m3">{dateTime}</Typography>
                 <Typography className="col s6 m4">{`${firstName} ${lastName} (${email})`}</Typography>
-                <Typography 
+                <Typography
                     className="col s12 m2 offset-m2">
                     ${amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <Typography className="row grey-text">
-                    <blockquote>
-                        Ones: ${ones * 1}, Fives: ${fives * 5}, Tens: ${tens * 10}, Twentys: ${twenties * 20}, Fifties: ${fifties * 50}, Hundreds: ${hundreds * 100}
-                    </blockquote>
+                    Ones: ${ones * 1}, Fives: ${fives * 5}, Tens: ${tens * 10}, Twentys: ${twenties * 20}, Fifties: ${fifties * 50}, Hundreds: ${hundreds * 100}
                 </Typography>
             </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -94,9 +92,9 @@ const materialCollection = (props) => {
                 <div className="col s6 m3">{dateTime}</div>
                 <div className="col s6 m3">{email}</div>
                 <div className="col s12 m3 offset-m3">${amount
-                        .toFixed(2)
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                    .toFixed(2)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
             </h5>
             <div className="row grey-text">
                 <blockquote>Ones: ${ones * 1}, Fives: ${fives * 5}, Tens: ${tens * 10}, Twentys: ${twenties * 20}, Fifties: ${fifties * 50}, Hundreds: ${hundreds * 100}
@@ -114,7 +112,7 @@ const DepositItem = (props) => {
         return (
             materialCollection(props)
         );
-    }    
+    }
 
     return (
         SimpleExpansionPanel(props)
