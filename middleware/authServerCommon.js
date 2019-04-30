@@ -20,7 +20,7 @@ if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
     });
 } else if (process.env.HEROKU_GOOGLE_CREDENTIALS) {
     console.log("Deployed HEROKU_GOOGLE_CREDENTIALS");
-    const serviceAccount = process.env.HEROKU_GOOGLE_CREDENTIALS;
+    const serviceAccount = JSON.parse(process.env.HEROKU_GOOGLE_CREDENTIALS);
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         databaseURL: databaseURL,
