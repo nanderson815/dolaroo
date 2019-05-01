@@ -11,6 +11,7 @@ import DepositBubble from "./Graphs/DepositBubble";
 import DepositByDenomination from "./Graphs/DepositByDenomination";
 import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 
 
 import DepositDB from './Deposit/DepositDB';
@@ -29,7 +30,7 @@ class Home extends React.Component {
 
     componentDidMount() {
         this._mounted = true;
-        this.setState({loadingFlag: true})
+        this.setState({ loadingFlag: true })
 
         DepositDB.get("deposits")
             .then(res => {
@@ -81,9 +82,9 @@ class Home extends React.Component {
         DepositDB.get("depositsarchive")
             .then(res => {
                 if (this._mounted) {
-                    this.setState({ depositsArchive: res });
+                    this.setState({ depositsArchive: res, loadingFlag: false });
                 }
-            }).then(this.setState({ loadingFlag: false }))
+            })
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
     }
 
@@ -96,48 +97,53 @@ class Home extends React.Component {
         if (this.props.user.authUser) {
             return (
                 <div>
-                    {this.state.loadingFlag ? <div> <CircularProgress /> <p>Loading ...</p> </div> : null}
-                    <div className="container">
-                        <div className="row">
-                            <ProvisionalCredit credit={this.state.credit} />
-                            <Balance balance={this.state.cash} disabled={this.props.user.isAdmin ? false : this.props.user.isCashier ? false : true} />
-                            <Savings credit={this.state.credit} />
-                        </div>
-                        <div className="row">
-                            <DepositByDay
-                                title={"Total Deposits By Day"}
-                                deposits={this.state.deposits}
-                                depositsArchive={this.state.depositsArchive}
-                            />
+                    {this.state.loadingFlag ?
+                        <Grid container justify="center">
+                        <br></br>
+                            <CircularProgress /> <p>Loading ...</p>
+                        </Grid>
 
-                            {this.props.user.isUser ? null :
-                                <DepositByUser
-                                    title={"Deposits By User"}
+                        :
+
+                        <div className="container">
+                            <div className="row">
+                                <ProvisionalCredit credit={this.state.credit} />
+                                <Balance balance={this.state.cash} disabled={this.props.user.isAdmin ? false : this.props.user.isCashier ? false : true} />
+                                <Savings credit={this.state.credit} />
+                            </div>
+                            <div className="row">
+                                <DepositByDay
+                                    title={"Total Deposits By Day"}
                                     deposits={this.state.deposits}
                                     depositsArchive={this.state.depositsArchive}
-                                />}
+                                />
 
+                                {this.props.user.isUser ? null :
+                                    <DepositByUser
+                                        title={"Deposits By User"}
+                                        deposits={this.state.deposits}
+                                        depositsArchive={this.state.depositsArchive}
+                                    />}
 
-                            <DepositBubble
-                                title={"All Deposits"}
-                                deposits={this.state.deposits}
-                                depositsArchive={this.state.depositsArchive}
-                            />
+                                <DepositBubble
+                                    title={"All Deposits"}
+                                    deposits={this.state.deposits}
+                                    depositsArchive={this.state.depositsArchive}
+                                />
 
-                            <DepositByDenomination
-                                title={"Number of Bills By Denomination"}
-                                deposits={this.state.deposits}
-                                depositsArchive={this.state.depositsArchive}
-                            />
+                                <DepositByDenomination
+                                    title={"Number of Bills By Denomination"}
+                                    deposits={this.state.deposits}
+                                    depositsArchive={this.state.depositsArchive}
+                                />
 
-                            <ProvisionalCreditOverTime
-                                title={"Provisional Credit Over Time"}
-                                balance={this.state.creditHistory}
-                            />
-
-
+                                <ProvisionalCreditOverTime
+                                    title={"Provisional Credit Over Time"}
+                                    balance={this.state.creditHistory}
+                                />
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             );
         } else {
