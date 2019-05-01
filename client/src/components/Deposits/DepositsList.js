@@ -26,7 +26,7 @@ const styles = theme => ({
     },
     progress: {
         margin: theme.spacing.unit * 2,
-    },    
+    },
 });
 
 class DepositList extends React.Component {
@@ -42,28 +42,28 @@ class DepositList extends React.Component {
 
     getDeposits = () => {
         // Get with security
-        this.setState({loadingFlag: true});
+        this.setState({ loadingFlag: true });
 
         DepositsArchiveDB.getWithUserAlt()
             .then(deposits => {
-                return(deposits);
+                return (deposits);
             })
-            .then (archive => {
+            .then(archive => {
                 DepositDB.getWithUserAlt()
-                .then(deposits => {
-                    let allDeposits = archive.concat(deposits);
-                    
-                    let sortedByDate = allDeposits.sort((a, b) => {
-                        return (a.time < b.time) ? 1 : -1;
+                    .then(deposits => {
+                        let allDeposits = archive.concat(deposits);
+
+                        let sortedByDate = allDeposits.sort((a, b) => {
+                            return (a.time < b.time) ? 1 : -1;
+                        });
+                        this.setState({ loadingFlag: false, deposits: sortedByDate });
                     });
-                    this.setState({ loadingFlag: false, deposits: sortedByDate });
-                });
             })
             .catch(err => {
                 console.error(err);
-                this.setState({loadingFlag: false});
+                this.setState({ loadingFlag: false });
             });
-;
+        ;
     };
 
     // get all on mount
@@ -85,22 +85,20 @@ class DepositList extends React.Component {
         if (this.props.user.authUser) {
             return (
                 <div className="container">
-                <br></br>
+                    <br></br>
                     <CSVLink
                         data={this.state.deposits}
                         filename={'dollaroo-transactions.csv'}
                         className='btn blue darken-4'
                         target="_blank"
-                    >
-                        EXPORT TO CSV
-                            </CSVLink>
+                    >EXPORT TO CSV</CSVLink>
                     <div className={classes.root}>
                         <div className="row">
                             <h5 className="col s6 m3 offset-m1">Time</h5>
                             <h5 className="col s6 m3">User</h5>
                             <h5 className="col s12 m2 offset-m3">Amount</h5>
                         </div>
-                        {this.state.loadingFlag ? <div> <CircularProgress className={classes.progress} /> <p>Loading ...</p> </div>: null }
+                        {this.state.loadingFlag ? <div> <CircularProgress className={classes.progress} /> <p>Loading ...</p> </div> : null}
                         {this.state.deposits.map((deposit) => {
                             return (
                                 <div key={deposit.id}>
