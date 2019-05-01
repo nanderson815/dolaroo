@@ -10,6 +10,8 @@ import DepositByDay from "./Graphs/DepositByDay";
 import DepositBubble from "./Graphs/DepositBubble";
 import DepositByDenomination from "./Graphs/DepositByDenomination";
 import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 import DepositDB from './Deposit/DepositDB';
 
@@ -20,12 +22,14 @@ class Home extends React.Component {
         cash: 0,
         depositsArchive: [],
         cashHistory: [],
-        creditHistory: []
+        creditHistory: [],
+        loadingFlag: false
     }
 
 
     componentDidMount() {
         this._mounted = true;
+        this.setState({loadingFlag: true})
 
         DepositDB.get("deposits")
             .then(res => {
@@ -79,7 +83,7 @@ class Home extends React.Component {
                 if (this._mounted) {
                     this.setState({ depositsArchive: res });
                 }
-            })
+            }).then(this.setState({ loadingFlag: false }))
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
     }
 
@@ -92,6 +96,7 @@ class Home extends React.Component {
         if (this.props.user.authUser) {
             return (
                 <div>
+                    {this.state.loadingFlag ? <div> <CircularProgress /> <p>Loading ...</p> </div> : null}
                     <div className="container">
                         <div className="row">
                             <ProvisionalCredit credit={this.state.credit} />
