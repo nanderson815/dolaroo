@@ -8,6 +8,7 @@ let credit = [];
 
 // Get all deposits on load
 db.collection("deposits").onSnapshot((querySnapshot) => {
+    deposits = [];
     querySnapshot.forEach(doc => {
         let deposit = {};
         deposit = doc.data();
@@ -18,6 +19,7 @@ db.collection("deposits").onSnapshot((querySnapshot) => {
 
 // Get all archived deposits on load
 db.collection("depositsarchive").onSnapshot((querySnapshot) => {
+    depositsArchive = [];
     querySnapshot.forEach(doc => {
         let deposit = {};
         deposit = doc.data();
@@ -28,6 +30,7 @@ db.collection("depositsarchive").onSnapshot((querySnapshot) => {
 
 // Get balances over time
 db.collection("cash").onSnapshot(querySnapshot => {
+    cash = [];
     querySnapshot.forEach(doc => {
         let total = {};
         total = doc.data();
@@ -38,6 +41,7 @@ db.collection("cash").onSnapshot(querySnapshot => {
 
 // Get credit over time
 db.collection("credit").onSnapshot(querySnapshot => {
+    credit = [];
     querySnapshot.forEach(doc => {
         let total = {};
         total = doc.data();
@@ -53,18 +57,22 @@ module.exports = function (app) {
     app.get("/api/firestore/deposits", (req, res) => {
         res.json(deposits);
     });
+
     // Send all archived deposits
     app.get("/api/firestore/depositsArchive", (req, res) => {
         res.json(depositsArchive);
     });
+
     // Send all cash
     app.get("/api/firestore/cash", (req, res) => {
         res.json(cash);
     });
+
     // Send all credit
-    app.get("/api/firestore/cash", (req, res) => {
+    app.get("/api/firestore/credit", (req, res) => {
         res.json(credit);
-    })
+    });
+
     // Get pending deposit total - ie not in safe, but not settled
     app.get("/api/firestore/getPendingTotal", (req, res) => {
         let result = new Promise((resolve, reject) => {
@@ -74,7 +82,8 @@ module.exports = function (app) {
             resolve(total);
         });
         result.then(result => res.json(result));
-    })
+    });
+
     // Get settled deposit total - transactions that have been settled 
     app.get("/api/firestore/getSettledTotal", (req, res) => {
         let result = new Promise((resolve, reject) => {
@@ -84,6 +93,7 @@ module.exports = function (app) {
             resolve(total);
         });
         result.then(result => res.json(result));
-    })
+    });
+
 };
 
