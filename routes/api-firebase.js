@@ -75,5 +75,15 @@ module.exports = function (app) {
         });
         result.then(result => res.json(result));
     })
+    // Get settled deposit total - transactions that have been settled 
+    app.get("/api/firestore/getSettledTotal", (req, res) => {
+        let result = new Promise((resolve, reject) => {
+            let total = 0;
+            let pendingTrans = depositsArchive.filter(dep => dep.awaitingSettlement === false);
+            pendingTrans.forEach(tran => total += tran.amount);
+            resolve(total);
+        });
+        result.then(result => res.json(result));
+    })
 };
 
