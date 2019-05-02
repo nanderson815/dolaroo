@@ -99,7 +99,6 @@ class Home extends React.Component {
                 <div>
                     {this.state.loadingFlag ?
                         <Grid container justify="center">
-                        <br></br>
                             <CircularProgress /> <p>Loading ...</p>
                         </Grid>
 
