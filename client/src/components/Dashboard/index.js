@@ -12,8 +12,6 @@ import DepositByDenomination from "./Graphs/DepositByDenomination";
 import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-
-
 import DepositDB from './Deposit/DepositDB';
 
 class Home extends React.Component {
