@@ -50,6 +50,7 @@ class Deposit extends React.Component {
     state = {
         cash: 0,
         credit: 0,
+        pendingCredit: 0,
         deposits: [],
         amount: 0,
         ones: 0,
@@ -73,7 +74,7 @@ class Deposit extends React.Component {
                     this.setState({ deposits: res.data }, () => this.calculate())
                 }
             })
-            .catch(err => console.error(err));       
+            .catch(err => console.error(err));
 
         let elem = document.querySelector(".modal");
         M.Modal.init(elem);
@@ -97,7 +98,7 @@ class Deposit extends React.Component {
             .then(res => {
                 if (this._mounted) {
                     this.setState({
-                        credit: this.state.credit + (res.data * .975)
+                        pendingCredit: this.state.credit + (res.data * .975)
                     })
                 }
             })
@@ -135,7 +136,7 @@ class Deposit extends React.Component {
         });
 
         db.collection('credit').add({
-            balance: this.state.credit + amount * .975,
+            balance: this.state.credit + this.state.pendingCredit + amount * .975,
             time: new Date(),
             uid: this.props.user.authUser.uid
         });

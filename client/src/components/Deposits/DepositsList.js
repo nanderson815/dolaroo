@@ -6,8 +6,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { withAuthUserContext } from "../Auth/Session/AuthUserContext";
 import DepositItem from './DepositItem';
-import DepositDB from "../Dashboard/Deposit/DepositDB";
-import DepositsArchiveDB from "../Banker/DepositsArchiveDB";
 import Util from '../Util/Util';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -43,45 +41,33 @@ class DepositList extends React.Component {
 
     getDeposits = () => {
         // Get with security
-        this.setState({ loadingFlag: true });
-
-        DepositsArchiveDB.getWithUserAlt()
-            .then(deposits => {
-                return (deposits);
-            })
-            .then(archive => {
-                DepositDB.getWithUserAlt()
-                    .then(deposits => {
-                        let allDeposits = archive.concat(deposits);
-
-                        let sortedByDate = allDeposits.sort((a, b) => {
-                            return (a.time < b.time) ? 1 : -1;
-                        });
-                        this.setState({ loadingFlag: false, deposits: sortedByDate });
-                    });
+        Util.apiGet("/api/banker/allDeposits")
+            .then(res => {
+                let allDeposits = res.data;
+                let sortedByDate = allDeposits.sort((a, b) => {
+                    return (a.time < b.time) ? 1 : -1;
+                });
+                this.setState({ loadingFlag: false, deposits: sortedByDate });
             })
             .catch(err => {
                 console.error(err);
                 this.setState({ loadingFlag: false });
             });
-        ;
     };
 
     // get all on mount
     componentDidMount() {
+        this.setState({ loadingFlag: true });
         this.getDeposits();
     }
-
-
 
     render() {
         const { classes } = this.props;
 
-
         // Some props take time to get ready so return null when uid not avaialble
-        if (this.props.user.uid === null) {
-            return null;
-        }
+        // if (this.props.user.uid === null) {
+        //     return null;
+        // }
 
         if (this.props.user.authUser) {
             return (
@@ -113,7 +99,7 @@ class DepositList extends React.Component {
             );
         } else {
             return (
-                <Redirect to="/signin" />
+                <Redirect to="/dashboard" />
             );
         }
     }
