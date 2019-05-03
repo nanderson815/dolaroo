@@ -13,6 +13,7 @@ import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import DepositDB from './Deposit/DepositDB';
+import axios from 'axios'
 
 class Home extends React.Component {
     state = {
@@ -30,37 +31,50 @@ class Home extends React.Component {
         this._mounted = true;
         this.setState({ loadingFlag: true })
 
-        DepositDB.get("deposits")
+        axios.get("/api/firestore/deposits")
             .then(res => {
+                console.log(res.data);
                 if (this._mounted) {
-                    this.setState({ deposits: res });
+                    this.setState({ deposits: res.data })
                 }
             })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+            .catch(err => console.error(err));
 
-        DepositDB.get("cash")
-            .then(res => {
-                if (this._mounted) {
-                    this.setState({ cashHistory: res })
-                }
-            })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
 
-        DepositDB.get("credit")
+        axios.get("/api/firestore/cash")
             .then(res => {
                 if (this._mounted) {
-                    this.setState({ creditHistory: res })
+                    this.setState({ cashHistory: res.data })
                 }
             })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+            .catch(err => console.error(err));
+
+        axios.get("/api/firestore/credit")
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({ creditHistory: res.data })
+                }
+            })
+            .catch(err => console.error(err));
+
+
+
+        axios.get("/api/firestore/getSafeDeposits")
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({
+                        cash: res.data,
+                        credit: res.data * .975
+                    })
+                }
+            })
+            .catch(err => console.error(err));
+
 
         DepositDB.getInSafeTotal()
             .then(res => {
                 if (this._mounted) {
-                    this.setState({
-                        cash: res,
-                        credit: res * .975
-                    })
+                    console.log(res)
                 }
             })
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
@@ -77,13 +91,15 @@ class Home extends React.Component {
             .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
 
 
-        DepositDB.get("depositsarchive")
+        axios.get("/api/firestore/depositsArchive")
             .then(res => {
                 if (this._mounted) {
-                    this.setState({ depositsArchive: res, loadingFlag: false });
+                    this.setState({ depositsArchive: res.data, loadingFlag: false })
                 }
             })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+            .catch(err => console.error(err));
+
+
     }
 
     componentWillUnmount() {

@@ -53,7 +53,7 @@ class DepositByAll extends React.Component {
 
         let combiedData = this.props.deposits.concat(this.props.depositsArchive);
 
-        let xData = combiedData.map(deposit => deposit.time.toDate());
+        let xData = combiedData.map(deposit => new Date(deposit.time));
 
         let yData = combiedData.map(deposit => {
             let bills = 0;

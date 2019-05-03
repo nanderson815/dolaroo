@@ -13,6 +13,7 @@ db.collection("deposits").onSnapshot((querySnapshot) => {
         let deposit = {};
         deposit = doc.data();
         deposit.id = doc.id;
+        deposit.time = deposit.time.toDate();
         deposits.push(deposit);
     });
 }, (err) => console.log(err));
@@ -24,6 +25,7 @@ db.collection("depositsarchive").onSnapshot((querySnapshot) => {
         let deposit = {};
         deposit = doc.data();
         deposit.id = doc.id;
+        deposit.time = deposit.time.toDate();
         depositsArchive.push(deposit);
     });
 }, (err) => console.log(err));
@@ -35,6 +37,7 @@ db.collection("cash").onSnapshot(querySnapshot => {
         let total = {};
         total = doc.data();
         total.id = doc.id;
+        total.time ? total.time = total.time.toDate() : null;
         cash.push(total);
     });
 }, (err) => console.log(err));
@@ -46,6 +49,7 @@ db.collection("credit").onSnapshot(querySnapshot => {
         let total = {};
         total = doc.data();
         total.id = doc.id;
+        total.time = total.time.toDate();
         credit.push(total);
     });
 }, (err) => console.log(err));
@@ -71,6 +75,16 @@ module.exports = function (app) {
     // Send all credit
     app.get("/api/firestore/credit", (req, res) => {
         res.json(credit);
+    });
+
+    // Get deposits in safe
+    app.get("/api/firestore/getSafeDeposits", (req, res) => {
+        let result = new Promise((resolve, reject) => {
+            let total = 0;
+            deposits.forEach(tran => total += tran.amount);
+            resolve(total);
+        });
+        result.then(result => res.json(result));
     });
 
     // Get pending deposit total - ie not in safe, but not settled
