@@ -57,7 +57,7 @@ class DepositByDay extends React.Component {
 
         // split deposits by day into object with all deposits for each day
         let groups = _.groupBy(sortedByDate, (deposit) => {
-            let jsDate = deposit.time.toDate();
+            let jsDate = new Date(deposit.time);
             return moment(jsDate).startOf('day').format();
         });
 

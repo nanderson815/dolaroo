@@ -12,9 +12,7 @@ import DepositByDenomination from "./Graphs/DepositByDenomination";
 import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-
-
-import DepositDB from './Deposit/DepositDB';
+import axios from 'axios'
 
 class Home extends React.Component {
     state = {
@@ -27,65 +25,66 @@ class Home extends React.Component {
         loadingFlag: false
     }
 
-
     componentDidMount() {
         this._mounted = true;
         this.setState({ loadingFlag: true })
 
-        DepositDB.get("deposits")
+        axios.get("/api/firestore/deposits")
             .then(res => {
+                console.log(res.data);
                 if (this._mounted) {
-                    this.setState({ deposits: res });
+                    this.setState({ deposits: res.data })
                 }
             })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+            .catch(err => console.error(err));
 
-        DepositDB.get("cash")
+
+        axios.get("/api/firestore/cash")
             .then(res => {
                 if (this._mounted) {
-                    this.setState({ cashHistory: res })
+                    this.setState({ cashHistory: res.data })
                 }
             })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+            .catch(err => console.error(err));
 
-        DepositDB.get("credit")
+        axios.get("/api/firestore/credit")
             .then(res => {
                 if (this._mounted) {
-                    this.setState({ creditHistory: res })
+                    this.setState({ creditHistory: res.data })
                 }
             })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+            .catch(err => console.error(err));
 
-        DepositDB.getInSafeTotal()
-            .then(res => {
-                if (this._mounted) {
-                    this.setState({
-                        cash: res,
-                        credit: res * .975
-                    })
-                }
-            })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
-
-
-        DepositDB.getPendingTotal()
+        axios.get("/api/firestore/getSafeDeposits")
             .then(res => {
                 if (this._mounted) {
                     this.setState({
-                        credit: this.state.credit + (res * .975)
+                        cash: res.data,
+                        credit: res.data * .975
                     })
                 }
             })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+            .catch(err => console.error(err));
 
-
-        DepositDB.get("depositsarchive")
+        axios.get("/api/firestore/getPendingTotal")
             .then(res => {
                 if (this._mounted) {
-                    this.setState({ depositsArchive: res, loadingFlag: false });
+                    this.setState({
+                        credit: this.state.credit + (res.data * .975)
+                    })
                 }
             })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
+            .catch(err => console.error(err));
+
+        axios.get("/api/firestore/depositsArchive")
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({ depositsArchive: res.data, loadingFlag: false })
+                }
+            })
+            .catch(err => console.error(err));
+
+
     }
 
     componentWillUnmount() {
@@ -99,7 +98,6 @@ class Home extends React.Component {
                 <div>
                     {this.state.loadingFlag ?
                         <Grid container justify="center">
-                        <br></br>
                             <CircularProgress /> <p>Loading ...</p>
                         </Grid>
 

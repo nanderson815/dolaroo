@@ -53,7 +53,7 @@ class ProvisionalCreditOverTime extends React.Component {
         });
 
         const times = sortedByDate.map((deposit) => {
-            return (deposit.time.toDate());
+            return (new Date(deposit.time));
         });
 
         const balances = sortedByDate.map((deposit) => {

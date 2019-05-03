@@ -41,7 +41,7 @@ class DepositByDay extends React.Component {
                 }]
         };
 
-        let combiedData = this.props.deposits.concat(this.props.depositsArchive);        
+        let combiedData = this.props.deposits.concat(this.props.depositsArchive);
 
         const sortedByDate = combiedData.sort((a, b) => {
             return (a.time > b.time) ? 1 : -1;
@@ -49,10 +49,11 @@ class DepositByDay extends React.Component {
 
         // split deposits by day into object with all deposits for each day
         let groups = _.groupBy(sortedByDate, (deposit) => {
-            let jsDate = deposit.time.toDate();
+            let jsDate = new Date(deposit.time);
             return moment(jsDate).startOf('day').format();
         });
 
+    
         // turn complex object into array by day with total for the day and each days deposits (for stacking later)
         var dayDeposits = _.map(groups, (deposit, day) => {
             let totalObj = deposit.reduce((a, b) => {
