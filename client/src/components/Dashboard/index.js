@@ -12,7 +12,6 @@ import DepositByDenomination from "./Graphs/DepositByDenomination";
 import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import DepositDB from './Deposit/DepositDB';
 import axios from 'axios'
 
 class Home extends React.Component {
@@ -25,7 +24,6 @@ class Home extends React.Component {
         creditHistory: [],
         loadingFlag: false
     }
-
 
     componentDidMount() {
         this._mounted = true;
@@ -57,8 +55,6 @@ class Home extends React.Component {
             })
             .catch(err => console.error(err));
 
-
-
         axios.get("/api/firestore/getSafeDeposits")
             .then(res => {
                 if (this._mounted) {
@@ -70,26 +66,15 @@ class Home extends React.Component {
             })
             .catch(err => console.error(err));
 
-
-        DepositDB.getInSafeTotal()
-            .then(res => {
-                if (this._mounted) {
-                    console.log(res)
-                }
-            })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
-
-
-        DepositDB.getPendingTotal()
+        axios.get("/api/firestore/getPendingTotal")
             .then(res => {
                 if (this._mounted) {
                     this.setState({
-                        credit: this.state.credit + (res * .975)
+                        credit: this.state.credit + (res.data * .975)
                     })
                 }
             })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
-
+            .catch(err => console.error(err));
 
         axios.get("/api/firestore/depositsArchive")
             .then(res => {
