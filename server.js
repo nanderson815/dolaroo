@@ -29,6 +29,7 @@ mongoose.connect(uri, {
 
 require("./routes/api-auth-routes.js")(app);
 require("./routes/api-user-routes.js")(app);
+require("./routes/api-banker-routes.js")(app);
 require("./routes/api-note-routes.js")(app);
 require("./routes/api-prospect-routes.js")(app);
 require("./routes/api-firebase.js")(app);

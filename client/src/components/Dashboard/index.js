@@ -12,7 +12,7 @@ import DepositByDenomination from "./Graphs/DepositByDenomination";
 import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import axios from 'axios'
+import Util from '../Util/Util';
 
 class Home extends React.Component {
     state = {
@@ -29,7 +29,7 @@ class Home extends React.Component {
         this._mounted = true;
         this.setState({ loadingFlag: true })
 
-        axios.get("/api/firestore/deposits")
+        Util.apiGet("/api/firestore/deposits")
             .then(res => {
                 console.log(res.data);
                 if (this._mounted) {
@@ -39,7 +39,7 @@ class Home extends React.Component {
             .catch(err => console.error(err));
 
 
-        axios.get("/api/firestore/cash")
+        Util.apiGet("/api/firestore/cash")
             .then(res => {
                 if (this._mounted) {
                     this.setState({ cashHistory: res.data })
@@ -47,7 +47,7 @@ class Home extends React.Component {
             })
             .catch(err => console.error(err));
 
-        axios.get("/api/firestore/credit")
+        Util.apiGet("/api/firestore/credit")
             .then(res => {
                 if (this._mounted) {
                     this.setState({ creditHistory: res.data })
@@ -55,7 +55,7 @@ class Home extends React.Component {
             })
             .catch(err => console.error(err));
 
-        axios.get("/api/firestore/getSafeDeposits")
+        Util.apiGet("/api/firestore/getSafeDeposits")
             .then(res => {
                 if (this._mounted) {
                     this.setState({
@@ -66,7 +66,7 @@ class Home extends React.Component {
             })
             .catch(err => console.error(err));
 
-        axios.get("/api/firestore/getPendingTotal")
+        Util.apiGet("/api/firestore/getPendingTotal")
             .then(res => {
                 if (this._mounted) {
                     this.setState({
@@ -76,7 +76,7 @@ class Home extends React.Component {
             })
             .catch(err => console.error(err));
 
-        axios.get("/api/firestore/depositsArchive")
+        Util.apiGet("/api/firestore/depositsArchive")
             .then(res => {
                 if (this._mounted) {
                     this.setState({ depositsArchive: res.data, loadingFlag: false })
