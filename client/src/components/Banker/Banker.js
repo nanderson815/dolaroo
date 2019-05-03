@@ -8,6 +8,7 @@ import SafeDeposits from "./SafeDeposits/SafeDeposits";
 import AwaitingSettlement from "./AwaitingSettlement/AwaitingSettlement";
 import SettledDeposits from "./SettledDeposits/SettledDeposits";
 
+import Util from '../Util/Util';
 import DepositsArchiveDB from "./DepositsArchiveDB";
 
 class Banker extends React.Component {
@@ -93,7 +94,8 @@ class Banker extends React.Component {
     }
 
     getInSafeTotal = () => {
-        DepositsArchiveDB.getInSafeTotal().then(total => {
+        Util.apiGet("/api/banker/cashInSafe").then(res => {
+            let total = res.data;
             if (this._isMounted) {
                 this.setState({
                     balanceInSafe: total,
@@ -101,11 +103,6 @@ class Banker extends React.Component {
             }   
         }).catch(err => {
             console.error(`Error getInSafeTotal ${err}`);
-            if (this._isMounted) {
-                // this.setState({
-                //     message: `Error in getInSafeTotal ${err}`
-                // });
-            }
         });
     }
   
@@ -129,22 +126,18 @@ class Banker extends React.Component {
     }
 
     getAwaitingTotal = () => {
-        DepositsArchiveDB.getAwaitingTotal().then(total => {
+        Util.apiGet("/api/banker/awaitingSettlement").then(res => {
+            let total = res.data;
             if (this._isMounted) {
                 this.setState({
                     balanceAwaitingSettlement: total,
-                });    
-            }
+                }); 
+            }   
         }).catch(err => {
             console.error(`Error getAwaitingTotal ${err}`);
-            if (this._isMounted) {
-                // this.setState({
-                //     message: `Error in getAwaitingTotal ${err}`
-                // });
-            }
         });
     }
-  
+
     getSettledDeposits = () => {
         DepositsArchiveDB.getSettledDeposits().then(depositsArray => {
             if (this._isMounted) {
@@ -165,19 +158,15 @@ class Banker extends React.Component {
     }
 
     getSettledTotal = () => {
-        DepositsArchiveDB.getSettledTotal().then(total => {
+        Util.apiGet("/api/banker/settled").then(res => {
+            let total = res.data;
             if (this._isMounted) {
                 this.setState({
                     balanceSettledDeposits: total,
                 }); 
             }   
         }).catch(err => {
-            console.error(`Error getAwaitingTotal ${err}`);
-            if (this._isMounted) {
-                // this.setState({
-                //     message: `Error in getAwaitingTotal ${err}`
-                // });
-            }
+            console.error(`Error getSettledTotal ${err}`);
         });
     }
   
