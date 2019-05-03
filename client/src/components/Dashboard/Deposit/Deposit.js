@@ -3,11 +3,11 @@ import Util from '../../Util/Util';
 import M from "materialize-css/dist/js/materialize.min.js";
 import Modal from './DepositModal';
 import { withAuthUserContext } from '../../Auth/Session/AuthUserContext';
-import DepositDB from '../Deposit/DepositDB';
 import { Redirect } from 'react-router';
 import NumberFormat from 'react-number-format';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 
 const styles = theme => ({
@@ -67,39 +67,41 @@ class Deposit extends React.Component {
     componentDidMount() {
         this._mounted = true;
 
-        DepositDB.get("deposits")
+        axios.get("/api/firestore/deposits")
             .then(res => {
                 if (this._mounted) {
-                    this.setState({ deposits: res }, () => this.calculate())
+                    this.setState({ deposits: res.data }, () => this.calculate())
                 }
             })
-            .catch(err => console.log("Please log in as a casheir or admin to unlock all features."));
-
+            .catch(err => console.error(err));       
 
         let elem = document.querySelector(".modal");
         M.Modal.init(elem);
     }
 
     calculate = () => {
-        DepositDB.getInSafeTotal()
-            .then(res => {
-                if (this._mounted) {
-                    this.setState({
-                        cash: res,
-                        credit: res * .975
-                    })
-                }
-            });
 
-        DepositDB.getPendingTotal()
+        axios.get("/api/firestore/getSafeDeposits")
             .then(res => {
                 if (this._mounted) {
                     this.setState({
-                        // cash: this.state.cash + res,
-                        credit: this.state.credit + (res * .975)
+                        cash: res.data,
+                        credit: res.data * .975
                     })
                 }
-            });
+            })
+            .catch(err => console.error(err));
+
+
+        axios.get("/api/firestore/getPendingTotal")
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({
+                        credit: this.state.credit + (res.data * .975)
+                    })
+                }
+            })
+            .catch(err => console.error(err));
     }
 
     handleChange = name => event => {
@@ -138,9 +140,9 @@ class Deposit extends React.Component {
             uid: this.props.user.authUser.uid
         });
 
-        db.collection('credit').doc('balance').update({
-            balance: this.state.credit + amount * .975
-        });
+        // db.collection('credit').doc('balance').update({
+        //     balance: this.state.credit + amount * .975
+        // });
 
         db.collection('cash').add({
             balance: this.state.cash + amount,
@@ -148,9 +150,9 @@ class Deposit extends React.Component {
             uid: this.props.user.authUser.uid
         });
 
-        db.collection('cash').doc('balance').update({
-            balance: this.state.cash + amount
-        });
+        // db.collection('cash').doc('balance').update({
+        //     balance: this.state.cash + amount
+        // });
     }
 
 
