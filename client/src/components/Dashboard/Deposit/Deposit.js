@@ -7,7 +7,7 @@ import { Redirect } from 'react-router';
 import NumberFormat from 'react-number-format';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
-import axios from 'axios';
+
 
 
 const styles = theme => ({
@@ -50,6 +50,7 @@ class Deposit extends React.Component {
     state = {
         cash: 0,
         credit: 0,
+        pendingCredit: 0,
         deposits: [],
         amount: 0,
         ones: 0,
@@ -67,13 +68,13 @@ class Deposit extends React.Component {
     componentDidMount() {
         this._mounted = true;
 
-        axios.get("/api/firestore/deposits")
+        Util.apiGet("/api/firestore/deposits")
             .then(res => {
                 if (this._mounted) {
                     this.setState({ deposits: res.data }, () => this.calculate())
                 }
             })
-            .catch(err => console.error(err));       
+            .catch(err => console.error(err));
 
         let elem = document.querySelector(".modal");
         M.Modal.init(elem);
@@ -81,7 +82,7 @@ class Deposit extends React.Component {
 
     calculate = () => {
 
-        axios.get("/api/firestore/getSafeDeposits")
+        Util.apiGet("/api/firestore/getSafeDeposits")
             .then(res => {
                 if (this._mounted) {
                     this.setState({
@@ -93,11 +94,11 @@ class Deposit extends React.Component {
             .catch(err => console.error(err));
 
 
-        axios.get("/api/firestore/getPendingTotal")
+        Util.apiGet("/api/firestore/getPendingTotal")
             .then(res => {
                 if (this._mounted) {
                     this.setState({
-                        credit: this.state.credit + (res.data * .975)
+                        pendingCredit: this.state.credit + (res.data * .975)
                     })
                 }
             })
@@ -135,7 +136,7 @@ class Deposit extends React.Component {
         });
 
         db.collection('credit').add({
-            balance: this.state.credit + amount * .975,
+            balance: this.state.credit + this.state.pendingCredit + amount * .975,
             time: new Date(),
             uid: this.props.user.authUser.uid
         });

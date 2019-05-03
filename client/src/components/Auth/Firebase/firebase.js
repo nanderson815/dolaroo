@@ -47,17 +47,19 @@ class Firebase {
 
   doRefreshToken = () => {
     return new Promise((resolve, reject) => {
-        this.auth.currentUser.getIdToken(true).then( (idToken) => {
+      if (this.auth.currentUser !== null) {
+        this.auth.currentUser.getIdToken(true).then((idToken) => {
           resolve(idToken);
         }).catch((err) => {
           console.error(`Firebase refresh id token failed: ${err}`);
           reject(err);
         });
+      }
     });
   }
 
-   // get custom claims
-   doGetAllCustomClaims = () => {
+  // get custom claims
+  doGetAllCustomClaims = () => {
     return new Promise((resolve, reject) => {
       this.auth.currentUser.getIdTokenResult()
         .then((idTokenResult) => {
@@ -82,7 +84,7 @@ class Firebase {
         .then((idTokenResult) => {
           let claims = {
             isAdmin: idTokenResult.claims ? idTokenResult.claims.admin : false,
-            isCashier: idTokenResult.claims ? idTokenResult.claims.cashier: false,
+            isCashier: idTokenResult.claims ? idTokenResult.claims.cashier : false,
             isBanker: idTokenResult.claims ? idTokenResult.claims.banker : false,
             isUser: idTokenResult.claims ? idTokenResult.claims.user : false
           };
@@ -130,7 +132,7 @@ class Firebase {
   }// method
 
   // get custom claims
-  doIsUserBanker= () => {
+  doIsUserBanker = () => {
     return new Promise((resolve, reject) => {
       this.auth.currentUser.getIdTokenResult()
         .then((idTokenResult) => {
@@ -147,8 +149,8 @@ class Firebase {
           reject(err);
         });
     });//promise
-    }// method
-  
+  }// method
+
 
   doIsUserCashier = () => {
     return new Promise((resolve, reject) => {
@@ -173,30 +175,30 @@ class Firebase {
   doCreateUserWithEmailAndPassword = (email, password) => {
     return new Promise((resolve, reject) => {
       this.auth.createUserWithEmailAndPassword(email.toLowerCase(), password).then((authData) => {
-          console.log("User created successfully with payload-", authData);
-          return resolve(authData);
-        }).catch((err) => {
-          console.error("User create failed!", err);
-          return reject(err);
-        });
+        console.log("User created successfully with payload-", authData);
+        return resolve(authData);
+      }).catch((err) => {
+        console.error("User create failed!", err);
+        return reject(err);
+      });
     }); // Promise  
   }
 
   doSignInWithEmailAndPassword = (email, password) => {
     return new Promise((resolve, reject) => {
       this.auth.signInWithEmailAndPassword(email.toLowerCase(), password).then((authData) => {
-          console.log("User logged in successfully with payload-", authData);
-          return resolve(authData);
-        }).catch((err) => {
-          console.error("Login Failed!", err);
-          return reject(err);
-        }) 
+        console.log("User logged in successfully with payload-", authData);
+        return resolve(authData);
+      }).catch((err) => {
+        console.error("Login Failed!", err);
+        return reject(err);
+      })
     }); // Promise
   }
 
   doSignInWithGoogle = () => {
     //return this.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
-    return(this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()));
+    return (this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()));
   }
 
   doGetRedirectResult = () => {
@@ -205,30 +207,30 @@ class Firebase {
 
 
   doSignOut = () => {
-    return(this.auth.signOut());
+    return (this.auth.signOut());
   }
 
   doPasswordReset = (email) => {
     return new Promise((resolve, reject) => {
       this.auth.sendPasswordResetEmail(email.toLowerCase()).then((authData) => {
-          console.log("User email reset sent successfully with payload-", authData);
-          return resolve(authData);
-        }).catch((err) => {
-          console.error("Login Failed!", err);
-          return reject(err);
-        });
+        console.log("User email reset sent successfully with payload-", authData);
+        return resolve(authData);
+      }).catch((err) => {
+        console.error("Login Failed!", err);
+        return reject(err);
+      });
     }); // Promise
   }
 
   doPasswordUpdate = (password) => {
     return new Promise((resolve, reject) => {
       this.auth.currentUser.updatePassword(password).then((authData) => {
-          console.log("User email reset sent successfully with payload-", authData);
-          return resolve(authData);
-        }).catch((err) => {
-          console.error("Login Failed!", err);
-          return reject(err);
-        });
+        console.log("User email reset sent successfully with payload-", authData);
+        return resolve(authData);
+      }).catch((err) => {
+        console.error("Login Failed!", err);
+        return reject(err);
+      });
     }); // Promise
   }
 }

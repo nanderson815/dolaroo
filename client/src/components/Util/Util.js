@@ -7,24 +7,24 @@ import Firebase from "../Auth/Firebase/firebase";
 // It gives access to firebase context informaton and auth information
 // without needing to use react context.  This way we can write more generic
 // functions and classes that do not have wrapped in react compnents
-class Util  {
+class Util {
   // Formats a display money field 
   static formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
       decimalCount = Math.abs(decimalCount);
       decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
-  
+
       const negativeSign = amount < 0 ? "-" : "";
-  
+
       let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
       let j = (i.length > 3) ? i.length % 3 : 0;
-  
+
       return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
     } catch (err) {
       console.log(err);
     }
   };
-  
+
 
   static getUserToken = async () => {
     const firebase = new Firebase();
@@ -71,19 +71,19 @@ class Util  {
   static apiGet = async (api) => {
     const firebase = new Firebase();
     const token = await firebase.doRefreshToken(true);
-    return(axios.get(api, {headers: {"FIREBASE_AUTH_TOKEN": token}}));
+    return (axios.get(api, { headers: { "FIREBASE_AUTH_TOKEN": token } }));
   }
 
-  
+
   static apiGetNoToken = (api) => {
-    return(axios.get(api));
+    return (axios.get(api));
   }
 
   static apiPost = async (api, param) => {
     const firebase = new Firebase();
     const token = await firebase.doRefreshToken(true);
-    return(axios.post(api, param, {headers: {"FIREBASE_AUTH_TOKEN": token}}));
-  } 
+    return (axios.post(api, param, { headers: { "FIREBASE_AUTH_TOKEN": token } }));
+  }
 
 } // class
 

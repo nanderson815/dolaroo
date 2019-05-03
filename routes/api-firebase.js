@@ -7,6 +7,8 @@ let depositsArchive = [];
 let cash = [];
 let credit = [];
 
+console.log("I ran");
+
 // Get all deposits on load
 db.collection("deposits").onSnapshot((querySnapshot) => {
     deposits = [];

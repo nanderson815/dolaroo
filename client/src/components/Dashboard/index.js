@@ -18,6 +18,7 @@ class Home extends React.Component {
     state = {
         deposits: [],
         credit: 0,
+        pendingCredit: 0,
         cash: 0,
         depositsArchive: [],
         cashHistory: [],
@@ -28,16 +29,6 @@ class Home extends React.Component {
     componentDidMount() {
         this._mounted = true;
         this.setState({ loadingFlag: true })
-
-        Util.apiGet("/api/firestore/deposits")
-            .then(res => {
-                console.log(res.data);
-                if (this._mounted) {
-                    this.setState({ deposits: res.data })
-                }
-            })
-            .catch(err => console.error(err));
-
 
         Util.apiGet("/api/firestore/cash")
             .then(res => {
@@ -66,24 +57,33 @@ class Home extends React.Component {
             })
             .catch(err => console.error(err));
 
+        Util.apiGet("/api/firestore/depositsArchive")
+            .then(res => {
+                if (this._mounted) {
+                    this.setState({ depositsArchive: res.data })
+                }
+            })
+            .catch(err => console.error(err));
+
+        Util.apiGet("/api/firestore/deposits")
+            .then(res => {
+                console.log(res.data);
+                if (this._mounted) {
+                    this.setState({ deposits: res.data })
+                }
+            })
+            .catch(err => console.error(err));
+
         Util.apiGet("/api/firestore/getPendingTotal")
             .then(res => {
                 if (this._mounted) {
                     this.setState({
-                        credit: this.state.credit + (res.data * .975)
+                        pendingCredit: res.data * .975,
+                        loadingFlag: false
                     })
                 }
             })
             .catch(err => console.error(err));
-
-        Util.apiGet("/api/firestore/depositsArchive")
-            .then(res => {
-                if (this._mounted) {
-                    this.setState({ depositsArchive: res.data, loadingFlag: false })
-                }
-            })
-            .catch(err => console.error(err));
-
 
     }
 
@@ -105,7 +105,7 @@ class Home extends React.Component {
 
                         <div className="container">
                             <div className="row">
-                                <ProvisionalCredit credit={this.state.credit} />
+                                <ProvisionalCredit credit={this.state.credit + this.state.pendingCredit} />
                                 <Balance balance={this.state.cash} disabled={this.props.user.isAdmin ? false : this.props.user.isCashier ? false : true} />
                                 <Savings credit={this.state.credit} />
                             </div>
