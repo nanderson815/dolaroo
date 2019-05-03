@@ -7,7 +7,7 @@ import { Redirect } from 'react-router';
 import NumberFormat from 'react-number-format';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
-import axios from 'axios';
+
 
 
 const styles = theme => ({
@@ -67,7 +67,7 @@ class Deposit extends React.Component {
     componentDidMount() {
         this._mounted = true;
 
-        axios.get("/api/firestore/deposits")
+        Util.apiGet("/api/firestore/deposits")
             .then(res => {
                 if (this._mounted) {
                     this.setState({ deposits: res.data }, () => this.calculate())
@@ -81,7 +81,7 @@ class Deposit extends React.Component {
 
     calculate = () => {
 
-        axios.get("/api/firestore/getSafeDeposits")
+        Util.apiGet("/api/firestore/getSafeDeposits")
             .then(res => {
                 if (this._mounted) {
                     this.setState({
@@ -93,7 +93,7 @@ class Deposit extends React.Component {
             .catch(err => console.error(err));
 
 
-        axios.get("/api/firestore/getPendingTotal")
+        Util.apiGet("/api/firestore/getPendingTotal")
             .then(res => {
                 if (this._mounted) {
                     this.setState({

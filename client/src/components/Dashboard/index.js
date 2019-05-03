@@ -29,16 +29,6 @@ class Home extends React.Component {
         this._mounted = true;
         this.setState({ loadingFlag: true })
 
-        Util.apiGet("/api/firestore/deposits")
-            .then(res => {
-                console.log(res.data);
-                if (this._mounted) {
-                    this.setState({ deposits: res.data })
-                }
-            })
-            .catch(err => console.error(err));
-
-
         Util.apiGet("/api/firestore/cash")
             .then(res => {
                 if (this._mounted) {
@@ -79,12 +69,20 @@ class Home extends React.Component {
         Util.apiGet("/api/firestore/depositsArchive")
             .then(res => {
                 if (this._mounted) {
-                    this.setState({ depositsArchive: res.data, loadingFlag: false })
+                    this.setState({ depositsArchive: res.data })
                 }
             })
             .catch(err => console.error(err));
 
 
+        Util.apiGet("/api/firestore/deposits")
+            .then(res => {
+                console.log(res.data);
+                if (this._mounted) {
+                    this.setState({ deposits: res.data, loadingFlag: false })
+                }
+            })
+            .catch(err => console.error(err));
     }
 
     componentWillUnmount() {
