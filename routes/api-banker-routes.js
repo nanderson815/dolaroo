@@ -54,6 +54,7 @@ db.collection("depositsarchive").onSnapshot((querySnapshot) => {
         let deposit = doc.data();
         deposit.id = doc.id;
         deposit.time = deposit.time.toDate();
+        ("settledDateTime" in deposit) ? deposit.settledDateTime = deposit.settledDateTime.toDate() : console.log("false");
         // get the user ndoc.data().uid;
         const userRef = db.collection("users").doc(deposit.uid);
         const userQuery = userRef.get()
