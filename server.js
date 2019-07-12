@@ -33,6 +33,8 @@ require("./routes/api-banker-routes.js")(app);
 require("./routes/api-note-routes.js")(app);
 require("./routes/api-prospect-routes.js")(app);
 require("./routes/api-firebase.js")(app);
+require("./routes/setup-first-user-auth-routes.js")(app);
+
 
 
 
