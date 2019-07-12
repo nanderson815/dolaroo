@@ -14,12 +14,13 @@ import 'firebase/functions';
 //   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID
 // };
 const config = {
-  apiKey: "AIzaSyDCddfdNSdSf19cWK7je91aJtlyh3zBp4Q",
-  authDomain: "project3-noahpauljj-fintech2.firebaseapp.com",
-  databaseURL: "https://project3-noahpauljj-fintech2.firebaseio.com",
-  projectId: "project3-noahpauljj-fintech2",
-  storageBucket: "project3-noahpauljj-fintech2.appspot.com",
-  messagingSenderId: "87243866145"
+  apiKey: "AIzaSyC-3IzXoP2LU2QhnrfuhZWHp_QGedI7VdY",
+  authDomain: "dolaroo.firebaseapp.com",
+  databaseURL: "https://dolaroo.firebaseio.com",
+  projectId: "dolaroo",
+  storageBucket: "dolaroo.appspot.com",
+  messagingSenderId: "485186240495",
+  appId: "1:485186240495:web:fe2f1984ed7faa6b"
 };
 
 // Firebase state already initialized so we dont do more that once

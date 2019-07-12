@@ -1,1 +1,1 @@
-firebase deploy --project project3-noahpauljj-fintech
+firebase deploy --project dolaroo-noahpauljj-fintech

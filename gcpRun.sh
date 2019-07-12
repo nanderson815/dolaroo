@@ -1,2 +1,2 @@
-gcloud config set project project3-noahpauljj-fintech2
+gcloud config set project dolaroo
 gcloud app browse

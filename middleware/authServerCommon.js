@@ -6,8 +6,8 @@ const path = require("path");
 // This will also be used to get a firestore cloud storage on the server
 // This gives us access to the *client side APIs* in firebase on node.
 const admin = require("firebase-admin");
-const storageBucket = "project3-noahpauljj-fintech2.appspot.com";
-const databaseURL = "https://project3-noahpauljj-fintech2.firebaseio.com";
+const storageBucket = "dolaroo.appspot.com";
+const databaseURL = "https://dolaroo.firebaseio.com";
 
 // if  GOOGLE_APPLICATION_CREDENTIALS set, use this file, else, dont send cred since App Engine finds it
 if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {

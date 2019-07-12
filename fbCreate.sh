@@ -1,1 +1,1 @@
-firebase init --project project3-noahpauljj-fintech2
+firebase init --project dolaroo
