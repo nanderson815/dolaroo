@@ -159,6 +159,15 @@ class UserAPI {
         });
     }
 
+    static addAuthUserToLocation = (authUser, company, location) => {
+        const db = Util.getFirestoreDB();
+        let uid = authUser.user.uid;
+
+        db.collection(company).doc(location).update({
+            [`roles.${uid}`]: "employee"
+        })
+    }
+
     static getUsersClaims = (uid) => {
         // its a promise so return
         return (Util.apiGet(`/api/auth/getClaims/${uid}`));
