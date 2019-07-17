@@ -27,6 +27,7 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
+        console.log(this.props.user.authUser)
         this._mounted = true;
         this.setState({ loadingFlag: true })
 
