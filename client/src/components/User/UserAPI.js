@@ -115,6 +115,7 @@ class UserAPI {
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
 
+            // TODO: Change path to user
             let docRef = db.collection("users").doc(authUser.user.uid);
             docRef.get().then((doc) => {
                 if (doc.exists) {
