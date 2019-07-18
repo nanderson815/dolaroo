@@ -130,6 +130,7 @@ class SignInFormBase extends React.Component {
     
         let SignInScreen;
     
+        // Add sign in with company password.
         if (localStorage.getItem(firebaseAuthKey) === "1") {
           SignInScreen = <p>Loading New Page After Google Login ...</p>;
         }
