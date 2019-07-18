@@ -39,7 +39,7 @@ class UserAPI {
 
     // Updates the current user (not do NOT update uid since it is really a primary key)
     // uid doc field in firestore should only be messed with on create
-    static updateCurrent =  (user) => {
+    static updateCurrent = (user) => {
         console.log(`trying to update user in fb and auth: ${user}`);
         return new Promise(async (resolve, reject) => {
             const db = Util.getFirestoreDB();
@@ -50,77 +50,63 @@ class UserAPI {
                 displayName: `${user.firstName} ${user.lastName}`,
                 photoURL: user.photoURL,
             })
-            .then(() => {
-                console.log("Auth Profile for User successfully updated!");
-                // update
-                // Note: DO NOT update claimns since that can only be done by admin
-                db.collection('users').doc(user.id).set({
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    displayName: `${user.firstName} ${user.lastName}`,
-                    phoneNumber: user.phoneNumber,
-                    email: user.email.toLowerCase(),
-                    photoURL: user.photoURL ? user.photoURL : ""    
-                },{ merge: true }).then(() => {
+                .then(() => {
+                    console.log("Auth Profile for User successfully updated!");
+                    // update
+                    // Note: DO NOT update claimns since that can only be done by admin
+                    db.collection('users').doc(user.id).set({
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        displayName: `${user.firstName} ${user.lastName}`,
+                        phoneNumber: user.phoneNumber,
+                        email: user.email.toLowerCase(),
+                        photoURL: user.photoURL ? user.photoURL : ""
+                    }, { merge: true }).then(() => {
+                        console.log("completed");
+                        resolve();
+                    }).catch(err => {
+                        console.error(`error updating user: ${err}`);
+                        reject(err);
+                    });
+                })
+                .catch(err => {
                     console.log("completed");
-                    resolve();
-                }).catch(err => {
-                    console.error(`error updating user: ${err}`);
                     reject(err);
                 });
-            })
-            .catch(err => {
-                console.log("completed");
-                reject(err);
-            });
         });
     }
 
     // This calls the backend to allow admins to create an auth user securely abd not change login
     static createAuthUser = (authUser) => {
-        return(Util.apiPost("/api/auth/createUser", authUser));
+        return (Util.apiPost("/api/auth/createUser", authUser));
     }
 
     // Adds a user that has been authroized to the firestore collection
     // If userInfo is passed, add all that, otherwise, just add info from authUser 
-    static addAuthUserToFirestore = (authUser, userInfo) => {
+    static addAuthUserToFirestore = (authUser, company, location) => {
         // get first and last name from authUser display name
-        const nameArray = authUser.user.displayName.split(" ");    
+        const nameArray = authUser.user.displayName.split(" ");
         let user = {};
 
-        // check if userInfo exists and set accordingly
-        // e.g. this funcxtion is ploymorphic so it can handle setting lots of userInfo or just seeding the firestore collection
-        if (userInfo) {
-            user = {
-                displayName: `${userInfo.firstName} ${userInfo.firstName}`,
-                firstName: userInfo.firstName,
-                lastName: userInfo.lastName,
-                phoneNumber: userInfo.phoneNumber,
-                uid: authUser.user.uid,
-                email: userInfo.email.toLowerCase(),
-                photoURL: userInfo.photoURL
-            };
-        } else {
-            user = {
-                displayName: authUser.user.displayName,
-                firstName: nameArray.length > 0 ? nameArray[0] : "",
-                lastName: nameArray.length > 1 ? nameArray[1] : "",
-                phoneNumber: authUser.user.phoneNumber ? authUser.user.phoneNumber : "",
-                uid: authUser.user.uid,
-                email: authUser.user.email.toLowerCase(),
-                photoURL: authUser.user.photoURL ? authUser.user.photoURL : ""
-            };
-        }
+        user = {
+            displayName: authUser.user.displayName,
+            firstName: nameArray.length > 0 ? nameArray[0] : "",
+            lastName: nameArray.length > 1 ? nameArray[1] : "",
+            phoneNumber: authUser.user.phoneNumber ? authUser.user.phoneNumber : "",
+            uid: authUser.user.uid,
+            email: authUser.user.email.toLowerCase(),
+            photoURL: authUser.user.photoURL ? authUser.user.photoURL : ""
+        };
 
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
 
             // TODO: Change path to user
-            let docRef = db.collection("users").doc(authUser.user.uid);
+            let docRef = db.collection(company).doc(location).collection("users").doc(authUser.user.uid);
             docRef.get().then((doc) => {
                 if (doc.exists) {
                     // update
-                    db.collection('users').doc(authUser.user.uid).update({
+                   docRef.update({
                         displayName: user.displayName,
                         firstName: user.firstName,
                         lastName: user.lastName,
@@ -128,16 +114,16 @@ class UserAPI {
                         uid: user.uid,
                         email: user.email,
                         photoURL: user.photoURL
-                    },{ merge: true }).then((doc) => {
+                    }, { merge: true }).then((doc) => {
                         console.log("Document updated with ID: ", doc.id);
                         resolve(doc.id);
                     }).catch(err => {
                         console.error(`Error creating user from authUser: ${err}`);
-                        reject(`Error in addAuthUserToFirestore.update creating user from authUser: ${err}`);    
+                        reject(`Error in addAuthUserToFirestore.update creating user from authUser: ${err}`);
                     });
                 } else {
                     // cretae if not existing
-                    db.collection('users').doc(authUser.user.uid).set({
+                    docRef.set({
                         displayName: user.displayName,
                         firstName: user.firstName,
                         lastName: user.lastName,
@@ -150,7 +136,7 @@ class UserAPI {
                         resolve(authUser.user.uid);
                     }).catch(err => {
                         console.error(`error creating user from authUser: ${err}`);
-                        reject(`error in addAuthUserToFirestore.add creating user from authUser: ${err}`);    
+                        reject(`error in addAuthUserToFirestore.add creating user from authUser: ${err}`);
                     });
                 }
             }).catch(err => {
@@ -240,10 +226,10 @@ class UserAPI {
                 if (doc.exists) {
                     // update
                     let user = doc.data();
-                    return(resolve(user));
+                    return (resolve(user));
                 }
                 console.log("User not found in firestore");
-                return(resolve());
+                return (resolve());
             }).catch(err => {
                 reject(`Error getting user in UserAPI.get ${err}`);
             });
@@ -255,27 +241,27 @@ class UserAPI {
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
             Util.apiPost(`/api/auth/deleteUser/${uid}`, {
-                    id: uid
-                }).then(() => {
-                    console.log("Auth for User successfully deleted!");
-                    db.collection("users").doc(uid).delete().then(() => {
-                        console.log("Firestore User successfully deleted!");
-                        return resolve();
-                    }).catch((err) => {
-                        console.error("Error deleting firestor user ", err);
-                        return reject(err);
-                    });
+                id: uid
+            }).then(() => {
+                console.log("Auth for User successfully deleted!");
+                db.collection("users").doc(uid).delete().then(() => {
+                    console.log("Firestore User successfully deleted!");
+                    return resolve();
                 }).catch((err) => {
-                    console.error("Error deleting auth user ", err);
+                    console.error("Error deleting firestor user ", err);
                     return reject(err);
                 });
+            }).catch((err) => {
+                console.error("Error deleting auth user ", err);
+                return reject(err);
+            });
 
         });
     }
 
     // Update Existing user
     // NOTE: - I purposely do not update uid since that is essentially the primary key
-    static update =  (user) => {
+    static update = (user) => {
         console.log(`trying to update user in firestore: ${user}`);
         return new Promise(async (resolve, reject) => {
             const db = Util.getFirestoreDB();
@@ -289,8 +275,8 @@ class UserAPI {
                 displayName: `${user.firstName} ${user.lastName}`,
                 phoneNumber: user.phoneNumber,
                 email: user.email.toLowerCase(),
-                photoURL: user.photoURL ? user.photoURL : ""    
-            },{ merge: true }).then(() => {
+                photoURL: user.photoURL ? user.photoURL : ""
+            }, { merge: true }).then(() => {
                 resolve();
             }).catch(err => {
                 console.error(`error updating user: ${err}`);
@@ -312,7 +298,7 @@ class UserAPI {
             id: uid
         }));
     }
-    
+
     // Make user a cashier - returns a promise 
     static makeCashier = (uid) => {
         return (Util.apiPost(`/api/auth/setCashier/${uid}`, {
@@ -325,8 +311,8 @@ class UserAPI {
         return (Util.apiPost(`/api/auth/setUser/${uid}`, {
             id: uid
         }));
-    }    
-    
+    }
+
 }
 
 export default UserAPI;
