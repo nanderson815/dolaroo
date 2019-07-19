@@ -236,14 +236,18 @@ class UserAPI {
 
             // then get from firestore
             let docRef = db.collectionGroup("users").where("uid","==", id);
-            docRef.get().then((doc) => {
-                if (doc.exists) {
-                    // update
-                    let user = doc.data();
-                    return (resolve(user));
-                }
-                console.log("User not found in firestore");
-                return (resolve());
+            docRef.get().then((snap) => {
+                snap.forEach(doc => {
+                    if (doc.exists) {
+                        console.log(doc.data())
+                        // update
+                        let user = doc.data();
+                        return (resolve(user));
+                    }
+                    console.log("User not found in firestore");
+                    return (resolve());
+                })
+                
             }).catch(err => {
                 reject(`Error getting user in UserAPI.get ${err}`);
             });
@@ -292,19 +296,23 @@ class UserAPI {
             // we always want uid = id to keep auth and firestore in sync
             // Do NOT update isAdmin, isCashier etc.  or claims i- only change claims through auth
             // (unless using just user or noAuth since those are not *secure*)
-            db.collectionGroup('users').doc(user.id).set({
-                firstName: user.firstName,
-                lastName: user.lastName,
-                displayName: `${user.firstName} ${user.lastName}`,
-                phoneNumber: user.phoneNumber,
-                email: user.email.toLowerCase(),
-                photoURL: user.photoURL ? user.photoURL : ""
-            }, { merge: true }).then(() => {
-                resolve();
-            }).catch(err => {
-                console.error(`error updating user: ${err}`);
-                reject(err);
-            });
+            db.collectionGroup('users').where("uid", "==", user.id).get()
+                .then((snap) => {
+                    let docPath = snap.docs[0].ref.path
+                    db.doc(docPath).set({
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        displayName: `${user.firstName} ${user.lastName}`,
+                        phoneNumber: user.phoneNumber,
+                        email: user.email.toLowerCase(),
+                        photoURL: user.photoURL ? user.photoURL : ""
+                    }, { merge: true }).then(() => {
+                        resolve();
+                    }).catch(err => {
+                        console.error(`error updating user: ${err}`);
+                        reject(err);
+                    });
+                })
         });
     }
 
