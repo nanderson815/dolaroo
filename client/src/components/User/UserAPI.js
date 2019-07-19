@@ -18,7 +18,7 @@ class UserAPI {
             Util.getCurrentAuthUser().then(autUser => {
                 const uid = autUser.uid;
                 // then get from firestore
-                let docRef = db.collection("users").doc(uid);
+                let docRef = db.collectionGroup("users").doc(uid);
                 docRef.get().then((doc) => {
                     if (doc.exists) {
                         // update
@@ -54,7 +54,7 @@ class UserAPI {
                     console.log("Auth Profile for User successfully updated!");
                     // update
                     // Note: DO NOT update claimns since that can only be done by admin
-                    db.collection('users').doc(user.id).set({
+                    db.collectionGroup('users').doc(user.id).set({
                         firstName: user.firstName,
                         lastName: user.lastName,
                         displayName: `${user.firstName} ${user.lastName}`,
@@ -95,25 +95,28 @@ class UserAPI {
             phoneNumber: authUser.user.phoneNumber ? authUser.user.phoneNumber : "",
             uid: authUser.user.uid,
             email: authUser.user.email.toLowerCase(),
-            photoURL: authUser.user.photoURL ? authUser.user.photoURL : ""
+            photoURL: authUser.user.photoURL ? authUser.user.photoURL : "",
+            location: location,
+            company: company
         };
 
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
 
-            // TODO: Change path to user
             let docRef = db.collection(company).doc(location).collection("users").doc(authUser.user.uid);
             docRef.get().then((doc) => {
                 if (doc.exists) {
                     // update
-                   docRef.update({
+                    docRef.update({
                         displayName: user.displayName,
                         firstName: user.firstName,
                         lastName: user.lastName,
                         phoneNumber: user.phoneNumber,
                         uid: user.uid,
                         email: user.email,
-                        photoURL: user.photoURL
+                        photoURL: user.photoURL,
+                        location: user.location,
+                        company: user.company
                     }, { merge: true }).then((doc) => {
                         console.log("Document updated with ID: ", doc.id);
                         resolve(doc.id);
@@ -130,7 +133,9 @@ class UserAPI {
                         phoneNumber: user.phoneNumber,
                         uid: user.uid,
                         email: user.email,
-                        photoURL: user.photoURL
+                        photoURL: user.photoURL,
+                        location: user.location,
+                        company: user.company
                     }).then(() => {
                         console.log("Document added with ID: ", authUser.user.uid);
                         resolve(authUser.user.uid);
@@ -191,7 +196,7 @@ class UserAPI {
             // then get from firestore
             let user = {};
             let foundUser = false;
-            let docRef = db.collection("users").where("email", "==", email.toLowerCase()).limit(1);
+            let docRef = db.collectionGroup("users").where("email", "==", email.toLowerCase()).limit(1);
             docRef.get().then((querySnapshot) => {
                 querySnapshot.forEach(doc => {
                     foundUser = true;
@@ -221,7 +226,7 @@ class UserAPI {
             const db = Util.getFirestoreDB();
 
             // then get from firestore
-            let docRef = db.collection("users").doc(id);
+            let docRef = db.collectionGroup("users").doc(id);
             docRef.get().then((doc) => {
                 if (doc.exists) {
                     // update
@@ -244,7 +249,7 @@ class UserAPI {
                 id: uid
             }).then(() => {
                 console.log("Auth for User successfully deleted!");
-                db.collection("users").doc(uid).delete().then(() => {
+                db.collectionGroup("users").doc(uid).delete().then(() => {
                     console.log("Firestore User successfully deleted!");
                     return resolve();
                 }).catch((err) => {
@@ -269,7 +274,7 @@ class UserAPI {
             // we always want uid = id to keep auth and firestore in sync
             // Do NOT update isAdmin, isCashier etc.  or claims i- only change claims through auth
             // (unless using just user or noAuth since those are not *secure*)
-            db.collection('users').doc(user.id).set({
+            db.collectionGroup('users').doc(user.id).set({
                 firstName: user.firstName,
                 lastName: user.lastName,
                 displayName: `${user.firstName} ${user.lastName}`,
@@ -283,6 +288,13 @@ class UserAPI {
                 reject(err);
             });
         });
+    }
+
+    // Set company and location
+    static setCompanyLocation = (uid, company, location) => {
+        return (Util.apiPost(`/api/auth/setLocation/${uid}/${company}/${location}`, {
+            id: uid
+        }));
     }
 
     // Make user an Admin user - returns a promise 

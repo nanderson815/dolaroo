@@ -16,7 +16,7 @@ class UserDB {
             if (authClaims && authClaims.user != null) updateFields.isUser = authClaims.user;
 
             // update claims
-            db.collection('users').doc(uid).set(updateFields,
+            db.collectionGroup('users').doc(uid).set(updateFields,
                 { merge: true }
             ).then(() => {
                 resolve();

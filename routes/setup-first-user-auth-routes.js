@@ -23,8 +23,8 @@ module.exports = function (app) {
         // check if user has submitted a password as request param. 
         if (password === "testPassword") {
             let firstUserClaims = {
-                [company]: true,
-                [loc]: true,
+                company: company,
+                location: loc,
                 admin: true,
                 cashier: false,
                 user: false,
@@ -47,6 +47,10 @@ module.exports = function (app) {
             if (authClaims && authClaims.admin != null) updateFields.isAdmin = authClaims.admin;
             if (authClaims && authClaims.cashier != null) updateFields.isCashier = authClaims.cashier;
             if (authClaims && authClaims.user != null) updateFields.isUser = authClaims.user;
+            if (authClaims && authClaims.company != null) updateFields.company = authClaims.company;
+            if (authClaims && authClaims.location != null) updateFields.location = authClaims.location;
+
+
 
             // update claims
             db.collection(company).doc(location).collection("users").doc(uid).set(updateFields,

@@ -22,6 +22,7 @@ class Users extends React.Component {
         // Get with security
         UserAPI.getUsers()
         .then(users => {
+            console.log(users)
             for (let i in users) {
                 users[i].firstName = users[i].firstName || "First";
                 users[i].lastName = users[i].lastName || "Last";
@@ -41,7 +42,7 @@ class Users extends React.Component {
         this.refreshPage();
     }
 
-    // Delete this article from MongoDB
+    // Delete user
     userDelete = (id) => {
         UserAPI.delete( id )
         .then(res => {

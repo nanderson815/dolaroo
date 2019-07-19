@@ -14,7 +14,9 @@ class AuthUserAPI {
                     admin: user.customClaims && user.customClaims.admin ? user.customClaims.admin : false,
                     cashier: user.customClaims && user.customClaims.cashier ? user.customClaims.cashier : false,
                     banker: user.customClaims && user.customClaims.banker ? user.customClaims.banker : false,
-                    user: user.customClaims && user.customClaims.user ? user.customClaims.user : false
+                    user: user.customClaims && user.customClaims.user ? user.customClaims.user : false,
+                    location: user.customClaims && user.customClaims.location ? user.customClaims.location : false,
+                    company: user.customClaims && user.customClaims.location ? user.customClaims.company : false
                 };
                 resolve(customClaims);
             }).catch(err => {
@@ -22,7 +24,9 @@ class AuthUserAPI {
                     admin: false,
                     cashier: false,
                     banker: false,
-                    user: false
+                    user: false,
+                    location: false,
+                    company: false
                 };
                 resolve(customClaims);
             });
@@ -40,6 +44,8 @@ class AuthUserAPI {
             if (customClaims && customClaims.cashier != null) updatedClaims.cashier = customClaims.cashier;
             if (customClaims && customClaims.banker != null) updatedClaims.banker = customClaims.banker;
             if (customClaims && customClaims.user != null) updatedClaims.user = customClaims.user;
+            if (customClaims && customClaims.location != null) updatedClaims.location = customClaims.location;
+            if (customClaims && customClaims.company != null) updatedClaims.company = customClaims.company;
 
             // The name is the *primary* role as someone can be admin and banker for example
             if (updatedClaims.admin) {
