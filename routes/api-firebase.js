@@ -2,6 +2,9 @@ const admin = require("../middleware/authServerCommon");
 const requiresLogin = require('../middleware/requiresLogin.js');
 const db = admin.firestore();;
 
+// Change to be unique to company.
+let company = "testCompany"
+
 let deposits = [];
 let depositsArchive = [];
 let cash = [];
@@ -9,8 +12,8 @@ let credit = [];
 
 console.log("I ran");
 
-// Get all deposits on load
-db.collection("deposits").onSnapshot((querySnapshot) => {
+// Get all deposits from this company only on load
+db.collectionGroup("deposits").where("company", "==", company).onSnapshot((querySnapshot) => {
     deposits = [];
     querySnapshot.forEach(doc => {
         let deposit = {};
@@ -22,7 +25,7 @@ db.collection("deposits").onSnapshot((querySnapshot) => {
 }, (err) => console.log(err));
 
 // Get all archived deposits on load
-db.collection("depositsarchive").onSnapshot((querySnapshot) => {
+db.collectionGroup("depositsarchive").where("company", "==", company).onSnapshot((querySnapshot) => {
     depositsArchive = [];
     querySnapshot.forEach(doc => {
         let deposit = {};
@@ -34,7 +37,7 @@ db.collection("depositsarchive").onSnapshot((querySnapshot) => {
 }, (err) => console.log(err));
 
 // Get balances over time
-db.collection("cash").onSnapshot(querySnapshot => {
+db.collectionGroup("cash").where("company", "==", company).onSnapshot((querySnapshot) => {
     cash = [];
     querySnapshot.forEach(doc => {
         let total = {};
@@ -46,7 +49,7 @@ db.collection("cash").onSnapshot(querySnapshot => {
 }, (err) => console.log(err));
 
 // Get credit over time
-db.collection("credit").onSnapshot(querySnapshot => {
+db.collectionGroup("credit").where("company", "==", company).onSnapshot((querySnapshot) => {
     credit = [];
     querySnapshot.forEach(doc => {
         let total = {};
@@ -66,7 +69,7 @@ module.exports = function (app) {
         console.error(`Error: ${err}`);
         res.status(401).json(`Auth Error Caught in Server: ${err}`);
     });
-    
+
     // Send all deposits
     app.get("/api/firestore/deposits", requiresLogin, (req, res) => {
         res.json(deposits);
