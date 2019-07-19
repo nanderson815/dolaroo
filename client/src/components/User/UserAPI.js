@@ -259,12 +259,20 @@ class UserAPI {
             }).then(() => {
                 console.log("Auth for User successfully deleted!");
                 // Below needs to be fixed.
-                db.collectionGroup("users").where("uid", "==", uid).delete().then(() => {
-                    console.log("Firestore User successfully deleted!");
-                    return resolve();
-                }).catch((err) => {
-                    console.error("Error deleting firestor user ", err);
-                    return reject(err);
+                let docRef = db.collectionGroup("users").where("uid", "==", uid);
+                docRef.get().then((snap) => {
+                    let docPath
+                    snap.forEach(doc => {
+                        docPath = doc.ref.path
+                    })
+                    db.doc(docPath).delete().then(()=>{
+                        console.log("Firestore User successfully deleted!");
+                        return resolve();
+                    }).catch((err) => {
+                        console.error("Error deleting firestor user ", err);
+                        return reject(err);
+                    })
+
                 });
             }).catch((err) => {
                 console.error("Error deleting auth user ", err);

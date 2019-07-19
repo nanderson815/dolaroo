@@ -115,7 +115,7 @@ module.exports = function (app) {
         }
     }); // Route
 
-    app.post("/api/auth/setLocation/:uid/:company/:location", (req, res) => {
+    app.post("/api/auth/setLocation/:uid/:company/:location", requiresLogin, (req, res) => {
         let uid = req.params.uid;
         let loc = req.params.location;
         let company = req.params.company
