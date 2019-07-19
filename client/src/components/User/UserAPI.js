@@ -165,7 +165,7 @@ class UserAPI {
         return new Promise((resolve, reject) => {
             const db = Util.getFirestoreDB();
 
-            db.collection("users").get().then((querySnapshot) => {
+            db.collectionGroup("users").get().then((querySnapshot) => {
                 let users = [];
                 querySnapshot.forEach(doc => {
                     let user = {};
