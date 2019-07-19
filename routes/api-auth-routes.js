@@ -121,7 +121,7 @@ module.exports = function (app) {
         let company = req.params.company
         try {
             // Authorize the current user
-            // if (req.user && !!req.user.admin) {
+            if (req.user && !!req.user.admin) {
                 // set the claim for the user who's uid is passed
                 // Note, this is the uid of the user to make admin (NOT the auth users uid)
                 AuthUserAPI.setClaims(uid, {
@@ -135,9 +135,9 @@ module.exports = function (app) {
                         res.status(500).json(`Error caught in "await UserDB.updateClaims" ${err}`);
                     }
                 });
-            // } else {
-            //     res.status(401).json(`Must be admin to make someone banker..."`);
-            // }
+            } else {
+                res.status(401).json(`Must be admin to make someone banker..."`);
+            }
         } catch (err) {
             // catch all error
             res.status(500).json(`Error caught in route app.post("//api/auth/setBanker/:uid..." ${err}`);
