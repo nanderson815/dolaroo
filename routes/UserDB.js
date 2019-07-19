@@ -3,11 +3,11 @@ const admin = require("../middleware/authServerCommon");
 
 // Backend functions for user DB in firestore and auth
 class UserDB {
-    static updateClaims (uid, claims, authClaims) {
+    static updateClaims(uid, claims, authClaims) {
         return new Promise(async (resolve, reject) => {
             const db = admin.firestore();
             // Init claims for primary since you can be multiple
-            let updateFields = {claims: claims};
+            let updateFields = { claims: claims };
 
             // Only *set* claims passed
             if (authClaims && authClaims.admin != null) updateFields.isAdmin = authClaims.admin;
@@ -16,18 +16,27 @@ class UserDB {
             if (authClaims && authClaims.user != null) updateFields.isUser = authClaims.user;
 
             // update claims
-            db.collectionGroup('users').doc(uid).set(updateFields,
-                { merge: true }
-            ).then(() => {
-                resolve();
-            }).catch(err => {
-                console.error(`Error updating claims in UserDB: ${err}`);
-                reject(err);
-            });
+            let ref = db.collectionGroup("users").where("uid", "==", uid).get()
+            ref.then(snap => {
+                let docPath
+                snap.docs.forEach(doc => {
+                    console.log(doc.ref.path)
+                    docPath = doc.ref.path
+
+                    db.doc(docPath).set(updateFields,
+                        { merge: true }
+                    ).then(() => {
+                        resolve();
+                    }).catch(err => {
+                        console.error(`Error updating claims in UserDB: ${err}`);
+                        reject(err);
+                    });
+                })
+            })
         });
     }
 
-    static update (user) {
+    static update(user) {
         console.log(`trying to update user in fb: ${user}`);
         return new Promise(async (resolve, reject) => {
             const db = admin.firestore();;
@@ -42,14 +51,14 @@ class UserDB {
                 email: user.email,
                 photoURL: user.photoURL ? user.photoURL : ""
             }, {
-                merge: true
-            }).then(() => {
-                console.log("completed");
-                resolve();
-            }).catch(err => {
-                console.error(`error updating user: ${err}`);
-                reject(err);
-            });
+                    merge: true
+                }).then(() => {
+                    console.log("completed");
+                    resolve();
+                }).catch(err => {
+                    console.error(`error updating user: ${err}`);
+                    reject(err);
+                });
         });
     }
 }
