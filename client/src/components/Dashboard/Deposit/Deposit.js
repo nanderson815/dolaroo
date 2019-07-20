@@ -117,9 +117,10 @@ class Deposit extends React.Component {
     updateDatabase = () => {
         const db = Util.getFirestoreDB();
         let company = 'testCompany'
+        let location = 'location1'
         let amount = this.state.amount
 
-        db.collection(company).doc('location1').collection('deposits').add({
+        db.collection(company).doc(location).collection('deposits').add({
             amount: amount,
             ones: this.state.ones,
             fives: this.state.fives,
@@ -131,7 +132,8 @@ class Deposit extends React.Component {
             email: this.props.user.authUser.email,
             uid: this.props.user.authUser.uid,
             awaitingSettlement: false,
-            company: company
+            company: company,
+            location: location
         }).catch(function (error) {
             alert("Deposit Failed: ", error);
         });

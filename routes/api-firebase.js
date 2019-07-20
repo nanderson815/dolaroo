@@ -71,7 +71,7 @@ module.exports = function (app) {
         res.status(401).json(`Auth Error Caught in Server: ${err}`);
     });
 
-    // Send all deposits
+    // Send all safe deposits
     app.get("/api/firestore/deposits", requiresLogin, (req, res) => {
         res.json(deposits);
     });
@@ -79,6 +79,12 @@ module.exports = function (app) {
     // Send all archived deposits
     app.get("/api/firestore/depositsArchive", requiresLogin, (req, res) => {
         res.json(depositsArchive);
+    });
+
+    // Send all deposts
+    app.get("/api/firestore/allDeposits", requiresLogin, (req, res) => {
+        let allDeposits = deposits.concat(depositsArchive);
+        res.json(allDeposits);
     });
 
     // Send all cash

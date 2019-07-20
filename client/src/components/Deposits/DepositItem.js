@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const SimpleExpansionPanel = (props) => {
+    console.log(props)
     // decontruct props
     const {
         amount,
@@ -25,8 +26,8 @@ const SimpleExpansionPanel = (props) => {
         hundreds,
         time,
         email,
-        firstName,
-        lastName,
+        company,
+        location,
         awaitingSettlement,
         settled
     } = props.deposit;
@@ -54,7 +55,7 @@ const SimpleExpansionPanel = (props) => {
                 </Tooltip>
 
                 <Typography className="col s5 m3">{dateTime}</Typography>
-                <Typography className="col s6 m4">{`${firstName} ${lastName} (${email})`}</Typography>
+                <Typography className="col s6 m4">{`${company} | ${location} | ${email}`}</Typography>
                 <Typography
                     className="col s12 m2 offset-m2">
                     ${amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}

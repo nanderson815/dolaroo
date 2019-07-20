@@ -41,7 +41,7 @@ class DepositList extends React.Component {
 
     getDeposits = () => {
         // Get with security
-        Util.apiGet("/api/banker/allDeposits")
+        Util.apiGet("/api/firestore/allDeposits")
             .then(res => {
                 let allDeposits = res.data;
                 let sortedByDate = allDeposits.sort((a, b) => {
