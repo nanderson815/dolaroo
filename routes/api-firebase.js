@@ -12,6 +12,7 @@ let credit = [];
 
 console.log("I ran");
 
+
 // Get all deposits from this company only on load
 db.collectionGroup("deposits").where("company", "==", company).onSnapshot((querySnapshot) => {
     deposits = [];
