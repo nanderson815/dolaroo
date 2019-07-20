@@ -43,8 +43,6 @@ class ProvisionalCreditOverTime extends React.Component {
 
         let lines = [];
 
-        console.log(this.props.balance);
-
         let combiedData = this.props.balance.filter(data => data.time);
 
         
