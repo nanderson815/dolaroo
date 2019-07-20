@@ -118,7 +118,7 @@ class Deposit extends React.Component {
         const db = Util.getFirestoreDB();
         let company = 'testCompany'
         let amount = this.state.amount
-        
+
         db.collection(company).doc('location1').collection('deposits').add({
             amount: amount,
             ones: this.state.ones,
@@ -139,7 +139,9 @@ class Deposit extends React.Component {
         db.collection('testCompany').doc('location1').collection('credit').add({
             balance: this.state.credit + this.state.pendingCredit + amount * .975,
             time: new Date(),
-            uid: this.props.user.authUser.uid
+            uid: this.props.user.authUser.uid,
+            company: "testCompany",
+            location: "location1"
         });
 
         // db.collection('credit').doc('balance').update({
@@ -148,7 +150,9 @@ class Deposit extends React.Component {
         db.collection('testCompany').doc('location1').collection('cash').add({
             balance: this.state.cash + amount,
             time: new Date(),
-            uid: this.props.user.authUser.uid
+            uid: this.props.user.authUser.uid,
+            company: "testCompany",
+            location: "location1"
         });
 
         // db.collection('cash').doc('balance').update({
