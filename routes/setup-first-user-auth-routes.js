@@ -5,13 +5,14 @@ const admin = require("../middleware/authServerCommon");
 
 module.exports = function (app) {
 
+    // Get custom claims
     app.get("/setFirstUser/setCustomClaims/:uid", (req, res) => {
         uid = req.params.uid
 
-        admin.auth().getUser(uid).then((userRecord) =>{
+        admin.auth().getUser(uid).then((userRecord) => {
             res.json(userRecord.customClaims)
-        });
-       
+        }).catch(err => res.json(err));
+
     });
 
     app.post("/setFirstUser/setCustomClaims/:uid/:company/:loc/:pass", (req, res) => {
@@ -33,7 +34,7 @@ module.exports = function (app) {
                 updateClaims(uid, company, loc, firstUserClaims)
                 res.json(uid)
             })
-            
+
         }
     });
 

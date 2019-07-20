@@ -158,16 +158,19 @@ class UserForm extends React.Component {
           }).catch(err => {
             this.setState({ message: err.message });
           });
+
+          UserAPI.setCompanyLocation(authUser.user.uid, 'testCompany', this.state.userLocation).then(() => {
+            console.log("custom claims added.")
+          })
+
         }).catch(err => {
           this.setState({ message: `Error adding user ${err}` });
         });
         // now add user to location field
-        UserAPI.addAuthUserToLocation(authUser, "testCompany", this.state.userLocation).then(()=>{
-          console.log("user added to location.")
-        })
-        UserAPI.setCompanyLocation(authUser.user.uid, 'testCompany', this.state.userLocation).then(() => {
-          console.log("custom claims added.")
-        })
+        // UserAPI.addAuthUserToLocation(authUser, "testCompany", this.state.userLocation).then(()=>{
+        //   console.log("user added to location.")
+        // })
+        
       })
       .catch(err => {
         this.setState({ message: `Error adding user ${err}` });
