@@ -118,7 +118,7 @@ class Deposit extends React.Component {
         const db = Util.getFirestoreDB();
         let company = 'testCompany'
         let amount = this.state.amount
-
+        
         db.collection(company).doc('location1').collection('deposits').add({
             amount: amount,
             ones: this.state.ones,

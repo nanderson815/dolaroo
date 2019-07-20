@@ -8,10 +8,8 @@ import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 class DepositByAll extends React.Component {
 
 
-
     plotDeposits = () => {
         let combinedData = this.props.deposits.concat(this.props.depositsArchive);
-        
         let ones = combinedData.map(deposit => deposit.ones).reduce((total, currentValue) => total + currentValue, 0);
         let fives = combinedData.map(deposit => deposit.fives).reduce((total, currentValue) => total + currentValue, 0);
         let tens = combinedData.map(deposit => deposit.tens).reduce((total, currentValue) => total + currentValue, 0);
@@ -19,6 +17,7 @@ class DepositByAll extends React.Component {
         let fifties = combinedData.map(deposit => deposit.fifties).reduce((total, currentValue) => total + currentValue, 0);
         let hundreds = combinedData.map(deposit => deposit.hundreds).reduce((total, currentValue) => total + currentValue, 0);
 
+        console.log(ones);
         // delays props and solves errors
         if (!ones) {
             return null;
