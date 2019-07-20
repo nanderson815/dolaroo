@@ -19,6 +19,7 @@ db.collectionGroup("deposits").where("company", "==", company).onSnapshot((query
     querySnapshot.forEach(doc => {
         let deposit = {};
         deposit = doc.data();
+        console.log(deposit);
         deposit.id = doc.id;
         deposit.time = deposit.time.toDate();
         deposits.push(deposit);
