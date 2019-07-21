@@ -19,7 +19,7 @@ import Banker from '../Banker/Banker';
 import Prospects from '../Banker/Prospects';
 
 // Auth components
-import SignUpForm from '../Auth/SignUp/SignUp';
+// import SignUpForm from '../Auth/SignUp/SignUp';
 import SignInForm from '../Auth/SignIn/SignIn';
 import PasswordForgetPage from '../Auth/PasswordForget/PasswordForget';
 
@@ -34,7 +34,7 @@ class App extends React.Component {
         <div>
           <Navigation />
           <Route exact path="/" component={LandingPage} />
-          <Route exact path="/signup" component={SignUpForm} />
+          {/* <Route exact path="/signup" component={SignUpForm} /> */}
           <Route exact path="/signin" component={SignInForm} />
           <Route exact path="/pw-forget" component={PasswordForgetPage} />
           <Route exact path="/dashboard" component={HomePage} />

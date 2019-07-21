@@ -38,6 +38,7 @@ db.collectionGroup("depositsarchive").where("company", "==", company).onSnapshot
     });
 }, (err) => console.log(err));
 
+
 // Get balances over time
 db.collectionGroup("cash").where("company", "==", company).onSnapshot((querySnapshot) => {
     cash = [];
