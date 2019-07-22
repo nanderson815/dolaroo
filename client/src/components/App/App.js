@@ -17,7 +17,6 @@ import Register from '../Register/Register';
 import DepositList from '../Deposits/DepositsList';
 import Banker from '../Banker/Banker';
 import Prospects from '../Banker/Prospects';
-import Data from '../Dashboard/Data/firebaseData';
 
 // Auth components
 // import SignUpForm from '../Auth/SignUp/SignUp';
@@ -38,10 +37,7 @@ class App extends React.Component {
           {/* <Route exact path="/signup" component={SignUpForm} /> */}
           <Route exact path="/signin" component={SignInForm} />
           <Route exact path="/pw-forget" component={PasswordForgetPage} />
-          <Route
-            path='/dashboard'
-            render={(props) => <HomePage {...props} data={Data} />}
-          />
+          <Route exact path="/dashboard" component={HomePage} />
           <Route exact path="/account" component={Account} />
           <Route exact path="/admin" component={Admin} />
           <Route exact path="/payment" component={Payment} />
