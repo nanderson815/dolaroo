@@ -13,6 +13,7 @@ import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Util from '../Util/Util';
+import Data from "./Data/firebaseData"
 
 class Home extends React.Component {
     state = {
@@ -28,7 +29,8 @@ class Home extends React.Component {
 
 
     componentDidMount() {
-        console.log(this.props.data)
+        console.log(Data)
+        
         this._mounted = true;
         this.setState({ loadingFlag: true })
 
