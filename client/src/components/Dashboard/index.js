@@ -26,8 +26,9 @@ class Home extends React.Component {
         loadingFlag: false
     }
 
+
     componentDidMount() {
-        console.log(this.props.user.authUser)
+        console.log(this.props.data)
         this._mounted = true;
         this.setState({ loadingFlag: true })
 
@@ -68,7 +69,6 @@ class Home extends React.Component {
 
         Util.apiGet("/api/firestore/deposits")
             .then(res => {
-                console.log(res.data);
                 if (this._mounted) {
                     this.setState({ deposits: res.data })
                 }
