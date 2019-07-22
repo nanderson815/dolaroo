@@ -13,7 +13,10 @@ import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Util from '../Util/Util';
-import Data from "./Data/firebaseData"
+
+let db = Util.getFirestoreDB()
+let company = "testCompany"
+let rate = .975
 
 class Home extends React.Component {
     state = {
@@ -29,65 +32,51 @@ class Home extends React.Component {
 
 
     componentDidMount() {
-        console.log(Data)
-        
+
         this._mounted = true;
-        this.setState({ loadingFlag: true })
+        this.setState({
+            loadingFlag: true
+        })
 
-        Util.apiGet("/api/firestore/cash")
-            .then(res => {
-                if (this._mounted) {
-                    this.setState({ cashHistory: res.data })
-                }
-            })
-            .catch(err => console.error(err));
+        // Get all deposits from this company only on load
+        db.collectionGroup("deposits").where("company", "==", company).onSnapshot((querySnapshot) => {
+            let deposits = [];
+            let cash = 0;
+            let credit = 0;
+            querySnapshot.forEach(doc => {
+                let deposit = {};
+                deposit = doc.data();
+                deposit.id = doc.id;
+                deposit.time = deposit.time.toDate();
+                deposits.push(deposit);
+                cash += deposit.amount
+                credit += deposit.amount * rate
+            });
+            if (this._mounted === true) {
+                this.setState({
+                    cash, credit, deposits
+                })
+            }
+        }, (err) => console.log(err));
 
-        Util.apiGet("/api/firestore/credit")
-            .then(res => {
-                if (this._mounted) {
-                    this.setState({ creditHistory: res.data })
-                }
-            })
-            .catch(err => console.error(err));
+        // Get all archived deposits on load
+        db.collectionGroup("depositsarchive").where("company", "==", company).onSnapshot((querySnapshot) => {
+            let depositsArchive = [];
+            let pendingCredit = 0;
+            querySnapshot.forEach(doc => {
+                let deposit = {};
+                deposit = doc.data();
+                deposit.id = doc.id;
+                deposit.time = deposit.time.toDate();
+                depositsArchive.push(deposit);
+            });
 
-        Util.apiGet("/api/firestore/getSafeDeposits")
-            .then(res => {
-                if (this._mounted) {
-                    this.setState({
-                        cash: res.data,
-                        credit: res.data * .975
-                    })
-                }
-            })
-            .catch(err => console.error(err));
+            depositsArchive.forEach(tran => pendingCredit += tran.amount);
 
-        Util.apiGet("/api/firestore/depositsArchive")
-            .then(res => {
-                if (this._mounted) {
-                    this.setState({ depositsArchive: res.data })
-                }
-            })
-            .catch(err => console.error(err));
-
-        Util.apiGet("/api/firestore/deposits")
-            .then(res => {
-                if (this._mounted) {
-                    this.setState({ deposits: res.data })
-                }
-            })
-            .catch(err => console.error(err));
-
-        Util.apiGet("/api/firestore/getPendingTotal")
-            .then(res => {
-                if (this._mounted) {
-                    this.setState({
-                        pendingCredit: res.data * .975,
-                        loadingFlag: false
-                    })
-                }
-            })
-            .catch(err => console.error(err));
-
+            if (this._mounted) {
+                this.setState({ depositsArchive, pendingCredit, loadingFlag: false })
+            }
+        }, (err) => console.log(err));
     }
 
     componentWillUnmount() {
