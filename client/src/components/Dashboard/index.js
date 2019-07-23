@@ -97,7 +97,7 @@ class Home extends React.Component {
                         <div className="container">
                             <div className="row">
                                 <ProvisionalCredit credit={this.state.credit + this.state.pendingCredit} />
-                                <Balance balance={this.state.cash} disabled={this.props.user.isAdmin ? false : this.props.user.isCashier ? false : true} />
+                                <Balance balance={this.state.cash} disabled={true} />
                                 <Savings credit={this.state.credit} />
                             </div>
                             <div className="row">
