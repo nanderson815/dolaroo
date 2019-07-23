@@ -126,6 +126,8 @@ class Home extends React.Component {
                                     depositsArchive={this.state.depositsArchive}
                                 />
 
+
+                                {/* Replace with deposits by location. */}
                                 <ProvisionalCreditOverTime
                                     title={"Provisional Credit Over Time"}
                                     balance={this.state.creditHistory}
