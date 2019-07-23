@@ -14,6 +14,8 @@ import { withStyles } from '@material-ui/core/styles';
 // eslint-disable-next-line no-unused-vars
 import { CSVLink, CSVDownload } from "react-csv";
 
+let db = Util.getFirestoreDB()
+let company = "testCompany"
 
 const styles = theme => ({
     root: {
@@ -33,15 +35,52 @@ class DepositList extends React.Component {
         super(props);
 
         this.state = {
-            deposits: [
-            ]
+            deposits: [],
+            depositsArchive: []
         };
     }
 
     
     // get all on mount
     componentDidMount() {
-        this.setState({deposits: this.props.location.state.deposits });
+        this._mounted = true;
+        this.setState({
+            loadingFlag: true
+        })
+
+        // Get all deposits from this company only on load
+        db.collectionGroup("deposits").where("company", "==", company).onSnapshot((querySnapshot) => {
+            let deposits = [];
+            querySnapshot.forEach(doc => {
+                let deposit = {};
+                deposit = doc.data();
+                deposit.id = doc.id;
+                deposit.time = deposit.time.toDate();
+                deposits.push(deposit);
+            });
+            if (this._mounted === true) {
+                this.setState({
+                    deposits
+                })
+            }
+        }, (err) => console.log(err));
+
+        // Get all archived deposits on load
+        db.collectionGroup("depositsarchive").where("company", "==", company).onSnapshot((querySnapshot) => {
+            let depositsArchive = [];
+            querySnapshot.forEach(doc => {
+                let deposit = {};
+                deposit = doc.data();
+                deposit.id = doc.id;
+                deposit.time = deposit.time.toDate();
+                depositsArchive.push(deposit);
+            });
+
+
+            if (this._mounted) {
+                this.setState({ depositsArchive,  loadingFlag: false })
+            }
+        }, (err) => console.log(err));
     }
 
     render() {
@@ -57,7 +96,7 @@ class DepositList extends React.Component {
                 <div className="container">
                     <br></br>
                     <CSVLink
-                        data={this.state.deposits}
+                        data={this.state.deposits.concat(this.state.depositsArchive)}
                         filename={'dollaroo-transactions.csv'}
                         className='btn blue darken-4'
                         target="_blank"

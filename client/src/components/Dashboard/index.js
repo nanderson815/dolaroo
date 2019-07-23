@@ -13,7 +13,6 @@ import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Util from '../Util/Util';
-import Modal from '@material-ui/core/Modal';
 
 let db = Util.getFirestoreDB()
 let company = "testCompany"
