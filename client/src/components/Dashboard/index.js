@@ -32,7 +32,6 @@ class Home extends React.Component {
 
 
     componentDidMount() {
-
         this._mounted = true;
         this.setState({
             loadingFlag: true
@@ -108,12 +107,12 @@ class Home extends React.Component {
                                     depositsArchive={this.state.depositsArchive}
                                 />
 
-                                {this.props.user.isUser ? null :
-                                    <DepositByUser
-                                        title={"Deposits By User"}
-                                        deposits={this.state.deposits}
-                                        depositsArchive={this.state.depositsArchive}
-                                    />}
+                                {console.log(this.props.user.isUser)}
+                                <DepositByUser
+                                    title={"Deposits By User"}
+                                    deposits={this.state.deposits}
+                                    depositsArchive={this.state.depositsArchive}
+                                />
 
                                 <DepositBubble
                                     title={"All Deposits"}
