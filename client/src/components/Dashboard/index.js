@@ -13,6 +13,7 @@ import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Util from '../Util/Util';
+import Modal from '@material-ui/core/Modal';
 
 let db = Util.getFirestoreDB()
 let company = "testCompany"
@@ -27,7 +28,7 @@ class Home extends React.Component {
         depositsArchive: [],
         cashHistory: [],
         creditHistory: [],
-        loadingFlag: false
+        loadingFlag: false,
     }
 
 
@@ -82,6 +83,10 @@ class Home extends React.Component {
         this._mounted = false;
     }
 
+    toggleModal() {
+        let status = !this.state.modalOpen
+        this.setState({ modalOpen: status })
+    }
 
     render() {
         if (this.props.user.authUser) {
@@ -105,6 +110,7 @@ class Home extends React.Component {
                                     title={"Total Deposits By Day"}
                                     deposits={this.state.deposits}
                                     depositsArchive={this.state.depositsArchive}
+                                    toggle={this.toggleModal}
                                 />
 
                                 <DepositByUser
@@ -131,6 +137,7 @@ class Home extends React.Component {
                                     title={"Provisional Credit Over Time"}
                                     balance={this.state.creditHistory}
                                 />
+
                             </div>
                         </div>
                     }
