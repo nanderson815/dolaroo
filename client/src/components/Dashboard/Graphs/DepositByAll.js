@@ -125,8 +125,10 @@ class DepositByAll extends React.Component {
 
     // go to details
     viewDetails = () => {
+        let combiedData = this.props.deposits.concat(this.props.depositsArchive);
         this.props.history.push({
-            pathname: '/depositlist'
+            pathname: '/depositlist',
+            state: { deposits: combiedData }
         });
     }
 

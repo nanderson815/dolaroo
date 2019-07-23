@@ -33,32 +33,15 @@ class DepositList extends React.Component {
         super(props);
 
         this.state = {
-            loadingFlag: false,
             deposits: [
             ]
         };
     }
 
-    getDeposits = () => {
-        // Get with security
-        Util.apiGet("/api/firestore/allDeposits")
-            .then(res => {
-                let allDeposits = res.data;
-                let sortedByDate = allDeposits.sort((a, b) => {
-                    return (a.time < b.time) ? 1 : -1;
-                });
-                this.setState({ loadingFlag: false, deposits: sortedByDate });
-            })
-            .catch(err => {
-                console.error(err);
-                this.setState({ loadingFlag: false });
-            });
-    };
-
+    
     // get all on mount
     componentDidMount() {
-        this.setState({ loadingFlag: true });
-        this.getDeposits();
+        this.setState({deposits: this.props.location.state.deposits });
     }
 
     render() {

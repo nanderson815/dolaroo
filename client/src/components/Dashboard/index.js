@@ -107,7 +107,6 @@ class Home extends React.Component {
                                     depositsArchive={this.state.depositsArchive}
                                 />
 
-                                {console.log(this.props.user.isUser)}
                                 <DepositByUser
                                     title={"Deposits By User"}
                                     deposits={this.state.deposits}
