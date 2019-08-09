@@ -16,7 +16,6 @@ import Util from '../Util/Util';
 
 let db = Util.getFirestoreDB()
 let company = "testCompany"
-let rate = .975
 
 class Home extends React.Component {
     state = {
@@ -49,7 +48,7 @@ class Home extends React.Component {
                 deposit.time = deposit.time.toDate();
                 deposits.push(deposit);
                 cash += deposit.amount
-                credit += deposit.amount * rate
+                credit += deposit.paidAmount
             });
             if (this._mounted === true) {
                 this.setState({

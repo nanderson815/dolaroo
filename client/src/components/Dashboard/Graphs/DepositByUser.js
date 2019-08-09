@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { withAuthUserContext } from "../../Auth/Session/AuthUserContext";
 
 class DepositByDay extends React.Component {
-    plotDeposits = (uid) => {
+    plotDeposits = (email) => {
         const selectorOptions = {
             buttons: [
                 {
@@ -46,7 +46,7 @@ class DepositByDay extends React.Component {
         // console.log(combiedData);
 
         const filteredByUid = combiedData.filter((deposit) => {
-            return deposit.uid === uid;
+            return deposit.email === email;
         });
 
         // console.log(filteredByUid);
@@ -168,7 +168,7 @@ class DepositByDay extends React.Component {
                         <div className="card">
                             <div className="card-content pCard">
                                 <span className="card-title">{this.props.title ? this.props.title : 'DepositByUser'} : {displayName}</span>
-                                {this.plotDeposits(this.props.user.authUser.uid)}
+                                {this.plotDeposits(this.props.user.email)}
                             </div>
                             <div className="card-action pCard">
                                 <div className="center-align">
