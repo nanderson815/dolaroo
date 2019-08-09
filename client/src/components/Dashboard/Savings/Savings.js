@@ -5,7 +5,7 @@ import styles from './Savings.module.css';
 
 const Savings = (props) => {
 
-    const cash = props.credit/.975;
+    const cash = props.credit;
 
     const oldCost = cash * .15;
     const ourCost = cash - props.credit;
