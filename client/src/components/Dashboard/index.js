@@ -48,7 +48,7 @@ class Home extends React.Component {
                 deposit.time = deposit.time.toDate();
                 deposits.push(deposit);
                 cash += deposit.amount
-                credit += deposit.paidAmount
+                credit += deposit.paidAmount ? deposit.paidAmount : 0
             });
             if (this._mounted === true) {
                 this.setState({
@@ -99,7 +99,7 @@ class Home extends React.Component {
 
                         <div className="container">
                             <div className="row">
-                                <ProvisionalCredit credit={this.state.credit + this.state.pendingCredit} />
+                                <ProvisionalCredit credit={this.state.credit} />
                                 <Balance balance={this.state.cash} disabled={true} />
                                 <Savings credit={this.state.credit} />
                             </div>
