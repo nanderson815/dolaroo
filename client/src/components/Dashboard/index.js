@@ -24,8 +24,6 @@ class Home extends React.Component {
         pendingCredit: 0,
         cash: 0,
         depositsArchive: [],
-        cashHistory: [],
-        creditHistory: [],
         loadingFlag: false,
     }
 
@@ -133,7 +131,8 @@ class Home extends React.Component {
                                 {/* Replace with deposits by location. */}
                                 <ProvisionalCreditOverTime
                                     title={"Provisional Credit Over Time"}
-                                    balance={this.state.creditHistory}
+                                    deposits={this.state.deposits}
+                                    depositsArchive={this.state.depositsArchive}
                                 />
 
                             </div>

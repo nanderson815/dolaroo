@@ -43,7 +43,11 @@ class ProvisionalCreditOverTime extends React.Component {
 
         let lines = [];
 
-        let combiedData = this.props.balance.filter(data => data.time);
+
+
+        let combiedData = this.props.deposits.concat(this.props.depositsArchive);
+
+        console.log(combiedData);
 
         
         const sortedByDate = combiedData.sort((a, b) => {
@@ -55,7 +59,7 @@ class ProvisionalCreditOverTime extends React.Component {
         });
 
         const balances = sortedByDate.map((deposit) => {
-            return (deposit.balance);
+            return (deposit.paidAmount);
         });
 
 
