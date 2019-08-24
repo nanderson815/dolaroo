@@ -10,6 +10,7 @@ import DepositByDay from "./Graphs/DepositByDay";
 import DepositBubble from "./Graphs/DepositBubble";
 import DepositByDenomination from "./Graphs/DepositByDenomination";
 import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
+import DepositsByStatus from './Graphs/DepositsByStatus';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Util from '../Util/Util';
@@ -129,8 +130,14 @@ class Home extends React.Component {
 
 
                                 {/* Replace with deposits by location. */}
-                                <ProvisionalCreditOverTime
+                                {/* <ProvisionalCreditOverTime
                                     title={"Provisional Credit Over Time"}
+                                    deposits={this.state.deposits}
+                                    depositsArchive={this.state.depositsArchive}
+                                /> */}
+
+                                <DepositsByStatus
+                                    title={"Deposits by Status"}
                                     deposits={this.state.deposits}
                                     depositsArchive={this.state.depositsArchive}
                                 />
