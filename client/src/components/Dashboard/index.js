@@ -15,7 +15,6 @@ import Grid from '@material-ui/core/Grid';
 import Util from '../Util/Util';
 
 let db = Util.getFirestoreDB()
-let company = "testCompany"
 
 class Home extends React.Component {
     state = {
@@ -25,58 +24,79 @@ class Home extends React.Component {
         cash: 0,
         depositsArchive: [],
         loadingFlag: false,
+        fetchedData: false
     }
+
+
 
 
     componentDidMount() {
         this._mounted = true;
-        this.setState({
-            loadingFlag: true
-        })
+        if (this.state.deposits.length === 0) {
+            this.setState({
+                loadingFlag: true
+            })
+        }
 
-        // Get all deposits from this company only on load
-        db.collectionGroup("deposits").where("company", "==", company).onSnapshot((querySnapshot) => {
-            let deposits = [];
-            let cash = 0;
-            let credit = 0;
-            querySnapshot.forEach(doc => {
-                let deposit = {};
-                deposit = doc.data();
-                deposit.id = doc.id;
-                deposit.time = deposit.time.toDate();
-                deposits.push(deposit);
-                cash += deposit.amount
-                credit += deposit.paidAmount ? deposit.paidAmount : 0
-            });
-            if (this._mounted === true) {
-                this.setState({
-                    cash, credit, deposits
-                })
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.user !== prevProps.user || this.state.fetchedData === false) {
+            if (this.props.user.authUser) {
+                // Get all deposits from this company only on load
+                console.log("i ran")
+                let company = this.props.user.company ? this.props.user.company : null;
+                let location = this.props.user.location;
+
+                this.listener1 = db.collectionGroup("deposits").where("company", "==", company).onSnapshot((querySnapshot) => {
+                    let deposits = [];
+                    let cash = 0;
+                    let credit = 0;
+                    querySnapshot.forEach(doc => {
+                        let deposit = {};
+                        deposit = doc.data();
+                        deposit.id = doc.id;
+                        deposit.time = deposit.time.toDate();
+                        deposits.push(deposit);
+                        cash += deposit.amount
+                        credit += deposit.paidAmount ? deposit.paidAmount : 0
+                    });
+                    if (this._mounted === true) {
+                        this.setState({
+                            cash, credit, deposits
+                        })
+                    }
+                }, (err) => console.log(err));
+
+                // Get all archived deposits on load
+               this.listener2 = db.collectionGroup("depositsarchive").where("company", "==", company).onSnapshot((querySnapshot) => {
+                    let depositsArchive = [];
+                    let pendingCredit = 0;
+                    querySnapshot.forEach(doc => {
+                        let deposit = {};
+                        deposit = doc.data();
+                        deposit.id = doc.id;
+                        deposit.time = deposit.time.toDate();
+                        depositsArchive.push(deposit);
+                    });
+
+                    depositsArchive.forEach(tran => pendingCredit += tran.amount);
+
+                    if (this._mounted) {
+                        this.setState({ depositsArchive, pendingCredit, loadingFlag: false, fetchedData: true })
+                    }
+                }, (err) => console.log(err));
             }
-        }, (err) => console.log(err));
 
-        // Get all archived deposits on load
-        db.collectionGroup("depositsarchive").where("company", "==", company).onSnapshot((querySnapshot) => {
-            let depositsArchive = [];
-            let pendingCredit = 0;
-            querySnapshot.forEach(doc => {
-                let deposit = {};
-                deposit = doc.data();
-                deposit.id = doc.id;
-                deposit.time = deposit.time.toDate();
-                depositsArchive.push(deposit);
-            });
-
-            depositsArchive.forEach(tran => pendingCredit += tran.amount);
-
-            if (this._mounted) {
-                this.setState({ depositsArchive, pendingCredit, loadingFlag: false })
-            }
-        }, (err) => console.log(err));
+        }
     }
 
     componentWillUnmount() {
         this._mounted = false;
+        if (this.listener1){
+            this.listener1();
+            this.listener2();
+        }
     }
 
     toggleModal() {
@@ -85,7 +105,6 @@ class Home extends React.Component {
     }
 
     render() {
-        console.log(this.props.user);
         if (this.props.user.authUser) {
             return (
                 <div>
