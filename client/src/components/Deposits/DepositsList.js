@@ -40,7 +40,7 @@ class DepositList extends React.Component {
         };
     }
 
-    
+
     // get all on mount
     componentDidMount() {
         this._mounted = true;
@@ -76,7 +76,7 @@ class DepositList extends React.Component {
                 depositsArchive.push(deposit);
             });
             if (this._mounted) {
-                this.setState({ depositsArchive,  loadingFlag: false })
+                this.setState({ depositsArchive, loadingFlag: false })
             }
         }, (err) => console.log(err));
     }
@@ -106,7 +106,7 @@ class DepositList extends React.Component {
                             <h5 className="col s12 m2 offset-m3">Amount</h5>
                         </div>
                         {this.state.loadingFlag ? <div> <CircularProgress className={classes.progress} /> <p>Loading ...</p> </div> : null}
-                        {this.state.deposits.map((deposit) => {
+                        {this.state.deposits.concat(this.state.depositsArchive).map((deposit) => {
                             return (
                                 <div key={deposit.id}>
                                     <DepositItem deposit={deposit}
