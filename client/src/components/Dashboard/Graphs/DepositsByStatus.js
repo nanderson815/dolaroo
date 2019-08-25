@@ -17,18 +17,28 @@ class DepositsByStatus extends React.Component {
         let currentDeposits = combiedData.filter(deposit => {
             let depositMonth = new Date(deposit.time.seconds * 1000).getMonth() + 1
             let currentMonth = new Date().getMonth() + 1
-            return currentMonth === depositMonth 
+            return currentMonth === depositMonth
         });
 
         console.log(combiedData);
         console.log(currentDeposits);
 
         // Get totals for each status option.
-        
-        let submitted = combiedData.filter(dep => dep.status === "submitted");
-        let pending = combiedData.filter(dep => dep.statue === "pending");
-        let settled = combiedData.filter(dep => dep.status === "settled");
 
+        let submittedDeposits = combiedData.filter(dep => dep.status === "submitted");
+        let submitted = Object.keys(submittedDeposits).reduce((previous, key) => {
+            return previous + submittedDeposits[key].amount
+        }, 0);
+
+        let pendingDeposits = combiedData.filter(dep => dep.statue === "pending");
+        let pending = Object.keys(pendingDeposits).reduce((previous, key) => {
+            return previous + pendingDeposits[key].amount
+        }, 0);
+
+        let settledDeposits = combiedData.filter(dep => dep.status === "settled");
+        let settled = Object.keys(settledDeposits).reduce((previous, key) => {
+            return previous + settledDeposits[key].amount
+        }, 0);
 
 
         // const formattedAmounts = amounts.map(amount => "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
