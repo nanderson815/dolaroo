@@ -24,17 +24,17 @@ class DepositsByStatus extends React.Component {
         let submittedDeposits = currentDeposits.filter(dep => dep.status === "submitted");
         let submitted = Object.keys(submittedDeposits).reduce((previous, key) => {
             return previous + submittedDeposits[key].amount
-        }, 0);
+        }, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
         let pendingDeposits = currentDeposits.filter(dep => dep.status === "pending");
         let pending = Object.keys(pendingDeposits).reduce((previous, key) => {
             return previous + pendingDeposits[key].amount
-        }, 0);
+        }, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
         let processedDeposits = currentDeposits.filter(dep => dep.status === "processed");
         let processed = Object.keys(processedDeposits).reduce((previous, key) => {
             return previous + processedDeposits[key].amount
-        }, 0);
+        }, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
 
         // const formattedAmounts = amounts.map(amount => "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
@@ -51,7 +51,7 @@ class DepositsByStatus extends React.Component {
                         marker: { color: 'rgb(13, 71, 161)' },
                         "hoverinfo": "text",
                         "line": { "width": 2.5 },
-                        text: [submitted, pending, processed],
+                        text: [`$${submitted}`, `$${pending}`, `$${processed}`]
                     },
                 ]}
                 layout={
