@@ -14,27 +14,24 @@ class DepositsByStatus extends React.Component {
 
         // Filter data for current month.
         let currentDeposits = combiedData.filter(deposit => {
-            let depositMonth = new Date(deposit.time.seconds * 1000).getMonth() + 1
+            let depositMonth = new Date(deposit.time).getMonth() + 1
             let currentMonth = new Date().getMonth() + 1
             return currentMonth === depositMonth
         });
 
-        console.log(combiedData);
-        console.log(currentDeposits);
-
         // Get totals for each status option.
 
-        let submittedDeposits = combiedData.filter(dep => dep.status === "submitted");
+        let submittedDeposits = currentDeposits.filter(dep => dep.status === "submitted");
         let submitted = Object.keys(submittedDeposits).reduce((previous, key) => {
             return previous + submittedDeposits[key].amount
         }, 0);
 
-        let pendingDeposits = combiedData.filter(dep => dep.statue === "pending");
+        let pendingDeposits = currentDeposits.filter(dep => dep.statue === "pending");
         let pending = Object.keys(pendingDeposits).reduce((previous, key) => {
             return previous + pendingDeposits[key].amount
         }, 0);
 
-        let settledDeposits = combiedData.filter(dep => dep.status === "settled");
+        let settledDeposits = currentDeposits.filter(dep => dep.status === "settled");
         let settled = Object.keys(settledDeposits).reduce((previous, key) => {
             return previous + settledDeposits[key].amount
         }, 0);

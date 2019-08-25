@@ -75,8 +75,6 @@ class DepositList extends React.Component {
                 deposit.time = deposit.time.toDate();
                 depositsArchive.push(deposit);
             });
-
-
             if (this._mounted) {
                 this.setState({ depositsArchive,  loadingFlag: false })
             }
