@@ -1,7 +1,6 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 import _ from "underscore";
-import moment from "moment";
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
@@ -61,6 +60,10 @@ class DepositsByStatus extends React.Component {
                 layout={
                     {
                         autosize: true,
+                        /* title: 'Deposits By User' */
+                        xaxis: {
+                            autorange: true,
+                        },
                         yaxis: {
                             tickprefix: "$",
                             separatethousands: true
@@ -68,14 +71,14 @@ class DepositsByStatus extends React.Component {
                         margin: {
                             l: 60,
                             r: 20,
-                            b: 10,
+                            b: 20,
                             t: 10,
                         }
                     }
                 }
+                useResizeHandler={true}
                 style={{ width: "100%", height: "100%" }}
                 config={{ displayModeBar: false }}
-
             />
         );
     }
