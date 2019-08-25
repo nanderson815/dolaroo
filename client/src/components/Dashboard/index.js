@@ -42,13 +42,14 @@ class Home extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.user !== prevProps.user || this.state.fetchedData === false) {
-            if (this.props.user.authUser) {
+
+            if (this.props.user.company) {
                 // Get all deposits from this company only on load
                 console.log("i ran")
                 let company = this.props.user.company ? this.props.user.company : null;
                 let location = this.props.user.location;
 
-                this.listener1 = db.collectionGroup("deposits").where("company", "==", company).onSnapshot((querySnapshot) => {
+                this.listener1 = db.collection(company).doc(location).collection("deposits").onSnapshot((querySnapshot) => {
                     let deposits = [];
                     let cash = 0;
                     let credit = 0;
@@ -69,7 +70,7 @@ class Home extends React.Component {
                 }, (err) => console.log(err));
 
                 // Get all archived deposits on load
-               this.listener2 = db.collectionGroup("depositsarchive").where("company", "==", company).onSnapshot((querySnapshot) => {
+                this.listener2 = db.collection(company).doc(location).collection("depositsarchive").onSnapshot((querySnapshot) => {
                     let depositsArchive = [];
                     let pendingCredit = 0;
                     querySnapshot.forEach(doc => {
@@ -93,7 +94,7 @@ class Home extends React.Component {
 
     componentWillUnmount() {
         this._mounted = false;
-        if (this.listener1){
+        if (this.listener1) {
             this.listener1();
             this.listener2();
         }

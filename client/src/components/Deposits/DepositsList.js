@@ -15,7 +15,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { CSVLink, CSVDownload } from "react-csv";
 
 let db = Util.getFirestoreDB()
-let company = "testCompany"
 
 const styles = theme => ({
     root: {
@@ -36,7 +35,9 @@ class DepositList extends React.Component {
 
         this.state = {
             deposits: [],
-            depositsArchive: []
+            depositsArchive: [],
+            loadingFlag: false,
+            fetchedData: false
         };
     }
 
@@ -47,38 +48,51 @@ class DepositList extends React.Component {
         this.setState({
             loadingFlag: true
         })
+    }
 
-        // Get all deposits from this company only on load
-        db.collectionGroup("deposits").where("company", "==", company).onSnapshot((querySnapshot) => {
-            let deposits = [];
-            querySnapshot.forEach(doc => {
-                let deposit = {};
-                deposit = doc.data();
-                deposit.id = doc.id;
-                deposit.time = deposit.time.toDate();
-                deposits.push(deposit);
-            });
-            if (this._mounted === true) {
-                this.setState({
-                    deposits
-                })
-            }
-        }, (err) => console.log(err));
+    componentDidUpdate(prevProps) {
+        if (this.props.user !== prevProps.user || this.state.fetchedData === false) {
 
-        // Get all archived deposits on load
-        db.collectionGroup("depositsarchive").where("company", "==", company).onSnapshot((querySnapshot) => {
-            let depositsArchive = [];
-            querySnapshot.forEach(doc => {
-                let deposit = {};
-                deposit = doc.data();
-                deposit.id = doc.id;
-                deposit.time = deposit.time.toDate();
-                depositsArchive.push(deposit);
-            });
-            if (this._mounted) {
-                this.setState({ depositsArchive, loadingFlag: false })
+            if (this.props.user.company) {
+                // Get all deposits from this company only on load
+                console.log("i ran")
+                let company = this.props.user.company ? this.props.user.company : null;
+                let location = this.props.user.location;
+
+                this.listener1 = db.collection(company).doc(location).collection("deposits").onSnapshot((querySnapshot) => {
+                    let deposits = [];
+                    querySnapshot.forEach(doc => {
+                        let deposit = {};
+                        deposit = doc.data();
+                        deposit.id = doc.id;
+                        deposit.time = deposit.time.toDate();
+                        deposits.push(deposit);
+                    });
+                    if (this._mounted === true) {
+                        this.setState({
+                            deposits
+                        })
+                    }
+                }, (err) => console.log(err));
+
+                // Get all archived deposits on load
+                this.listener2 = db.collection(company).doc(location).collection("depositsarchive").onSnapshot((querySnapshot) => {
+                    let depositsArchive = [];
+                    querySnapshot.forEach(doc => {
+                        let deposit = {};
+                        deposit = doc.data();
+                        deposit.id = doc.id;
+                        deposit.time = deposit.time.toDate();
+                        depositsArchive.push(deposit);
+                    });
+
+                    if (this._mounted) {
+                        this.setState({ depositsArchive, loadingFlag: false, fetchedData: true })
+                    }
+                }, (err) => console.log(err));
             }
-        }, (err) => console.log(err));
+
+        }
     }
 
     render() {
