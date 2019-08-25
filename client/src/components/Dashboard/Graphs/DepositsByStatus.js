@@ -26,14 +26,14 @@ class DepositsByStatus extends React.Component {
             return previous + submittedDeposits[key].amount
         }, 0);
 
-        let pendingDeposits = currentDeposits.filter(dep => dep.statue === "pending");
+        let pendingDeposits = currentDeposits.filter(dep => dep.status === "pending");
         let pending = Object.keys(pendingDeposits).reduce((previous, key) => {
             return previous + pendingDeposits[key].amount
         }, 0);
 
-        let settledDeposits = currentDeposits.filter(dep => dep.status === "settled");
-        let settled = Object.keys(settledDeposits).reduce((previous, key) => {
-            return previous + settledDeposits[key].amount
+        let processedDeposits = currentDeposits.filter(dep => dep.status === "processed");
+        let processed = Object.keys(processedDeposits).reduce((previous, key) => {
+            return previous + processedDeposits[key].amount
         }, 0);
 
 
@@ -46,12 +46,12 @@ class DepositsByStatus extends React.Component {
                     {
                         type: 'bar',
                         name: 'Deposits by Status',
-                        x: ["submitted", "pending", "settled"],
-                        y: [submitted, pending, settled],
+                        x: ["submitted", "pending", "processed"],
+                        y: [submitted, pending, processed],
                         marker: { color: 'rgb(13, 71, 161)' },
                         "hoverinfo": "text",
                         "line": { "width": 2.5 },
-                        text: [submitted, pending, settled],
+                        text: [submitted, pending, processed],
                     },
                 ]}
                 layout={
