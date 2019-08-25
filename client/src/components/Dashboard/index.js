@@ -9,7 +9,6 @@ import DepositByUser from "./Graphs/DepositByUser";
 import DepositByDay from "./Graphs/DepositByDay";
 import DepositBubble from "./Graphs/DepositBubble";
 import DepositByDenomination from "./Graphs/DepositByDenomination";
-import ProvisionalCreditOverTime from "./Graphs/ProvisionalCreditOverTime"
 import DepositsByStatus from './Graphs/DepositsByStatus';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
@@ -86,6 +85,7 @@ class Home extends React.Component {
     }
 
     render() {
+        console.log(this.props.user);
         if (this.props.user.authUser) {
             return (
                 <div>

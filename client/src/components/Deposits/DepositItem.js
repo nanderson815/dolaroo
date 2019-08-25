@@ -14,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const SimpleExpansionPanel = (props) => {
-    console.log(props)
     // decontruct props
     const {
         amount,

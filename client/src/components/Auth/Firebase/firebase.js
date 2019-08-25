@@ -86,8 +86,9 @@ class Firebase {
           let claims = {
             isAdmin: idTokenResult.claims ? idTokenResult.claims.admin : false,
             isCashier: idTokenResult.claims ? idTokenResult.claims.cashier : false,
-            isBanker: idTokenResult.claims ? idTokenResult.claims.banker : false,
-            isUser: idTokenResult.claims ? idTokenResult.claims.user : false
+            isUser: idTokenResult.claims ? idTokenResult.claims.user : false,
+            company: idTokenResult.claims ? idTokenResult.claims.company : false,
+            location: idTokenResult.claims ? idTokenResult.claims.location: false
           };
 
           // The name is the *primary* role as someone can be admin and banker for example

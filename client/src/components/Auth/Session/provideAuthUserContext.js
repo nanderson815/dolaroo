@@ -38,8 +38,9 @@ const provideAuthUserContext = Component => {
                     claims: claims.name,
                     isAdmin: claims.isAdmin,
                     isCashier: claims.isCashier,
-                    isBanker: claims.isBanker,
-                    isUser: claims.isUser
+                    isUser: claims.isUser,
+                    company: claims.company,
+                    location: claims.location
                  });
             } catch {
                 console.error("Error refreshng token");
