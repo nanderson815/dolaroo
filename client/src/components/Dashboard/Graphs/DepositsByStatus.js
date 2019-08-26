@@ -1,6 +1,5 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
-import _ from "underscore";
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
 

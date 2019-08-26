@@ -28,21 +28,21 @@ const SimpleExpansionPanel = (props) => {
         company,
         location,
         awaitingSettlement,
-        settled
+        status
     } = props.deposit;
     let jsDate = new Date(time);
     const dateTime = moment(jsDate).format("YYYY-MM-DD HH:mm:ss");
 
     let depositState = "";
     let depositIcon = "";
-    if (!!settled) {
-        depositState = "Settled";
+    if (status === "processed") {
+        depositState = "Processed";
         depositIcon = "done_all";
-    } else if (awaitingSettlement) {
-        depositState = "Awaiting Settledment";
+    } else if (status === "pending") {
+        depositState = "Pending";
         depositIcon = "mail_outline";
     } else {
-        depositState = "In Safe";
+        depositState = "Submitted";
         depositIcon = "lock";
     }
 
