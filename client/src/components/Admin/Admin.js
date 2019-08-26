@@ -14,13 +14,6 @@ class Admin extends React.Component {
         });
     }
 
-    // route to show all prospect
-    listProspects = () => {
-        this.props.history.push({
-            pathname: '/prospects'
-        });
-    }
-
     // go back to where you came from
     goBack = () => {
         this.props.history.goBack();
