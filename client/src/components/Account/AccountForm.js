@@ -72,7 +72,6 @@ class AccountForm extends React.Component {
         claims: "",
         isAdmin: false,
         isCashier: false,
-        isBanker: false,
         isUser: false,    
         message: ""
     };
@@ -90,7 +89,6 @@ class AccountForm extends React.Component {
                     claims: user.claims || "user",
                     isAdmin: user.isAdmin,
                     isCashier: user.isCashier,
-                    isBanker: user.isBanker,
                     isUser: user.isUser,                
                     email: user.email
                 });
@@ -148,7 +146,6 @@ class AccountForm extends React.Component {
             claims,
             isAdmin,
             isCashier,
-            isBanker,
             isUser,        
             message
         } = this.state;
@@ -250,13 +247,6 @@ class AccountForm extends React.Component {
                             <Checkbox checked={isAdmin}/>
                             }
                             label="Admin"
-                        />
-                        <FormControlLabel
-                            disabled
-                            control={
-                            <Checkbox checked={isBanker}/>
-                            }
-                            label="Banker"
                         />
                         <FormControlLabel
                             disabled

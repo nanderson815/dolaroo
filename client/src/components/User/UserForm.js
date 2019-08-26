@@ -76,7 +76,6 @@ class UserForm extends React.Component {
     claims: "noauth",
     isAdmin: false,
     isCashier: false,
-    isBanker: false,
     isUser: false,
     message: "",
     locations: [],
@@ -95,7 +94,6 @@ class UserForm extends React.Component {
           claims: user.claims,
           isAdmin: user.isAdmin,
           isCashier: user.isCashier,
-          isBanker: user.isBanker,
           isUser: user.isUser,
           email: user.email
         });
@@ -170,7 +168,7 @@ class UserForm extends React.Component {
         // UserAPI.addAuthUserToLocation(authUser, "testCompany", this.state.userLocation).then(()=>{
         //   console.log("user added to location.")
         // })
-        
+
       })
       .catch(err => {
         this.setState({ message: `Error adding user ${err}` });
@@ -252,20 +250,6 @@ class UserForm extends React.Component {
       .then(res => {
         console.log(`Made User ${id} User`);
         this.setState({ message: `Disabled User (i.e. made them a user)` });
-        this.fetchUser(id);
-      })
-      .catch(err => {
-        this.setState({ message: `Error: ${err}` });
-        console.error(err);
-      });
-  }
-
-  // Make Banker
-  userMakeBanker = (id) => {
-    UserAPI.makeBanker(id)
-      .then(res => {
-        console.log(`Made User ${id} Banker`);
-        this.setState({ message: `Made User Banker` });
         this.fetchUser(id);
       })
       .catch(err => {
@@ -416,13 +400,6 @@ class UserForm extends React.Component {
                         <Checkbox checked={this.state.isAdmin} onClick={() => this.userMakeAdmin(this.state.id)} />
                       }
                       label="Admin"
-                    />
-                    <FormControlLabel
-                      disabled={this.state.isBanker}
-                      control={
-                        <Checkbox checked={this.state.isBanker} onClick={() => this.userMakeBanker(this.state.id)} />
-                      }
-                      label="Banker"
                     />
                     <FormControlLabel
                       control={

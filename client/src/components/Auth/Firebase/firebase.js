@@ -88,18 +88,15 @@ class Firebase {
             isCashier: idTokenResult.claims ? idTokenResult.claims.cashier : false,
             isUser: idTokenResult.claims ? idTokenResult.claims.user : false,
             company: idTokenResult.claims ? idTokenResult.claims.company : false,
-            location: idTokenResult.claims ? idTokenResult.claims.location: false
+            location: idTokenResult.claims ? idTokenResult.claims.location : false
           };
 
-          // The name is the *primary* role as someone can be admin and banker for example
+          // The name is the *primary* role as someone can be admin and cashier for example
           if (idTokenResult.claims.admin) {
             claims.name = "admin";
             resolve(claims);
           } else if (idTokenResult.claims.cashier) {
             claims.name = "cashier";
-            resolve(claims);
-          } else if (idTokenResult.claims.banker) {
-            claims.name = "banker";
             resolve(claims);
           } else {
             claims.name = "user";
@@ -121,26 +118,6 @@ class Firebase {
           // Confirm the user is an Admin.
           // Note double bangs is used to convert truthy/falsy to true/fale
           if (!!idTokenResult.claims.admin) {
-            resolve(true);
-          } else {
-            resolve(false);
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          reject(err);
-        });
-    });//promise
-  }// method
-
-  // get custom claims
-  doIsUserBanker = () => {
-    return new Promise((resolve, reject) => {
-      this.auth.currentUser.getIdTokenResult()
-        .then((idTokenResult) => {
-          // Confirm the user is an Admin.
-          // Note double bangs is used to convert truthy/falsy to true/fale
-          if (!!idTokenResult.claims.banker) {
             resolve(true);
           } else {
             resolve(false);

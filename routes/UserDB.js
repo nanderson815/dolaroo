@@ -12,7 +12,6 @@ class UserDB {
             // Only *set* claims passed
             if (authClaims && authClaims.admin != null) updateFields.isAdmin = authClaims.admin;
             if (authClaims && authClaims.cashier != null) updateFields.isCashier = authClaims.cashier;
-            if (authClaims && authClaims.banker != null) updateFields.isBanker = authClaims.banker;
             if (authClaims && authClaims.user != null) updateFields.isUser = authClaims.user;
 
             // update claims

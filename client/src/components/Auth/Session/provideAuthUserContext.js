@@ -24,7 +24,6 @@ const provideAuthUserContext = Component => {
                 claims: null,
                 isAdmin: false,
                 isCashier: false,
-                isBanker: false,
                 isUser: false,
             };
         }

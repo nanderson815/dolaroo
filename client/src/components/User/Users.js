@@ -100,19 +100,6 @@ class Users extends React.Component {
         });
     }       
 
-    // Make Banker
-    userMakeBanker = (id) => {
-        UserAPI.makeBanker( id )
-        .then(res => {
-            console.log(`Made User ${id} Banker`);
-            this.setState({message: `Made User Banker`});
-            this.refreshPage();
-        })
-        .catch(err => {
-            this.setState({message: `Error ${err}`});
-            console.error(err); 
-        });
-    }       
     
     // go back to where you came from
     goBack = () => {
@@ -131,7 +118,6 @@ class Users extends React.Component {
                             userDelete={this.userDelete}
                             userMakeAdmin={this.userMakeAdmin}
                             userMakeCashier={this.userMakeCashier}
-                            userMakeBanker={this.userMakeBanker}
                             userMakeUser={this.userMakeUser}
                             userInfo={user}
                             />

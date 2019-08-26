@@ -330,13 +330,6 @@ class UserAPI {
         }));
     }
 
-    // Make user an Admin user - returns a promise 
-    static makeBanker = (uid) => {
-        return (Util.apiPost(`/api/auth/setBanker/${uid}`, {
-            id: uid
-        }));
-    }
-
     // Make user a cashier - returns a promise 
     static makeCashier = (uid) => {
         return (Util.apiPost(`/api/auth/setCashier/${uid}`, {

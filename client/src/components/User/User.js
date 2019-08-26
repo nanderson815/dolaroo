@@ -32,7 +32,7 @@ class User extends React.Component {
     // decontruct props
     render() {
         let { id, uid, firstName, lastName, phoneNumber, email, photoURL, claims } =  this.props.userInfo;
-        let { userMakeAdmin, userMakeCashier, userMakeUser, userMakeBanker } =  this.props;
+        let { userMakeAdmin, userMakeCashier, userMakeUser } =  this.props;
     
         if (!photoURL) {
             photoURL = "./images/noUserImage150x150.png";
@@ -99,14 +99,6 @@ class User extends React.Component {
                                         disabled={editIsDisabled}
                                         className="material-icons left indigo-text text-darken-4"
                                         onClick={() => userMakeAdmin(id)}>supervisor_account
-                                    </i>
-                                </Tooltip>
-
-                                <Tooltip title="Make Banker">
-                                    <i style={{cursor: 'pointer'}}
-                                        disabled={editIsDisabled}
-                                        className="material-icons left indigo-text text-darken-4"
-                                        onClick={() => userMakeBanker(id)}>next_week
                                     </i>
                                 </Tooltip>
 

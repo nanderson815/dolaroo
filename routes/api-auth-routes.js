@@ -89,32 +89,6 @@ module.exports = function (app) {
         }
     }); // Route
 
-    app.post("/api/auth/setBanker/:uid", requiresLogin, (req, res) => {
-        let uid = req.params.uid;
-        try {
-            // Authorize the current user
-            if (req.user && !!req.user.admin) {
-                // set the claim for the user who's uid is passed
-                // Note, this is the uid of the user to make admin (NOT the auth users uid)
-                AuthUserAPI.setClaims(uid, {
-                    banker: true
-                }).then(async (newClaims) => {
-                    try {
-                        await UserDB.updateClaims(uid, newClaims.name, newClaims);
-                        res.json(uid);
-                    } catch (err) {
-                        res.status(500).json(`Error caught in "await UserDB.updateClaims" ${err}`);
-                    }
-                });
-            } else {
-                res.status(401).json(`Must be admin to make someone banker..."`);
-            }
-        } catch (err) {
-            // catch all error
-            res.status(500).json(`Error caught in route app.post("//api/auth/setBanker/:uid..." ${err}`);
-        }
-    }); // Route
-
     app.post("/api/auth/setLocation/:uid/:company/:location", requiresLogin, (req, res) => {
         let uid = req.params.uid;
         let loc = req.params.location;
@@ -136,11 +110,11 @@ module.exports = function (app) {
                     }
                 });
             } else {
-                res.status(401).json(`Must be admin to make someone banker..."`);
+                res.status(401).json(`Must be admin to set claims."`);
             }
         } catch (err) {
             // catch all error
-            res.status(500).json(`Error caught in route app.post("//api/auth/setBanker/:uid..." ${err}`);
+            res.status(500).json(`Error caught in route app.post("//api/auth/setLocation/:uid/:company/:location..." ${err}`);
         }
     });
 
@@ -148,13 +122,12 @@ module.exports = function (app) {
         let uid = req.params.uid;
         try {
             // Authorize the current user
-            if (req.user && !! req.user.admin) {
+            if (req.user && !!req.user.admin) {
                 // set the claim for the user who's uid is passed
                 // Note, this is the uid of the user to update (NOT the auth users uid)
                 AuthUserAPI.setClaims(uid, {
                     admin: false,
                     cashier: false,
-                    banker: false,
                     user: true
                 }).then(async (newClaims) => {
                     try {
@@ -219,14 +192,14 @@ module.exports = function (app) {
                     displayName: `${user.firstName} ${user.lastName}`,
                     disabled: false
                 })
-                .then((authUser) => {
+                    .then((authUser) => {
                         console.log('Successfully added auth user');
                         res.json(authUser);
-                })
-                .catch((err) => {
-                    console.error('Error creating auth user:', err);
-                    res.status(404).json(`Error caught in app.post("/api/auth/createUser}" ${err}`);
-                });
+                    })
+                    .catch((err) => {
+                        console.error('Error creating auth user:', err);
+                        res.status(404).json(`Error caught in app.post("/api/auth/createUser}" ${err}`);
+                    });
             } else {
                 res.status(401).json(`Must be admin to create user`);
             }
