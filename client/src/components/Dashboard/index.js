@@ -157,7 +157,7 @@ class Home extends React.Component {
                                 /> */}
 
                                 <DepositsByStatus
-                                    title={"Deposits by Status"}
+                                    title={"Deposits by Status (Current Month)"}
                                     deposits={this.state.deposits}
                                     depositsArchive={this.state.depositsArchive}
                                 />

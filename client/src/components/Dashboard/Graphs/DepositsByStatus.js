@@ -36,6 +36,7 @@ class DepositsByStatus extends React.Component {
         }, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
 
+
         // const formattedAmounts = amounts.map(amount => "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 
 
