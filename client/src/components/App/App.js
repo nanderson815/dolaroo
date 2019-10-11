@@ -11,7 +11,6 @@ import Account from '../Account/Account';
 import Admin from '../Admin/Admin';
 import UserPage from '../User/UserPage';
 import UserForm from '../User/UserForm';
-import Register from '../Register/Register';
 import DepositList from '../Deposits/DepositsList';
 
 // Auth components
@@ -38,7 +37,6 @@ class App extends React.Component {
           <Route exact path="/admin" component={Admin} />
           <Route exact path="/userpage" component={UserPage} />
           <Route exact path="/userform" component={UserForm} />
-          <Route exact path="/register" component={Register} />
           <Route exact path="/depositlist" component={DepositList} />
         </div>
       </Router>
