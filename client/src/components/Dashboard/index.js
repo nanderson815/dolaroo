@@ -29,7 +29,6 @@ class Home extends React.Component {
 
 
     componentDidMount() {
-        console.log('bang bang homie.')
         this._mounted = true;
         if (this.state.deposits.length === 0) {
             this.setState({
