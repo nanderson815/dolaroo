@@ -40,13 +40,14 @@ class Home extends React.Component {
 
     componentDidUpdate(prevProps) {
 
+        // Allows a super admin to input what company/location he wants to see.
         if (this.props.user.isSuperAdmin !== prevProps.user.isSuperAdmin && this.props.user.isSuperAdmin === true) {
             let company = prompt("Enter the company name.");
             let location = prompt("Enter the location name.")
             this.setState({ company, location })
         }
 
-
+        // sets up the listener to grab data in real time, only if the user is new.
         if (this.props.user !== prevProps.user || this.state.fetchedData === false) {
 
             if (this.props.user.company || this.state.company) {
@@ -111,7 +112,6 @@ class Home extends React.Component {
     }
 
     render() {
-        console.log(this.props.user)
         if (this.props.user.authUser) {
             return (
                 <div>
