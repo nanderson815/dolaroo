@@ -24,30 +24,36 @@ class Home extends React.Component {
         cash: 0,
         depositsArchive: [],
         loadingFlag: false,
-        fetchedData: false
+        fetchedData: false,
     }
 
 
-
-
     componentDidMount() {
+        console.log('bang bang homie.')
         this._mounted = true;
         if (this.state.deposits.length === 0) {
             this.setState({
                 loadingFlag: true
             })
         }
-
     }
 
     componentDidUpdate(prevProps) {
+
+        if (this.props.user.isSuperAdmin !== prevProps.user.isSuperAdmin && this.props.user.isSuperAdmin === true) {
+            let company = prompt("Enter the company name.");
+            let location = prompt("Enter the location name.")
+            this.setState({ company, location })
+        }
+
+
         if (this.props.user !== prevProps.user || this.state.fetchedData === false) {
 
-            if (this.props.user.company) {
-                // Get all deposits from this company only on load
-                let company = this.props.user.company ? this.props.user.company : null;
-                let location = this.props.user.location;
+            if (this.props.user.company || this.state.company) {
+                let company = this.props.user.company ? this.props.user.company : this.state.company;
+                let location = this.props.user.location ? this.props.user.location : this.state.location;
 
+                // Get all deposits from this company only on load
                 this.listener1 = db.collection(company).doc(location).collection("deposits").onSnapshot((querySnapshot) => {
                     let deposits = [];
                     let cash = 0;
