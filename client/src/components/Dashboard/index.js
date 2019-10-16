@@ -45,7 +45,6 @@ class Home extends React.Component {
 
             if (this.props.user.company) {
                 // Get all deposits from this company only on load
-                console.log("i ran")
                 let company = this.props.user.company ? this.props.user.company : null;
                 let location = this.props.user.location;
 
@@ -106,6 +105,7 @@ class Home extends React.Component {
     }
 
     render() {
+        console.log(this.props.user)
         if (this.props.user.authUser) {
             return (
                 <div>

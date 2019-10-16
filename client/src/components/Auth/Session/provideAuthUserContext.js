@@ -25,6 +25,7 @@ const provideAuthUserContext = Component => {
                 isAdmin: false,
                 isCashier: false,
                 isUser: false,
+                isSuperAdmin: false
             };
         }
 
@@ -38,6 +39,7 @@ const provideAuthUserContext = Component => {
                     isAdmin: claims.isAdmin,
                     isCashier: claims.isCashier,
                     isUser: claims.isUser,
+                    isSuperAdmin: claims.isSuperAdmin,
                     company: claims.company,
                     location: claims.location
                  });

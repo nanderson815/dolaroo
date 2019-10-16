@@ -87,6 +87,7 @@ class Firebase {
             isAdmin: idTokenResult.claims ? idTokenResult.claims.admin : false,
             isCashier: idTokenResult.claims ? idTokenResult.claims.cashier : false,
             isUser: idTokenResult.claims ? idTokenResult.claims.user : false,
+            isSuperAdmin: idTokenResult.claims ? idTokenResult.claims.superAdmin : false,
             company: idTokenResult.claims ? idTokenResult.claims.company : false,
             location: idTokenResult.claims ? idTokenResult.claims.location : false
           };
