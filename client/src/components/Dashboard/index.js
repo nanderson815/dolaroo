@@ -53,7 +53,7 @@ class Home extends React.Component {
                 let company = this.props.user.company ? this.props.user.company : this.state.company;
                 let location = this.props.user.location ? this.props.user.location : this.state.location;
 
-                // Get all deposits from this company only on load
+                // Get all deposits from this company only on load for one location. TODO: Add all locations
                 this.listener1 = db.collection(company).doc(location).collection("deposits").onSnapshot((querySnapshot) => {
                     let deposits = [];
                     let cash = 0;
