@@ -27,6 +27,7 @@ class Home extends React.Component {
         fetchedData: false,
     }
 
+    
 
     componentDidMount() {
         this._mounted = true;
