@@ -69,7 +69,7 @@ class DepositByAll extends React.Component {
 
         return (
             <div>
-                <DepositModal open={this.state.open} amount={this.state.clickedAmount} date={this.state.clickedDate}/>
+                <DepositModal open={this.state.open} amount={this.state.clickedAmount} date={this.state.clickedDate} />
                 <Plot
                     data={[
                         {
@@ -132,7 +132,7 @@ class DepositByAll extends React.Component {
         let combiedData = this.props.deposits.concat(this.props.depositsArchive);
         this.props.history.push({
             pathname: '/depositlist',
-            state: {deposits: combiedData}
+            state: { deposits: combiedData }
         });
     }
 

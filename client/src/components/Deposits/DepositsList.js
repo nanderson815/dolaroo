@@ -103,12 +103,15 @@ class DepositList extends React.Component {
         //     return null;
         // }
 
+        let csvData = this.state.deposits.concat(this.state.depositsArchive);
+        let cleanedData = csvData.map(({ correlationId, link, uid, id, settlementLink, ...keepers }) => keepers)
+
         if (this.props.user.authUser) {
             return (
                 <div className="container">
                     <br></br>
                     <CSVLink
-                        data={this.state.deposits.concat(this.state.depositsArchive)}
+                        data={cleanedData}
                         filename={'dollaroo-transactions.csv'}
                         className='btn blue darken-4'
                         target="_blank"
