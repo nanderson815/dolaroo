@@ -27,7 +27,6 @@ const SimpleExpansionPanel = (props) => {
         email,
         company,
         location,
-        awaitingSettlement,
         status
     } = props.deposit;
     let jsDate = new Date(time);
