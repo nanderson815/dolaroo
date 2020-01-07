@@ -6,11 +6,6 @@
 
 Dollaroo is a cloud-based web and mobile application that imitates smart safe functionality with minimal upfront cost.
 
-## Team
-
-* [x] Noah Anderson [Noah Portfolio](https://noahanderson.dev)
-* [x] Paul Linck [Paul Portfolio](https://paullinck.com/)
-* [x] JJ Harry [JJ Portfolio](https://jjisharry.github.io/portfolio/)
 
 ### The Problem
 
@@ -48,14 +43,6 @@ This is deployed to **Google Cloud Platform**.  GCP provides several huge advant
 
 NOTE: We also deployed to Herkou since GCP was charging fees given the services we are using.
 
-## Links
-
-* [Live Google Cloud Platform Site](https://project3-noahpauljj-fintech2.appspot.com)
-* [Live HEROKU Link](https://project3-noahpauljj-fintech2.herokuapp.com)
-* [GitHub for this](https://github.com/nanderson815/Project3/)
-* [Paul Portfolio](https://paullinck.com/)
-* [Noah Portfolio](https://noahanderson.dev)
-* [JJ Portfolio](https://jjisharry.github.io/portfolio/)
 
 ## Technologies Used
 
@@ -74,10 +61,6 @@ NOTE: We also deployed to Herkou since GCP was charging fees given the services 
 ## Screenshots
 
 ![ss1 deposit](./images/s1-dashDepositAni.gif)
-
-![ss1 details](./images/s1-deposits.gif)
-
-![ss1 signin](./images/s1-signInResetPWAni.gif)
 
 ![ss1 account](./images/s1-userAccountAni.gif)
 
@@ -111,8 +94,6 @@ Dollaroo deals with money and hence is very secure.  We are using firebase auth 
 
 4. Firestore data is completely locked down using the auth customClaims so even if a hacker was sneaky enough to bypass all the client side security, they would be unable to update the data in any way.
 
-See some of the rules below:
-![ss9](./images/ss9.png)
 
 ### Model View Controller (with lightweight controller routing to business and data logic)
 

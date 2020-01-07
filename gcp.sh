@@ -1,1 +1,1 @@
-gcloud projects create dolaroo-noahpauljj-fintech2
+gcloud projects create dolaroo
