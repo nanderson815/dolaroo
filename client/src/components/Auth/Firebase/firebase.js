@@ -14,7 +14,7 @@ import 'firebase/functions';
 //   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID
 // };
 const config = {
-  apiKey: "AIzaSyC-3IzXoP2LU2QhnrfuhZWHp_QGedI7VdY",
+  apiKey: "AIzaSyCQW6BiljNLHEtXFpedPv5eJJDmW0gu4Ck",
   authDomain: "dolaroo.firebaseapp.com",
   databaseURL: "https://dolaroo.firebaseio.com",
   projectId: "dolaroo",
