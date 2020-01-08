@@ -1,5 +1,10 @@
 # Dollaroo
 
+## Login
+
+User: dolaroo19@gmail.com
+Password: 123456
+
 ## Overview
 
 ![Dollaroo](./images/DollarRooBanner.png)
